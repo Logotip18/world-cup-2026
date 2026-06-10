@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ЧМ-2026: Прогнозы | ЛОГОТИП 18+</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
     <style>
         * {
             margin: 0;
@@ -39,6 +42,23 @@
         @keyframes glow {
             from { text-shadow: 0 0 20px rgba(255, 0, 0, 0.5); }
             to { text-shadow: 0 0 40px rgba(255, 0, 0, 1), 0 0 60px rgba(255, 0, 0, 0.8); }
+        }
+        
+        .firebase-status {
+            background: rgba(0, 255, 0, 0.1);
+            border: 2px solid #00ff00;
+            color: #00ff00;
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-align: center;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+        
+        .firebase-status.offline {
+            background: rgba(255, 0, 0, 0.1);
+            border-color: #ff0000;
+            color: #ff0000;
         }
         
         .tabs {
@@ -137,7 +157,7 @@
             background: rgba(139, 0, 0, 0.3);
         }
         
-        input[type="text"], input[type="number"] {
+        input[type="text"], input[type="number"], input[type="password"] {
             background: #1a1a1a;
             border: 2px solid #8B0000;
             color: #fff;
@@ -157,7 +177,7 @@
             margin: 0; 
         }
         
-        input[type="text"]:focus, input[type="number"]:focus {
+        input[type="text"]:focus, input[type="number"]:focus, input[type="password"]:focus {
             outline: none;
             border-color: #ff0000;
             box-shadow: 0 0 10px rgba(255, 0, 0, 0.6);
@@ -528,11 +548,57 @@
             padding: 30px;
             font-size: 1.1em;
         }
+        
+        .group-standings {
+            margin-bottom: 25px;
+        }
+        
+        .group-title {
+            font-family: 'Orbitron', sans-serif;
+            color: #ff0000;
+            font-size: 1.3em;
+            margin-bottom: 10px;
+            padding: 8px 15px;
+            background: rgba(139, 0, 0, 0.3);
+            border-radius: 6px;
+            display: inline-block;
+        }
+        
+        .group-table td:first-child {
+            font-weight: 700;
+            color: #fff;
+        }
+        
+        .qualify {
+            background: rgba(0, 255, 0, 0.15) !important;
+        }
+        
+        .login-section {
+            background: rgba(30, 30, 30, 0.9);
+            border: 2px solid #8B0000;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .login-section input {
+            margin: 5px;
+            width: 200px;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>⚽ ЧМ-2026: ПРОГНОЗЫ ⚽</h1>
+        
+        <div id="firebaseStatus" class="firebase-status offline">🔴 Подключение к Firebase...</div>
+        
+        <div id="loginSection" class="login-section" style="display: none;">
+            <h2 style="color: #ff0000; margin-bottom: 15px;">🔐 Вход в систему</h2>
+            <input type="text" id="usernameInput" placeholder="Ваше имя">
+            <button onclick="login()">Войти</button>
+        </div>
         
         <div class="rules">
             <div class="rules-title">📋 ПРАВИЛА:</div>
@@ -554,10 +620,10 @@
         
         <div class="tabs">
             <div class="tab active" onclick="switchTab('matches')">📅 Матчи</div>
+            <div class="tab" onclick="switchTab('groups')">📊 Группы ЧМ</div>
             <div class="tab" onclick="switchTab('leaderboard')">🏆 Таблица</div>
-            <div class="tab" onclick="switchTab('analytics')">📊 Аналитика</div>
+            <div class="tab" onclick="switchTab('analytics')">📈 Аналитика</div>
             <div class="tab" onclick="switchTab('archive')">📁 Архив</div>
-            <div class="tab" onclick="switchTab('players')">👥 Игроки</div>
         </div>
         
         <div id="matches" class="tab-content active">
@@ -571,9 +637,16 @@
             </div>
         </div>
         
+        <div id="groups" class="tab-content">
+            <div class="section">
+                <div class="section-title">📊 Групповой этап ЧМ-2026</div>
+                <div id="groupStandings"></div>
+            </div>
+        </div>
+        
         <div id="leaderboard" class="tab-content">
             <div class="section">
-                <div class="section-title">🏆 Таблица лидеров</div>
+                <div class="section-title">🏆 Таблица лидеров (прогнозы)</div>
                 <table class="leaderboard">
                     <thead>
                         <tr>
@@ -592,12 +665,12 @@
         
         <div id="analytics" class="tab-content">
             <div class="section">
-                <div class="section-title">📊 Аналитика и статистика</div>
+                <div class="section-title">📈 Аналитика прогнозов</div>
                 <div id="analyticsContent"></div>
             </div>
             
             <div class="section">
-                <div class="section-title">📈 Общая статистика</div>
+                <div class="section-title">📊 Общая статистика</div>
                 <div class="stats">
                     <div class="stat-card">
                         <div class="stat-value" id="totalMatches">0</div>
@@ -625,65 +698,101 @@
                 <div id="archiveList"></div>
             </div>
         </div>
-        
-        <div id="players" class="tab-content">
-            <div class="section">
-                <div class="section-title">👥 Управление игроками</div>
-                <div class="player-controls">
-                    <input type="text" id="newPlayerName" placeholder="Имя игрока" style="width: 200px;">
-                    <button onclick="addPlayer()">+ Добавить игрока</button>
-                </div>
-                <div id="playersList" style="margin-top: 15px;"></div>
-            </div>
-        </div>
     </div>
 
     <script>
+        // 🔥 FIREBASE CONFIGURATION
+        // ЗАМЕНИ НА СВОИ ДАННЫЕ ИЗ FIREBASE!
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+            databaseURL: "https://YOUR_PROJECT_ID-default-rtdb.firebaseio.com",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_PROJECT_ID.appspot.com",
+            messagingSenderId: "YOUR_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
+        
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+        
+        let currentUser = null;
         let data = {
             matches: [],
             archivedMatches: [],
-            players: ['Сергей', 'ИИ', 'АлПашка']
+            players: ['Сергей', 'ИИ', 'АлПашка'],
+            groups: {}
         };
         
-        function loadData() {
-            const saved = localStorage.getItem('worldCup2026_v5');
-            if (saved) {
-                data = JSON.parse(saved);
+        // Check Firebase connection
+        const connectedRef = database.ref(".info/connected");
+        connectedRef.on("value", (snap) => {
+            const statusEl = document.getElementById('firebaseStatus');
+            if (snap.val() === true) {
+                statusEl.textContent = "🟢 Онлайн - синхронизация активна";
+                statusEl.classList.remove('offline');
+                loadData();
             } else {
-                loadRealMatches();
+                statusEl.textContent = "🔴 Офлайн - нет подключения";
+                statusEl.classList.add('offline');
             }
+        });
+        
+        function loadData() {
+            const dataRef = database.ref('worldcup2026/data');
+            dataRef.on('value', (snapshot) => {
+                const val = snapshot.val();
+                if (val) {
+                    data = val;
+                    render();
+                }
+            });
         }
         
         function saveData() {
-            localStorage.setItem('worldCup2026_v5', JSON.stringify(data));
+            database.ref('worldcup2026/data').set(data);
+        }
+        
+        function login() {
+            const username = document.getElementById('usernameInput').value.trim();
+            if (username) {
+                currentUser = username;
+                document.getElementById('loginSection').style.display = 'none';
+                // Add user to players if not exists
+                if (!data.players.includes(username)) {
+                    data.players.push(username);
+                    saveData();
+                }
+            }
         }
         
         function loadRealMatches() {
             const realMatches = [
-                { date: '11 июня', time: '22:00', team1: 'Мексика', team2: 'ЮАР', group: 'Группа А' },
-                { date: '12 июня', time: '05:00', team1: 'Южная Корея', team2: 'Чехия', group: 'Группа А' },
-                { date: '12 июня', time: '22:00', team1: 'Канада', team2: 'Босния', group: 'Группа B' },
-                { date: '13 июня', time: '04:00', team1: 'США', team2: 'Парагвай', group: 'Группа D' },
-                { date: '13 июня', time: '22:00', team1: 'Катар', team2: 'Швейцария', group: 'Группа B' },
-                { date: '14 июня', time: '01:00', team1: 'Бразилия', team2: 'Марокко', group: 'Группа C' },
-                { date: '14 июня', time: '04:00', team1: 'Гаити', team2: 'Шотландия', group: 'Группа C' },
-                { date: '14 июня', time: '07:00', team1: 'Австралия', team2: 'Турция', group: 'Группа D' },
-                { date: '14 июня', time: '20:00', team1: 'Германия', team2: 'Кюрасао', group: 'Группа E' },
-                { date: '14 июня', time: '23:00', team1: 'Нидерланды', team2: 'Япония', group: 'Группа F' },
-                { date: '15 июня', time: '02:00', team1: "Кот-д'Ивуар", team2: 'Эквадор', group: 'Группа E' },
-                { date: '15 июня', time: '05:00', team1: 'Швеция', team2: 'Тунис', group: 'Группа F' },
-                { date: '15 июня', time: '19:00', team1: 'Испания', team2: 'Кабо-Верде', group: 'Группа Н' },
-                { date: '15 июня', time: '22:00', team1: 'Бельгия', team2: 'Египет', group: 'Группа G' },
-                { date: '16 июня', time: '01:00', team1: 'Саудовская Аравия', team2: 'Уругвай', group: 'Группа Н' },
-                { date: '16 июня', time: '04:00', team1: 'Иран', team2: 'Новая Зеландия', group: 'Группа G' },
-                { date: '16 июня', time: '22:00', team1: 'Франция', team2: 'Сенегал', group: 'Группа I' },
-                { date: '17 июня', time: '01:00', team1: 'Ирак', team2: 'Норвегия', group: 'Группа I' },
-                { date: '17 июня', time: '04:00', team1: 'Аргентина', team2: 'Алжир', group: 'Группа J' },
-                { date: '17 июня', time: '07:00', team1: 'Австрия', team2: 'Иордания', group: 'Группа J' },
-                { date: '17 июня', time: '20:00', team1: 'Португалия', team2: 'ДР Конго', group: 'Группа K' },
-                { date: '17 июня', time: '23:00', team1: 'Англия', team2: 'Хорватия', group: 'Группа L' },
-                { date: '18 июня', time: '02:00', team1: 'Гана', team2: 'Панама', group: 'Группа L' },
-                { date: '18 июня', time: '05:00', team1: 'Узбекистан', team2: 'Колумбия', group: 'Группа K' }
+                { date: '11 июня', time: '22:00', team1: 'Мексика', team2: 'ЮАР', group: 'A' },
+                { date: '12 июня', time: '05:00', team1: 'Южная Корея', team2: 'Чехия', group: 'A' },
+                { date: '12 июня', time: '22:00', team1: 'Канада', team2: 'Босния', group: 'B' },
+                { date: '13 июня', time: '04:00', team1: 'США', team2: 'Парагвай', group: 'D' },
+                { date: '13 июня', time: '22:00', team1: 'Катар', team2: 'Швейцария', group: 'B' },
+                { date: '14 июня', time: '01:00', team1: 'Бразилия', team2: 'Марокко', group: 'C' },
+                { date: '14 июня', time: '04:00', team1: 'Гаити', team2: 'Шотландия', group: 'C' },
+                { date: '14 июня', time: '07:00', team1: 'Австралия', team2: 'Турция', group: 'D' },
+                { date: '14 июня', time: '20:00', team1: 'Германия', team2: 'Кюрасао', group: 'E' },
+                { date: '14 июня', time: '23:00', team1: 'Нидерланды', team2: 'Япония', group: 'F' },
+                { date: '15 июня', time: '02:00', team1: "Кот-д'Ивуар", team2: 'Эквадор', group: 'E' },
+                { date: '15 июня', time: '05:00', team1: 'Швеция', team2: 'Тунис', group: 'F' },
+                { date: '15 июня', time: '19:00', team1: 'Испания', team2: 'Кабо-Верде', group: 'H' },
+                { date: '15 июня', time: '22:00', team1: 'Бельгия', team2: 'Египет', group: 'G' },
+                { date: '16 июня', time: '01:00', team1: 'Саудовская Аравия', team2: 'Уругвай', group: 'H' },
+                { date: '16 июня', time: '04:00', team1: 'Иран', team2: 'Новая Зеландия', group: 'G' },
+                { date: '16 июня', time: '22:00', team1: 'Франция', team2: 'Сенегал', group: 'I' },
+                { date: '17 июня', time: '01:00', team1: 'Ирак', team2: 'Норвегия', group: 'I' },
+                { date: '17 июня', time: '04:00', team1: 'Аргентина', team2: 'Алжир', group: 'J' },
+                { date: '17 июня', time: '07:00', team1: 'Австрия', team2: 'Иордания', group: 'J' },
+                { date: '17 июня', time: '20:00', team1: 'Португалия', team2: 'ДР Конго', group: 'K' },
+                { date: '17 июня', time: '23:00', team1: 'Англия', team2: 'Хорватия', group: 'L' },
+                { date: '18 июня', time: '02:00', team1: 'Гана', team2: 'Панама', group: 'L' },
+                { date: '18 июня', time: '05:00', team1: 'Узбекистан', team2: 'Колумбия', group: 'K' }
             ];
             
             realMatches.forEach(match => {
@@ -707,41 +816,6 @@
             render();
         }
         
-        function addPlayer() {
-            const nameInput = document.getElementById('newPlayerName');
-            const name = nameInput.value.trim();
-            
-            if (!name) {
-                alert('Введите имя игрока!');
-                return;
-            }
-            
-            if (data.players.includes(name)) {
-                alert('Такой игрок уже есть!');
-                return;
-            }
-            
-            data.players.push(name);
-            nameInput.value = '';
-            saveData();
-            render();
-        }
-        
-        function deletePlayer(playerName) {
-            if (data.players.length <= 1) {
-                alert('Должен остаться хотя бы один игрок!');
-                return;
-            }
-            
-            if (confirm(`Удалить игрока "${playerName}"?`)) {
-                data.players = data.players.filter(p => p !== playerName);
-                data.matches.forEach(match => delete match.predictions[playerName]);
-                data.archivedMatches.forEach(match => delete match.predictions[playerName]);
-                saveData();
-                render();
-            }
-        }
-        
         function addMatch() {
             data.matches.push({
                 date: '',
@@ -753,31 +827,25 @@
                 result: { team1: null, team2: null }
             });
             saveData();
-            render();
         }
         
         function deleteMatch(index) {
-            if (confirm(`Удалить матч: ${data.matches[index].team1} vs ${data.matches[index].team2}?`)) {
+            if (confirm('Удалить матч?')) {
                 data.matches.splice(index, 1);
                 saveData();
-                render();
             }
         }
         
         function archiveMatch(index) {
-            if (confirm(`Переместить матч в архив?`)) {
-                const match = data.matches.splice(index, 1)[0];
-                data.archivedMatches.push(match);
-                saveData();
-                render();
-            }
+            const match = data.matches.splice(index, 1)[0];
+            data.archivedMatches.push(match);
+            saveData();
         }
         
         function restoreMatch(index) {
             const match = data.archivedMatches.splice(index, 1)[0];
             data.matches.push(match);
             saveData();
-            render();
         }
         
         function updateMatch(index, field, value) {
@@ -791,13 +859,67 @@
             }
             data.matches[matchIndex].predictions[player][team] = value === '' ? null : parseInt(value);
             saveData();
-            render();
         }
         
         function updateResult(matchIndex, team, value) {
             data.matches[matchIndex].result[team] = value === '' ? null : parseInt(value);
             saveData();
-            render();
+            updateGroupStandings();
+        }
+        
+        function updateGroupStandings() {
+            // Initialize groups
+            const groups = {};
+            'ABCDEFGHIJKL'.split('').forEach(letter => {
+                groups[letter] = {};
+            });
+            
+            // Calculate standings from results
+            [...data.matches, ...data.archivedMatches].forEach(match => {
+                if (match.group && match.result.team1 !== null && match.result.team2 !== null) {
+                    const group = match.group.toUpperCase();
+                    if (!groups[group]) groups[group] = {};
+                    
+                    // Team 1
+                    if (!groups[group][match.team1]) {
+                        groups[group][match.team1] = { name: match.team1, played: 0, won: 0, drawn: 0, lost: 0, gf: 0, ga: 0, gd: 0, points: 0 };
+                    }
+                    // Team 2
+                    if (!groups[group][match.team2]) {
+                        groups[group][match.team2] = { name: match.team2, played: 0, won: 0, drawn: 0, lost: 0, gf: 0, ga: 0, gd: 0, points: 0 };
+                    }
+                    
+                    const t1 = groups[group][match.team1];
+                    const t2 = groups[group][match.team2];
+                    
+                    t1.played++;
+                    t2.played++;
+                    t1.gf += match.result.team1;
+                    t1.ga += match.result.team2;
+                    t2.gf += match.result.team2;
+                    t2.ga += match.result.team1;
+                    t1.gd = t1.gf - t1.ga;
+                    t2.gd = t2.gf - t2.ga;
+                    
+                    if (match.result.team1 > match.result.team2) {
+                        t1.won++;
+                        t1.points += 3;
+                        t2.lost++;
+                    } else if (match.result.team1 < match.result.team2) {
+                        t2.won++;
+                        t2.points += 3;
+                        t1.lost++;
+                    } else {
+                        t1.drawn++;
+                        t1.points += 1;
+                        t2.drawn++;
+                        t2.points += 1;
+                    }
+                }
+            });
+            
+            data.groups = groups;
+            saveData();
         }
         
         function calculatePoints() {
@@ -831,6 +953,153 @@
             });
             
             return stats;
+        }
+        
+        function clearAllPredictions() {
+            if (confirm('Очистить ВСЕ прогнозы?')) {
+                data.matches.forEach(match => match.predictions = {});
+                data.archivedMatches.forEach(match => match.predictions = {});
+                saveData();
+            }
+        }
+        
+        function getPointsClass(points) {
+            if (points === 0) return 'zero';
+            if (points === 3) return 'three';
+            if (points === 2) return 'two';
+            if (points === 1) return 'one';
+            return 'zero';
+        }
+        
+        function renderGroupStandings() {
+            const container = document.getElementById('groupStandings');
+            let html = '';
+            
+            Object.entries(data.groups).forEach(([groupName, teams]) => {
+                const sortedTeams = Object.values(teams).sort((a, b) => {
+                    if (b.points !== a.points) return b.points - a.points;
+                    if (b.gd !== a.gd) return b.gd - a.gd;
+                    return b.gf - a.gf;
+                });
+                
+                if (sortedTeams.length > 0) {
+                    html += `
+                        <div class="group-standings">
+                            <div class="group-title">Группа ${groupName}</div>
+                            <table class="group-table">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Команда</th>
+                                        <th>И</th>
+                                        <th>В</th>
+                                        <th>Н</th>
+                                        <th>П</th>
+                                        <th>Мячи</th>
+                                        <th>Разн.</th>
+                                        <th>Очки</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    ${sortedTeams.map((team, index) => `
+                                        <tr class="${index < 2 ? 'qualify' : ''}">
+                                            <td>${index + 1}</td>
+                                            <td>${team.name}</td>
+                                            <td>${team.played}</td>
+                                            <td>${team.won}</td>
+                                            <td>${team.drawn}</td>
+                                            <td>${team.lost}</td>
+                                            <td>${team.gf}-${team.ga}</td>
+                                            <td>${team.gd > 0 ? '+' : ''}${team.gd}</td>
+                                            <td><strong>${team.points}</strong></td>
+                                        </tr>
+                                    `).join('')}
+                                </tbody>
+                            </table>
+                        </div>
+                    `;
+                }
+            });
+            
+            if (html === '') {
+                html = '<div class="empty-state">Нет данных о матчах группового этапа</div>';
+            }
+            
+            container.innerHTML = html;
+        }
+        
+        function renderMatchCard(match, index, isArchived = false) {
+            const result = match.result;
+            const archiveClass = isArchived ? 'archived' : '';
+            
+            return `
+                <div class="match-card ${archiveClass}">
+                    <div class="match-header">
+                        <div class="match-info">
+                            <div class="match-date">📅 ${match.date || 'Дата'} ${match.time ? 'в ' + match.time : ''}</div>
+                            <div class="match-teams">${match.team1 || 'Команда 1'} vs ${match.team2 || 'Команда 2'}</div>
+                            <div class="match-group">Группа ${match.group || '-'}</div>
+                        </div>
+                        <div class="match-actions">
+                            <div class="result-input">
+                                <span style="color: #888; font-size: 0.9em;">Счёт:</span>
+                                <input type="number" min="0" placeholder="0" value="${result.team1 !== null ? result.team1 : ''}" 
+                                       onchange="updateResult(${index}, 'team1', this.value)">
+                                <span>:</span>
+                                <input type="number" min="0" placeholder="0" value="${result.team2 !== null ? result.team2 : ''}" 
+                                       onchange="updateResult(${index}, 'team2', this.value)">
+                            </div>
+                            ${isArchived 
+                                ? `<button class="archive" onclick="restoreMatch(${index})">↩️</button>`
+                                : `<button class="archive" onclick="archiveMatch(${index})">📁</button>`
+                            }
+                            <button class="delete" onclick="deleteMatch(${index})">🗑️</button>
+                        </div>
+                    </div>
+                    
+                    <div style="color: #ff0000; font-weight: 700; margin-bottom: 10px; font-size: 1em;">📝 Прогнозы:</div>
+                    <div class="predictions-grid">
+                        ${data.players.map(player => {
+                            const pred = match.predictions[player] || { team1: '', team2: '' };
+                            let points = 0;
+                            
+                            if (result.team1 !== null && result.team2 !== null && 
+                                pred.team1 !== null && pred.team2 !== null) {
+                                const realDiff = result.team1 - result.team2;
+                                const predDiff = pred.team1 - pred.team2;
+                                
+                                if (pred.team1 === result.team1 && pred.team2 === result.team2) {
+                                    points = 3;
+                                } else if (predDiff === realDiff) {
+                                    points = 2;
+                                } else if (Math.sign(predDiff) === Math.sign(realDiff)) {
+                                    points = 1;
+                                }
+                            }
+                            
+                            const pointsText = points === 3 ? '+3 ТОЧНО!' : 
+                                               points === 2 ? '+2 разница' : 
+                                               points === 1 ? '+1 исход' : '0';
+                            
+                            return `
+                                <div class="player-prediction">
+                                    <div class="player-name">${player}</div>
+                                    <div class="prediction-score">
+                                        <input type="number" min="0" placeholder="0" value="${pred.team1 || ''}" 
+                                               onchange="updatePrediction(${index}, '${player}', 'team1', this.value)">
+                                        <span>:</span>
+                                        <input type="number" min="0" placeholder="0" value="${pred.team2 || ''}" 
+                                               onchange="updatePrediction(${index}, '${player}', 'team2', this.value)">
+                                    </div>
+                                    <div class="points-earned ${getPointsClass(points)}">
+                                        ${pointsText}
+                                    </div>
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+                </div>
+            `;
         }
         
         function updateLeaderboard() {
@@ -913,149 +1182,16 @@
                             <span class="analytics-label">Всего очков</span>
                             <span class="analytics-value">${Object.values(stats).reduce((sum, s) => sum + s.points, 0)}</span>
                         </div>
-                        <div class="analytics-item">
-                            <span class="analytics-label">Сыграно матчей</span>
-                            <span class="analytics-value">${completedMatches.length}</span>
-                        </div>
                     </div>
                 `;
             }
-            
-            const playerActivity = {};
-            data.players.forEach(player => { playerActivity[player] = 0; });
-            allMatches.forEach(match => {
-                data.players.forEach(player => {
-                    if (match.predictions[player] && 
-                        match.predictions[player].team1 !== null && 
-                        match.predictions[player].team2 !== null) {
-                        playerActivity[player]++;
-                    }
-                });
-            });
-            
-            const sortedActivity = Object.entries(playerActivity).sort((a, b) => b[1] - a[1]);
-            analyticsHTML += `
-                <div class="analytics-card">
-                    <h3>📝 Активность</h3>
-                    ${sortedActivity.map(entry => `
-                        <div class="analytics-item">
-                            <span class="analytics-label">${entry[0]}</span>
-                            <span class="analytics-value">${entry[1]} прогнозов</span>
-                        </div>
-                    `).join('')}
-                </div>
-            `;
             
             analyticsHTML += '</div>';
             document.getElementById('analyticsContent').innerHTML = analyticsHTML;
         }
         
-        function clearAllPredictions() {
-            if (confirm('Очистить ВСЕ прогнозы?')) {
-                data.matches.forEach(match => match.predictions = {});
-                data.archivedMatches.forEach(match => match.predictions = {});
-                saveData();
-                render();
-            }
-        }
-        
-        function getPointsClass(points) {
-            if (points === 0) return 'zero';
-            if (points === 3) return 'three';
-            if (points === 2) return 'two';
-            if (points === 1) return 'one';
-            return 'zero';
-        }
-        
-        function renderMatchCard(match, index, isArchived = false) {
-            const result = match.result;
-            const resultText = (result.team1 !== null && result.team2 !== null) 
-                ? `${result.team1}:${result.team2}` 
-                : 'не сыгран';
-            
-            const archiveClass = isArchived ? 'archived' : '';
-            
-            return `
-                <div class="match-card ${archiveClass}">
-                    <div class="match-header">
-                        <div class="match-info">
-                            <div class="match-date">📅 ${match.date || 'Дата'} ${match.time ? 'в ' + match.time : ''}</div>
-                            <div class="match-teams">${match.team1 || 'Команда 1'} vs ${match.team2 || 'Команда 2'}</div>
-                            <div class="match-group">${match.group || ''}</div>
-                        </div>
-                        <div class="match-actions">
-                            <div class="result-input">
-                                <span style="color: #888; font-size: 0.9em;">Счёт:</span>
-                                <input type="number" min="0" placeholder="0" value="${result.team1 !== null ? result.team1 : ''}" 
-                                       onchange="updateResult(${index}, 'team1', this.value)">
-                                <span>:</span>
-                                <input type="number" min="0" placeholder="0" value="${result.team2 !== null ? result.team2 : ''}" 
-                                       onchange="updateResult(${index}, 'team2', this.value)">
-                            </div>
-                            ${isArchived 
-                                ? `<button class="archive" onclick="restoreMatch(${index})">↩️ Вернуть</button>`
-                                : `<button class="archive" onclick="archiveMatch(${index})"> В архив</button>`
-                            }
-                            <button class="delete" onclick="deleteMatch(${index})">🗑️</button>
-                        </div>
-                    </div>
-                    
-                    <div style="color: #ff0000; font-weight: 700; margin-bottom: 10px; font-size: 1em;">📝 Прогнозы:</div>
-                    <div class="predictions-grid">
-                        ${data.players.map(player => {
-                            const pred = match.predictions[player] || { team1: '', team2: '' };
-                            let points = 0;
-                            
-                            if (result.team1 !== null && result.team2 !== null && 
-                                pred.team1 !== null && pred.team2 !== null) {
-                                const realDiff = result.team1 - result.team2;
-                                const predDiff = pred.team1 - pred.team2;
-                                
-                                if (pred.team1 === result.team1 && pred.team2 === result.team2) {
-                                    points = 3;
-                                } else if (predDiff === realDiff) {
-                                    points = 2;
-                                } else if (Math.sign(predDiff) === Math.sign(realDiff)) {
-                                    points = 1;
-                                }
-                            }
-                            
-                            const pointsText = points === 3 ? '+3 ТОЧНО!' : 
-                                               points === 2 ? '+2 разница' : 
-                                               points === 1 ? '+1 исход' : '0';
-                            
-                            return `
-                                <div class="player-prediction">
-                                    <div class="player-name">${player}</div>
-                                    <div class="prediction-score">
-                                        <input type="number" min="0" placeholder="0" value="${pred.team1 || ''}" 
-                                               onchange="updatePrediction(${index}, '${player}', 'team1', this.value)">
-                                        <span>:</span>
-                                        <input type="number" min="0" placeholder="0" value="${pred.team2 || ''}" 
-                                               onchange="updatePrediction(${index}, '${player}', 'team2', this.value)">
-                                    </div>
-                                    <div class="points-earned ${getPointsClass(points)}">
-                                        ${pointsText}
-                                    </div>
-                                </div>
-                            `;
-                        }).join('')}
-                    </div>
-                </div>
-            `;
-        }
-        
         function render() {
-            // Игроки
-            const playersList = document.getElementById('playersList');
-            playersList.innerHTML = data.players.map(player => `
-                <div class="player-tag">
-                    <span>${player}</span>
-                    <button class="small delete" onclick="deletePlayer('${player}')">×</button>
-                </div>
-            `).join('');
-            
-            // Активные матчи
+            // Active matches
             const matchesList = document.getElementById('matchesList');
             if (data.matches.length === 0) {
                 matchesList.innerHTML = '<div class="empty-state">Нет активных матчей</div>';
@@ -1065,7 +1201,7 @@
                 ).join('');
             }
             
-            // Архив
+            // Archive
             const archiveList = document.getElementById('archiveList');
             if (data.archivedMatches.length === 0) {
                 archiveList.innerHTML = '<div class="empty-state">Архив пуст</div>';
@@ -1075,12 +1211,15 @@
                 ).join('');
             }
             
+            renderGroupStandings();
             updateLeaderboard();
             updateAnalytics();
         }
         
-        loadData();
-        render();
+        // Show login on load
+        window.onload = () => {
+            document.getElementById('loginSection').style.display = 'block';
+        };
     </script>
 </body>
 </html>
