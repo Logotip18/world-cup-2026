@@ -11,8 +11,7 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Rajdhani', sans-serif; background: linear-gradient(135deg, #0a0a0a 0%, #1a0000 100%); color: #fff; min-height: 100vh; padding: 15px; }
         .container { max-width: 1400px; margin: 0 auto; }
-        h1 { font-family: 'Orbitron', sans-serif; text-align: center; color: #ff0000; text-shadow: 0 0 30px rgba(255,0,0,0.7); margin-bottom: 20px; font-size: clamp(1.8em,5vw,2.8em); letter-spacing: 5px; animation: glow 2s ease-in-out infinite alternate; }
-        @keyframes glow { from { text-shadow: 0 0 20px rgba(255,0,0,0.5); } to { text-shadow: 0 0 40px rgba(255,0,0,1), 0 0 60px rgba(255,0,0,0.8); } }
+        h1 { font-family: 'Orbitron', sans-serif; text-align: center; color: #ff0000; text-shadow: 0 0 30px rgba(255,0,0,0.7); margin-bottom: 20px; font-size: clamp(1.8em,5vw,2.8em); letter-spacing: 5px; }
         .firebase-status { background: rgba(0,255,0,0.1); border: 2px solid #00ff00; color: #00ff00; padding: 10px 20px; border-radius: 8px; text-align: center; margin-bottom: 20px; font-weight: 600; }
         .firebase-status.offline { background: rgba(255,0,0,0.1); border-color: #ff0000; color: #ff0000; }
         .tabs { display: flex; gap: 5px; margin-bottom: 20px; flex-wrap: wrap; border-bottom: 3px solid #8B0000; padding-bottom: 10px; }
@@ -21,61 +20,49 @@
         .tab.active { background: linear-gradient(135deg, #8B0000 0%, #ff0000 100%); border-color: #ff0000; color: #fff; box-shadow: 0 0 20px rgba(255,0,0,0.5); }
         .tab-content { display: none; }
         .tab-content.active { display: block; }
-        .section { background: rgba(20,20,20,0.95); border: 2px solid #8B0000; border-radius: 15px; padding: 20px; margin-bottom: 20px; box-shadow: 0 0 40px rgba(139,0,0,0.4); }
+        .section { background: rgba(20,20,20,0.95); border: 2px solid #8B0000; border-radius: 15px; padding: 20px; margin-bottom: 20px; }
         .section-title { font-family: 'Orbitron', sans-serif; color: #ff0000; font-size: 1.5em; margin-bottom: 15px; border-bottom: 3px solid #8B0000; padding-bottom: 10px; }
         table { width: 100%; border-collapse: collapse; margin-top: 15px; }
         th, td { padding: 12px; text-align: center; border: 1px solid #333; }
-        th { background: linear-gradient(135deg, #8B0000 0%, #ff0000 100%); font-family: 'Orbitron', sans-serif; font-weight: 700; font-size: 1em; text-transform: uppercase; letter-spacing: 1px; }
+        th { background: linear-gradient(135deg, #8B0000 0%, #ff0000 100%); font-family: 'Orbitron', sans-serif; font-weight: 700; }
         tr:nth-child(even) { background: rgba(40,40,40,0.6); }
-        tr:hover { background: rgba(139,0,0,0.3); }
-        input[type="text"], input[type="number"] { background: #1a1a1a; border: 2px solid #8B0000; color: #fff; padding: 8px; border-radius: 6px; font-family: 'Rajdhani', sans-serif; font-size: 1em; font-weight: 600; text-align: center; transition: all 0.3s; -moz-appearance: textfield; }
+        input[type="text"], input[type="number"], input[type="password"] { background: #1a1a1a; border: 2px solid #8B0000; color: #fff; padding: 8px; border-radius: 6px; font-family: 'Rajdhani', sans-serif; font-size: 1em; font-weight: 600; text-align: center; -moz-appearance: textfield; }
         input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
         input:focus { outline: none; border-color: #ff0000; box-shadow: 0 0 10px rgba(255,0,0,0.6); }
-        button { background: linear-gradient(135deg, #8B0000 0%, #ff0000 100%); color: #fff; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-family: 'Orbitron', sans-serif; font-weight: 700; font-size: 0.9em; transition: all 0.3s; margin: 3px; text-transform: uppercase; letter-spacing: 1px; box-shadow: 0 3px 10px rgba(139,0,0,0.4); }
+        button { background: linear-gradient(135deg, #8B0000 0%, #ff0000 100%); color: #fff; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-family: 'Orbitron', sans-serif; font-weight: 700; font-size: 0.9em; margin: 3px; text-transform: uppercase; }
         button:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(255,0,0,0.7); }
-        button.delete { background: linear-gradient(135deg, #ff0000 0%, #8B0000 100%); padding: 8px 15px; }
-        button.archive { background: linear-gradient(135deg, #4a4a4a 0%, #2a2a2a 100%); padding: 8px 15px; }
-        button.primary { background: linear-gradient(135deg, #ffa500 0%, #ff8c00 100%); }
-        .controls { display: flex; gap: 10px; margin-bottom: 15px; flex-wrap: wrap; align-items: center; }
-        .match-card { background: rgba(25,25,25,0.9); border: 2px solid #8B0000; border-radius: 10px; padding: 15px; margin-bottom: 15px; transition: all 0.3s; position: relative; }
-        .match-card.playoff { border-color: #ffd700; box-shadow: 0 0 20px rgba(255,215,0,0.3); }
+        button.delete { background: linear-gradient(135deg, #ff0000 0%, #8B0000 100%); }
+        button.archive { background: linear-gradient(135deg, #4a4a4a 0%, #2a2a2a 100%); }
+        button.primary { background: linear-gradient(135deg, #00ff00 0%, #00cc00 100%); color: #000; }
+        .controls { display: flex; gap: 10px; margin-bottom: 15px; flex-wrap: wrap; }
+        .match-card { background: rgba(25,25,25,0.9); border: 2px solid #8B0000; border-radius: 10px; padding: 15px; margin-bottom: 15px; position: relative; }
+        .match-card.playoff { border-color: #ffd700; }
         .match-card.playoff::before { content: "🔥 ПЛЕЙ-ОФФ (×2)"; position: absolute; top: -12px; right: 20px; background: linear-gradient(135deg, #ffd700 0%, #ff8c00 100%); color: #000; padding: 3px 12px; border-radius: 4px; font-weight: 700; font-size: 0.85em; font-family: 'Orbitron', sans-serif; }
-        .match-card:hover { box-shadow: 0 5px 20px rgba(139,0,0,0.5); }
-        .match-card.archived { opacity: 0.6; border-color: #555; }
         .match-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 15px; flex-wrap: wrap; margin-bottom: 12px; padding-bottom: 12px; border-bottom: 2px solid #333; }
-        .match-info { flex: 1; min-width: 200px; }
+        .match-info { flex: 1; }
         .predictions-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 12px; margin-top: 12px; }
         .player-prediction { background: rgba(30,30,30,0.8); border: 2px solid #333; border-radius: 8px; padding: 12px; }
         .player-name { font-family: 'Orbitron', sans-serif; color: #ff0000; font-size: 1.1em; margin-bottom: 8px; font-weight: 700; }
         .points-earned { font-size: 0.9em; font-weight: 600; text-align: center; padding: 4px; border-radius: 4px; margin-top: 6px; }
         .points-earned.zero { color: #666; background: rgba(100,100,100,0.1); }
-        .points-earned.three { color: #ffd700; background: rgba(255,215,0,0.2); font-weight: 700; }
+        .points-earned.three { color: #ffd700; background: rgba(255,215,0,0.2); }
         .points-earned.two { color: #00ffff; background: rgba(0,255,255,0.2); }
         .points-earned.one { color: #90EE90; background: rgba(144,238,144,0.2); }
-        .login-section { background: rgba(30,30,30,0.9); border: 2px solid #8B0000; border-radius: 10px; padding: 25px; margin-bottom: 20px; text-align: center; }
-        .login-section input { width: 100%; max-width: 320px; margin: 8px auto; display: block; }
+        .login-section { background: rgba(30,30,30,0.9); border: 2px solid #8B0000; border-radius: 10px; padding: 30px; margin-bottom: 20px; text-align: center; max-width: 400px; margin-left: auto; margin-right: auto; }
+        .login-section input { width: 100%; margin: 10px 0; }
         .rules { background: rgba(139,0,0,0.2); border: 2px solid #8B0000; border-radius: 10px; padding: 15px; margin-bottom: 20px; }
-        .rules-title { font-family: 'Orbitron', sans-serif; color: #ff0000; font-size: 1.2em; margin-bottom: 10px; }
-        .rules-list { display: flex; gap: 20px; flex-wrap: wrap; }
-        .rule-item { display: flex; align-items: center; gap: 8px; font-size: 1em; }
+        .rules-list { display: flex; gap: 20px; flex-wrap: wrap; margin-top: 10px; }
+        .rule-item { display: flex; align-items: center; gap: 8px; }
         .rule-points { background: #8B0000; color: #fff; padding: 4px 10px; border-radius: 4px; font-weight: 700; font-family: 'Orbitron', sans-serif; }
         .group-standings { margin-bottom: 25px; }
         .group-title { font-family: 'Orbitron', sans-serif; color: #ff0000; font-size: 1.3em; margin-bottom: 10px; padding: 8px 15px; background: rgba(139,0,0,0.3); border-radius: 6px; display: inline-block; }
         .qualify { background: rgba(0,255,0,0.15) !important; }
         .stat-card { background: linear-gradient(135deg, rgba(139,0,0,0.3) 0%, rgba(139,0,0,0.1) 100%); border: 2px solid #8B0000; padding: 15px; border-radius: 8px; text-align: center; }
-        .stat-value { font-family: 'Orbitron', sans-serif; font-size: 2em; color: #ff0000; text-shadow: 0 0 10px rgba(255,0,0,0.6); }
-        .stat-label { font-size: 0.9em; color: #aaa; margin-top: 5px; font-weight: 600; }
-        .player-tag { background: rgba(139,0,0,0.4); border: 2px solid #8B0000; padding: 6px 12px; border-radius: 6px; display: inline-flex; align-items: center; gap: 8px; font-weight: 600; margin: 4px; }
-        .player-tag button { padding: 2px 6px; font-size: 0.75em; margin: 0; }
-        .analytics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 15px; }
-        .analytics-card { background: rgba(30,30,30,0.8); border: 2px solid #333; border-radius: 8px; padding: 15px; }
-        .analytics-card h3 { font-family: 'Orbitron', sans-serif; color: #ff0000; margin-bottom: 12px; font-size: 1.2em; border-bottom: 2px solid #8B0000; padding-bottom: 8px; }
-        .analytics-item { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid #333; }
-        .analytics-item:last-child { border-bottom: none; }
-        .analytics-label { color: #aaa; }
-        .analytics-value { font-weight: 700; color: #fff; }
-        .top-player { color: #ffd700; font-weight: 700; }
-        .init-button { background: linear-gradient(135deg, #00ff00 0%, #00cc00 100%); color: #000; font-size: 1.2em; padding: 15px 30px; margin: 20px auto; display: block; }
+        .stat-value { font-family: 'Orbitron', sans-serif; font-size: 2em; color: #ff0000; }
+        .stat-label { font-size: 0.9em; color: #aaa; margin-top: 5px; }
+        .player-tag { background: rgba(139,0,0,0.4); border: 2px solid #8B0000; padding: 6px 12px; border-radius: 6px; display: inline-flex; align-items: center; gap: 8px; margin: 4px; }
+        .init-banner { background: linear-gradient(135deg, #00ff00 0%, #00cc00 100%); color: #000; padding: 20px; border-radius: 10px; text-align: center; margin-bottom: 20px; }
+        .init-banner button { background: #000; color: #00ff00; font-size: 1.2em; padding: 15px 40px; margin-top: 15px; }
     </style>
 </head>
 <body>
@@ -83,27 +70,29 @@
         <h1>⚽ ЧМ-2026: ПРОГНОЗЫ ⚽</h1>
         <div id="firebaseStatus" class="firebase-status offline">🔴 Подключение...</div>
         
-        <div id="loginSection" class="login-section" style="display: none;">
-            <h2 style="color: #ff0000; margin-bottom: 20px;">🔐 Вход в пул прогнозов</h2>
-            <input type="text" id="usernameInput" placeholder="Твоё имя (как в чате)">
-            <button onclick="login()" style="padding: 12px 40px; font-size: 1.1em;">ВОЙТИ</button>
+        <div id="initBanner" class="init-banner" style="display:none;">
+            <h2>🎮 Первый запуск!</h2>
+            <p>Нажми кнопку ниже для создания турнира (24 матча + 3 игрока)</p>
+            <button class="primary" onclick="initializeTournament()">🚀 СОЗДАТЬ ТУРНИР</button>
         </div>
 
-        <div id="initSection" style="display: none; text-align: center; padding: 40px; background: rgba(30,30,30,0.95); border: 3px solid #00ff00; border-radius: 15px; margin-bottom: 20px;">
-            <h2 style="color: #00ff00; margin-bottom: 15px;">🎮 Первый запуск!</h2>
-            <p style="margin-bottom: 20px; font-size: 1.1em;">Нажми кнопку ниже, чтобы загрузить все матчи ЧМ-2026 и создать игроков</p>
-            <button class="init-button" onclick="initializeTournament()">🚀 ИНИЦИАЛИЗИРОВАТЬ ТУРНИР</button>
-            <p style="color: #888; font-size: 0.9em;">Будет создано: 24 матча + 3 игрока (Сергей, ИИ, АлПашка)</p>
+        <div id="loginSection" class="login-section" style="display: none;">
+            <h2 style="color: #ff0000; margin-bottom: 20px;">🔐 Вход в систему</h2>
+            <input type="text" id="usernameInput" placeholder="Логин">
+            <input type="password" id="passwordInput" placeholder="Пароль">
+            <button onclick="login()" style="padding: 12px 40px; font-size: 1.1em; width: 100%;">ВОЙТИ</button>
+            <p style="margin-top: 15px; color: #888; font-size: 0.85em;">
+                Пароли: Сергей - admin123, ИИ - ai123, АлПашка - al123
+            </p>
         </div>
 
         <div class="rules">
-            <div class="rules-title">📋 ПРАВИЛА НАЧИСЛЕНИЯ ОЧКОВ:</div>
+            <div style="font-family:'Orbitron',sans-serif; color:#ff0000; font-size:1.2em; margin-bottom:10px;">📋 ПРАВИЛА:</div>
             <div class="rules-list">
                 <div class="rule-item"><span class="rule-points">3</span> Точный счёт</div>
                 <div class="rule-item"><span class="rule-points">2</span> Правильная разница</div>
                 <div class="rule-item"><span class="rule-points">1</span> Правильный исход</div>
                 <div class="rule-item"><span class="rule-points" style="background:#ffd700;color:#000;">×2</span> Плей-офф</div>
-                <div class="rule-item"><span class="rule-points" style="background:#ff8c00;">-10%</span> Новым игрокам</div>
             </div>
         </div>
         
@@ -113,7 +102,6 @@
             <div class="tab" onclick="switchTab(event,'leaderboard')">🏆 Таблица</div>
             <div class="tab" onclick="switchTab(event,'analytics')">📈 Аналитика</div>
             <div class="tab" onclick="switchTab(event,'archive')">📁 Архив</div>
-            <div class="tab" onclick="switchTab(event,'players')">👥 Игроки</div>
         </div>
         
         <div id="matches" class="tab-content active">
@@ -137,16 +125,9 @@
         <div id="leaderboard" class="tab-content">
             <div class="section">
                 <div class="section-title">🏆 Таблица лидеров</div>
-                <table class="leaderboard">
+                <table>
                     <thead>
-                        <tr>
-                            <th>Место</th>
-                            <th>Игрок</th>
-                            <th>Очки</th>
-                            <th>Точных</th>
-                            <th>Разница</th>
-                            <th>Исходов</th>
-                        </tr>
+                        <tr><th>Место</th><th>Игрок</th><th>Очки</th><th>Точных</th><th>Разница</th><th>Исходов</th></tr>
                     </thead>
                     <tbody id="leaderboardBody"></tbody>
                 </table>
@@ -155,38 +136,23 @@
         
         <div id="analytics" class="tab-content">
             <div class="section">
-                <div class="section-title">📈 Аналитика прогнозов</div>
+                <div class="section-title">📈 Аналитика</div>
                 <div id="analyticsContent"></div>
             </div>
             <div class="section">
-                <div class="section-title">📊 Общая статистика</div>
+                <div class="section-title">📊 Статистика</div>
                 <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:12px;">
-                    <div class="stat-card"><div class="stat-value" id="totalMatches">0</div><div class="stat-label">Всего матчей</div></div>
+                    <div class="stat-card"><div class="stat-value" id="totalMatches">0</div><div class="stat-label">Матчей</div></div>
                     <div class="stat-card"><div class="stat-value" id="completedMatches">0</div><div class="stat-label">Сыграно</div></div>
-                    <div class="stat-card"><div class="stat-value" id="totalPlayers">0</div><div class="stat-label">Участников</div></div>
-                    <div class="stat-card"><div class="stat-value" id="totalPoints">0</div><div class="stat-label">Всего очков</div></div>
+                    <div class="stat-card"><div class="stat-value" id="totalPlayers">0</div><div class="stat-label">Игроков</div></div>
                 </div>
             </div>
         </div>
         
         <div id="archive" class="tab-content">
             <div class="section">
-                <div class="section-title">📁 Архив завершённых матчей</div>
+                <div class="section-title">📁 Архив</div>
                 <div id="archiveList"></div>
-            </div>
-        </div>
-        
-        <div id="players" class="tab-content">
-            <div class="section">
-                <div class="section-title">👥 Управление игроками</div>
-                <div style="margin-bottom:15px;">
-                    <input type="text" id="newPlayerInput" placeholder="Имя нового игрока" style="width:250px;">
-                    <button onclick="addPlayer()">+ Добавить</button>
-                </div>
-                <div id="playersList"></div>
-                <div style="margin-top:20px; color:#888; font-size:0.9em;">
-                    ⚠️ Новые игроки, присоединившиеся в процессе турнира, получают -10% к очкам за уже сыгранные матчи
-                </div>
             </div>
         </div>
     </div>
@@ -206,65 +172,52 @@
         const database = firebase.database();
         
         let currentUser = null;
-        let data = {
-            matches: [],
-            archivedMatches: [],
-            players: ['Сергей', 'ИИ', 'АлПашка'],
-            groups: {},
-            playerJoinData: {},
-            initialized: false
+        let currentPassword = null;
+        let isAdmin = false;
+        let data = { matches: [], archivedMatches: [], players: [], groups: {}, initialized: false };
+        
+        const USERS = {
+            'Сергей': { password: 'admin123', isAdmin: true },
+            'ИИ': { password: 'ai123', isAdmin: false },
+            'АлПашка': { password: 'al123', isAdmin: false }
         };
 
-        const connectedRef = database.ref(".info/connected");
+        connectedRef = database.ref(".info/connected");
         connectedRef.on("value", (snap) => {
-            const statusEl = document.getElementById('firebaseStatus');
+            const el = document.getElementById('firebaseStatus');
             if (snap.val() === true) {
-                statusEl.textContent = "🟢 Онлайн — синхронизация активна";
-                statusEl.classList.remove('offline');
+                el.textContent = "🟢 Онлайн";
+                el.classList.remove('offline');
             } else {
-                statusEl.textContent = "🔴 Офлайн — изменения сохранятся позже";
-                statusEl.classList.add('offline');
+                el.textContent = "🔴 Офлайн";
+                el.classList.add('offline');
             }
         });
 
         function loadData() {
-            database.ref('worldcup2026/data').once('value').then((snapshot) => {
+            database.ref('worldcup2026/data').once('value').then(snapshot => {
                 const val = snapshot.val();
                 if (val && val.initialized) {
-                    // Данные уже есть
                     data = val;
-                    document.getElementById('initSection').style.display = 'none';
-                } else {
-                    // Первый запуск - показываем кнопку инициализации
-                    document.getElementById('initSection').style.display = 'block';
-                    return;
-                }
-                
-                // Проверяем логин
-                const saved = localStorage.getItem('wcPredictorUser');
-                if (saved) {
-                    currentUser = saved;
-                    document.getElementById('loginSection').style.display = 'none';
-                } else {
+                    document.getElementById('initBanner').style.display = 'none';
                     document.getElementById('loginSection').style.display = 'block';
+                } else {
+                    document.getElementById('initBanner').style.display = 'block';
+                    document.getElementById('loginSection').style.display = 'none';
                 }
-                
-                render();
             });
             
-            // Подписываемся на изменения
-            database.ref('worldcup2026/data').on('value', (snapshot) => {
+            database.ref('worldcup2026/data').on('value', snapshot => {
                 const val = snapshot.val();
                 if (val && val.initialized) {
                     data = val;
-                    document.getElementById('initSection').style.display = 'none';
-                    render();
+                    document.getElementById('initBanner').style.display = 'none';
+                    if (currentUser) render();
                 }
             });
         }
 
         function initializeTournament() {
-            // Создаем все матчи
             const allMatches = [
                 {date:"11 июня", time:"22:00", team1:"Мексика", team2:"ЮАР", group:"A"},
                 {date:"12 июня", time:"05:00", team1:"Южная Корея", team2:"Чехия", group:"A"},
@@ -293,23 +246,25 @@
             ];
             
             data.matches = allMatches.map(m => ({
-                ...m, predictions: {}, result: { team1: null, team2: null }
+                ...m, 
+                predictions: {
+                    'Сергей': {team1: null, team2: null},
+                    'ИИ': {team1: null, team2: null},
+                    'АлПашка': {team1: null, team2: null}
+                }, 
+                result: { team1: null, team2: null }
             }));
+            
             data.archivedMatches = [];
             data.players = ['Сергей', 'ИИ', 'АлПашка'];
-            data.playerJoinData = {
-                'Сергей': { joinedAt: Date.now(), completedMatchesAtJoin: 0 },
-                'ИИ': { joinedAt: Date.now(), completedMatchesAtJoin: 0 },
-                'АлПашка': { joinedAt: Date.now(), completedMatchesAtJoin: 0 }
-            };
             data.groups = {};
             data.initialized = true;
             
-            saveData();
-            
-            document.getElementById('initSection').style.display = 'none';
-            alert('✅ Турнир инициализирован! Создано 24 матча и 3 игрока (Сергей, ИИ, АлПашка)');
-            render();
+            database.ref('worldcup2026/data').set(data).then(() => {
+                alert('✅ Турнир создан! 24 матча + 3 игрока');
+                document.getElementById('initBanner').style.display = 'none';
+                document.getElementById('loginSection').style.display = 'block';
+            });
         }
 
         function saveData() {
@@ -318,86 +273,69 @@
 
         function login() {
             const username = document.getElementById('usernameInput').value.trim();
-            if (!username) { alert("Введите имя!"); return; }
-            currentUser = username;
-            localStorage.setItem('wcPredictorUser', username);
-
-            if (!data.players.includes(username)) {
-                const completedCount = [...data.matches, ...data.archivedMatches]
-                    .filter(m => m.result.team1 !== null && m.result.team2 !== null).length;
-                data.players.push(username);
-                data.playerJoinData[username] = { 
-                    joinedAt: Date.now(),
-                    completedMatchesAtJoin: completedCount
-                };
-                saveData();
+            const password = document.getElementById('passwordInput').value.trim();
+            
+            if (!USERS[username]) {
+                alert('❌ Неверный логин!');
+                return;
             }
+            
+            if (USERS[username].password !== password) {
+                alert('❌ Неверный пароль!');
+                return;
+            }
+            
+            currentUser = username;
+            isAdmin = USERS[username].isAdmin;
+            localStorage.setItem('wcUser', username);
+            
             document.getElementById('loginSection').style.display = 'none';
             render();
         }
 
-        function isPlayoffMatch(match) {
+        function isPlayoff(match) {
             const g = (match.group || '').toUpperCase();
-            return ['1/8','1/4','1/2','ФИНАЛ','FINAL','3RD','3 МЕСТО'].some(p => g.includes(p));
+            return ['1/8','1/4','1/2','ФИНАЛ','FINAL'].some(p => g.includes(p));
         }
 
         function addMatch() {
+            if (!currentUser) return;
             data.matches.push({
                 date: '', time: '', team1: '', team2: '', group: '',
-                predictions: {}, result: { team1: null, team2: null }
+                predictions: {
+                    'Сергей': {team1: null, team2: null},
+                    'ИИ': {team1: null, team2: null},
+                    'АлПашка': {team1: null, team2: null}
+                },
+                result: { team1: null, team2: null }
             });
             saveData();
         }
 
-        function addPlayer() {
-            const input = document.getElementById('newPlayerInput');
-            const name = input.value.trim();
-            if (!name) { alert('Введите имя!'); return; }
-            if (data.players.includes(name)) { alert('Такой игрок уже есть!'); return; }
-            
-            const completedCount = [...data.matches, ...data.archivedMatches]
-                .filter(m => m.result.team1 !== null && m.result.team2 !== null).length;
-            data.players.push(name);
-            data.playerJoinData[name] = { 
-                joinedAt: Date.now(),
-                completedMatchesAtJoin: completedCount
-            };
-            input.value = '';
-            saveData();
-        }
-
-        function removePlayer(name) {
-            if (name === currentUser) { alert('Нельзя удалить самого себя!'); return; }
-            if (data.players.length <= 1) { alert('Должен остаться хотя бы один игрок!'); return; }
-            if (!confirm(`Удалить игрока "${name}" и все его прогнозы?`)) return;
-            
-            data.players = data.players.filter(p => p !== name);
-            data.matches.forEach(m => delete m.predictions[name]);
-            data.archivedMatches.forEach(m => delete m.predictions[name]);
-            delete data.playerJoinData[name];
-            saveData();
-        }
-
-        function deleteMatch(index, isArchived = false) {
-            if (!confirm('Удалить матч?')) return;
+        function deleteMatch(index, isArchived) {
+            if (!isAdmin) { alert('Только Сергей может удалять!'); return; }
+            if (!confirm('Удалить?')) return;
             if (isArchived) data.archivedMatches.splice(index, 1);
             else data.matches.splice(index, 1);
             saveData();
         }
 
         function archiveMatch(index) {
+            if (!isAdmin) { alert('Только Сергей может архивировать!'); return; }
             const match = data.matches.splice(index, 1)[0];
             data.archivedMatches.push(match);
             saveData();
         }
 
         function restoreMatch(index) {
+            if (!isAdmin) return;
             const match = data.archivedMatches.splice(index, 1)[0];
             data.matches.push(match);
             saveData();
         }
 
         function autoArchiveCompleted() {
+            if (!isAdmin) { alert('Только Сергей может архивировать!'); return; }
             const completed = [];
             for (let i = data.matches.length - 1; i >= 0; i--) {
                 if (data.matches[i].result.team1 !== null && data.matches[i].result.team2 !== null) {
@@ -405,7 +343,7 @@
                 }
             }
             if (completed.length === 0) { alert('Нет завершённых матчей'); return; }
-            if (!confirm(`Архивировать ${completed.length} сыгранных матчей?`)) return;
+            if (!confirm(`Архивировать ${completed.length} матчей?`)) return;
             for (let i of completed) {
                 const match = data.matches.splice(i, 1)[0];
                 data.archivedMatches.push(match);
@@ -413,31 +351,29 @@
             saveData();
         }
 
-        function updateMatch(index, field, value, isArchived = false) {
-            const list = isArchived ? data.archivedMatches : data.matches;
-            if (index >= 0 && index < list.length) {
-                list[index][field] = value;
-                saveData();
-            }
+        function updateResult(index, team, value) {
+            if (!isAdmin) { alert('Только Сергей может вводить результаты!'); return; }
+            data.matches[index].result[team] = value === '' ? null : parseInt(value);
+            saveData();
+            updateGroups();
         }
 
-        function updatePrediction(matchIndex, player, team, value, isArchived = false) {
-            const list = isArchived ? data.archivedMatches : data.matches;
-            const match = list[matchIndex];
-            if (!match.predictions[player]) match.predictions[player] = {team1: null, team2: null};
+        function updatePrediction(matchIndex, player, team, value) {
+            // Проверка прав
+            if (!isAdmin && currentUser !== player) {
+                alert('Ты можешь ставить прогнозы только за себя!');
+                return;
+            }
+            
+            const match = data.matches[matchIndex];
+            if (!match.predictions[player]) {
+                match.predictions[player] = {team1: null, team2: null};
+            }
             match.predictions[player][team] = value === '' ? null : parseInt(value);
             saveData();
         }
 
-        function updateResult(matchIndex, team, value) {
-            const match = data.matches[matchIndex];
-            if (!match) return;
-            match.result[team] = value === '' ? null : parseInt(value);
-            saveData();
-            updateGroupStandings();
-        }
-
-        function updateGroupStandings() {
+        function updateGroups() {
             const groups = {};
             'ABCDEFGHIJKL'.split('').forEach(l => groups[l] = {});
             
@@ -471,21 +407,11 @@
             const stats = {};
             data.players.forEach(p => stats[p] = {points: 0, exact: 0, diff: 0, outcome: 0});
 
-            const allMatches = [...data.matches, ...data.archivedMatches];
-            
-            allMatches.forEach((match, matchIndex) => {
+            [...data.matches, ...data.archivedMatches].forEach(match => {
                 if (match.result.team1 === null || match.result.team2 === null) return;
-                const playoffMult = isPlayoffMatch(match) ? 2 : 1;
-                const matchesCompletedBefore = allMatches.slice(0, matchIndex).filter(m => 
-                    m.result.team1 !== null && m.result.team2 !== null).length;
+                const mult = isPlayoff(match) ? 2 : 1;
                 
                 data.players.forEach(player => {
-                    const joinData = data.playerJoinData[player];
-                    const isNewPlayerForThisMatch = joinData && 
-                        matchesCompletedBefore < joinData.completedMatchesAtJoin;
-                    const playerMult = isNewPlayerForThisMatch ? 0.9 : 1;
-                    const multiplier = playoffMult * playerMult;
-                    
                     const pred = match.predictions[player];
                     if (!pred || pred.team1 === null || pred.team2 === null) return;
                     
@@ -493,13 +419,13 @@
                     const predDiff = pred.team1 - pred.team2;
                     
                     if (pred.team1 === match.result.team1 && pred.team2 === match.result.team2) {
-                        stats[player].points += 3 * multiplier;
+                        stats[player].points += 3 * mult;
                         stats[player].exact++;
                     } else if (predDiff === realDiff) {
-                        stats[player].points += 2 * multiplier;
+                        stats[player].points += 2 * mult;
                         stats[player].diff++;
                     } else if (Math.sign(predDiff) === Math.sign(realDiff)) {
-                        stats[player].points += 1 * multiplier;
+                        stats[player].points += 1 * mult;
                         stats[player].outcome++;
                     }
                 });
@@ -514,47 +440,39 @@
             return 'zero';
         }
 
-        function renderMatchCard(match, index, isArchived = false) {
+        function renderMatchCard(match, index, isArchived) {
             const result = match.result || {team1:null, team2:null};
-            const playoffClass = isPlayoffMatch(match) ? 'playoff' : '';
-            const archiveClass = isArchived ? 'archived' : '';
+            const playoffClass = isPlayoff(match) ? 'playoff' : '';
             
             let predictionsHTML = data.players.map(player => {
-                const pred = match.predictions[player] || {team1:'', team2:''};
+                const pred = (match.predictions && match.predictions[player]) || {team1:'', team2:''};
                 let points = 0;
                 
                 if (result.team1 !== null && result.team2 !== null && 
-                    pred.team1 !== null && pred.team2 !== null &&
-                    pred.team1 !== '' && pred.team2 !== '') {
-                    const playoffMult = isPlayoffMatch(match) ? 2 : 1;
-                    const joinData = data.playerJoinData[player];
-                    const completedCount = [...data.matches, ...data.archivedMatches]
-                        .filter(m => m.result.team1 !== null && m.result.team2 !== null).length;
-                    const isNewPlayer = joinData && completedCount > joinData.completedMatchesAtJoin + 5;
-                    const playerMult = isNewPlayer ? 0.9 : 1;
-                    const multiplier = playoffMult * playerMult;
-                    
+                    pred.team1 !== null && pred.team2 !== null) {
+                    const mult = isPlayoff(match) ? 2 : 1;
                     const realDiff = result.team1 - result.team2;
                     const predDiff = parseInt(pred.team1) - parseInt(pred.team2);
                     
-                    if (pred.team1 == result.team1 && pred.team2 == result.team2) points = 3 * multiplier;
-                    else if (predDiff === realDiff) points = 2 * multiplier;
-                    else if (Math.sign(predDiff) === Math.sign(realDiff)) points = 1 * multiplier;
+                    if (pred.team1 == result.team1 && pred.team2 == result.team2) points = 3 * mult;
+                    else if (predDiff === realDiff) points = 2 * mult;
+                    else if (Math.sign(predDiff) === Math.sign(realDiff)) points = 1 * mult;
                 }
                 
-                const ptsText = points === 0 ? '0' : 
-                               points >= 6 ? `+${points.toFixed(1)} 🔥` : 
-                               `+${points.toFixed(1)}`;
+                const canEdit = isAdmin || currentUser === player;
+                const ptsText = points === 0 ? '0' : points >= 6 ? `+${points.toFixed(1)} 🔥` : `+${points.toFixed(1)}`;
                 
                 return `
-                    <div class="player-prediction">
-                        <div class="player-name">${player}</div>
+                    <div class="player-prediction" style="${!canEdit ? 'opacity:0.6;' : ''}">
+                        <div class="player-name">${player} ${player === currentUser ? '(ты)' : ''}</div>
                         <div style="display:flex; align-items:center; justify-content:center; gap:8px; font-size:1.1em;">
                             <input type="number" min="0" value="${pred.team1 || ''}" 
-                                   onchange="updatePrediction(${index}, '${player}', 'team1', this.value, ${isArchived})" style="width:55px;">
+                                   ${!canEdit ? 'disabled' : ''}
+                                   onchange="updatePrediction(${index}, '${player}', 'team1', this.value)" style="width:55px;">
                             <span>:</span>
                             <input type="number" min="0" value="${pred.team2 || ''}" 
-                                   onchange="updatePrediction(${index}, '${player}', 'team2', this.value, ${isArchived})" style="width:55px;">
+                                   ${!canEdit ? 'disabled' : ''}
+                                   onchange="updatePrediction(${index}, '${player}', 'team2', this.value)" style="width:55px;">
                         </div>
                         <div class="points-earned ${getPointsClass(points)}">${ptsText}</div>
                     </div>
@@ -562,69 +480,71 @@
             }).join('');
             
             return `
-                <div class="match-card ${archiveClass} ${playoffClass}">
+                <div class="match-card ${playoffClass}">
                     <div class="match-header">
                         <div class="match-info">
-                            <div style="color:#888; font-size:0.9em;">${match.date || '—'} ${match.time ? match.time : ''}</div>
+                            <div style="color:#888; font-size:0.9em;">${match.date || '—'} ${match.time || ''}</div>
                             <div style="font-size:1.25em; font-weight:700;">${match.team1 || '???'} — ${match.team2 || '???'}</div>
                             <div style="color:#ff0000;">Группа ${match.group || '—'}</div>
                         </div>
-                        <div style="text-align:right; min-width:140px;">
+                        <div style="text-align:right;">
                             <div style="font-size:0.9em; color:#aaa; margin-bottom:4px;">Результат:</div>
                             <input type="number" min="0" value="${result.team1 !== null ? result.team1 : ''}" 
+                                   ${!isAdmin ? 'disabled' : ''}
                                    onchange="updateResult(${index}, 'team1', this.value)" style="width:50px; font-size:1.2em;">
                             <span style="font-size:1.4em;">:</span>
                             <input type="number" min="0" value="${result.team2 !== null ? result.team2 : ''}" 
+                                   ${!isAdmin ? 'disabled' : ''}
                                    onchange="updateResult(${index}, 'team2', this.value)" style="width:50px; font-size:1.2em;">
                         </div>
                     </div>
-                    <div style="color:#ff0000; font-weight:700; margin:10px 0 8px;">📝 Прогнозы участников:</div>
+                    <div style="color:#ff0000; font-weight:700; margin:10px 0 8px;">📝 Прогнозы:</div>
                     <div class="predictions-grid">${predictionsHTML}</div>
+                    ${isAdmin ? `
                     <div style="margin-top:12px; text-align:right;">
                         ${isArchived ? 
                             `<button class="archive" onclick="restoreMatch(${index})">↩️ Вернуть</button>` : 
                             `<button class="archive" onclick="archiveMatch(${index})">📁 В архив</button>`
                         }
                         <button class="delete" onclick="deleteMatch(${index}, ${isArchived})">🗑️</button>
-                    </div>
+                    </div>` : ''}
                 </div>
             `;
         }
 
-        function renderGroupStandings() {
-            const container = document.getElementById('groupStandings');
-            let html = '';
+        function render() {
+            if (!currentUser) return;
             
-            Object.entries(data.groups || {}).forEach(([groupName, teams]) => {
-                const sortedTeams = Object.values(teams).sort((a, b) => {
+            document.getElementById('matchesList').innerHTML = data.matches.length ? 
+                data.matches.map((m, i) => renderMatchCard(m, i, false)).join('') : 
+                '<div style="text-align:center; padding:40px; color:#666;">Нет матчей</div>';
+
+            document.getElementById('archiveList').innerHTML = data.archivedMatches.length ? 
+                data.archivedMatches.map((m, i) => renderMatchCard(m, i, true)).join('') : 
+                '<div style="text-align:center; padding:40px; color:#666;">Архив пуст</div>';
+
+            // Группы
+            let groupsHTML = '';
+            Object.entries(data.groups || {}).forEach(([name, teams]) => {
+                const sorted = Object.values(teams).sort((a,b) => {
                     if (b.points !== a.points) return b.points - a.points;
                     if (b.gd !== a.gd) return b.gd - a.gd;
                     return b.gf - a.gf;
                 });
                 
-                if (sortedTeams.length > 0) {
-                    html += `
+                if (sorted.length > 0) {
+                    groupsHTML += `
                         <div class="group-standings">
-                            <div class="group-title">Группа ${groupName}</div>
+                            <div class="group-title">Группа ${name}</div>
                             <table>
-                                <thead>
-                                    <tr>
-                                        <th>#</th><th>Команда</th><th>И</th><th>В</th><th>Н</th><th>П</th>
-                                        <th>Мячи</th><th>Разн.</th><th>Очки</th>
-                                    </tr>
-                                </thead>
+                                <thead><tr><th>#</th><th>Команда</th><th>И</th><th>В</th><th>Н</th><th>П</th><th>Мячи</th><th>Разн.</th><th>Очки</th></tr></thead>
                                 <tbody>
-                                    ${sortedTeams.map((team, index) => `
-                                        <tr class="${index < 2 ? 'qualify' : ''}">
-                                            <td>${index + 1}</td>
-                                            <td style="text-align:left;">${team.name}</td>
-                                            <td>${team.played}</td>
-                                            <td>${team.won}</td>
-                                            <td>${team.drawn}</td>
-                                            <td>${team.lost}</td>
-                                            <td>${team.gf}-${team.ga}</td>
-                                            <td>${team.gd > 0 ? '+' : ''}${team.gd}</td>
-                                            <td><strong>${team.points}</strong></td>
+                                    ${sorted.map((t, i) => `
+                                        <tr class="${i < 2 ? 'qualify' : ''}">
+                                            <td>${i+1}</td><td style="text-align:left;">${t.name}</td>
+                                            <td>${t.played}</td><td>${t.won}</td><td>${t.drawn}</td><td>${t.lost}</td>
+                                            <td>${t.gf}-${t.ga}</td><td>${t.gd > 0 ? '+' : ''}${t.gd}</td>
+                                            <td><strong>${t.points}</strong></td>
                                         </tr>
                                     `).join('')}
                                 </tbody>
@@ -633,109 +553,38 @@
                     `;
                 }
             });
-            
-            container.innerHTML = html || '<div style="text-align:center; padding:30px; color:#666;">Введите результаты матчей - таблицы групп появятся автоматически</div>';
-        }
+            document.getElementById('groupStandings').innerHTML = groupsHTML || '<div style="text-align:center; padding:30px; color:#666;">Нет данных</div>';
 
-        function renderAnalytics() {
+            // Таблица
             const stats = calculatePoints();
-            const sorted = Object.entries(stats).sort((a, b) => b[1].points - a[1].points);
-            
-            let html = '<div class="analytics-grid">';
-            
-            html += `
-                <div class="analytics-card">
-                    <h3>🏆 Топ-3 игроков</h3>
-                    ${sorted.slice(0, 3).map(([name, s], i) => `
-                        <div class="analytics-item">
-                            <span class="analytics-label">${i + 1}. ${name}</span>
-                            <span class="analytics-value top-player">${Math.round(s.points)}</span>
-                        </div>
-                    `).join('') || '<div class="analytics-item"><span class="analytics-label">Пока нет данных</span></div>'}
-                </div>
-            `;
-            
-            const exactStats = Object.entries(stats).sort((a, b) => b[1].exact - a[1].exact);
-            html += `
-                <div class="analytics-card">
-                    <h3>🎯 Точные прогнозы</h3>
-                    ${exactStats.filter(([,s]) => s.exact > 0).map(([name, s]) => `
-                        <div class="analytics-item">
-                            <span class="analytics-label">${name}</span>
-                            <span class="analytics-value">${s.exact}</span>
-                        </div>
-                    `).join('') || '<div class="analytics-item"><span class="analytics-label">Пока нет</span></div>'}
-                </div>
-            `;
-            
-            const activityStats = data.players.map(p => ({
-                name: p,
-                count: [...data.matches, ...data.archivedMatches].filter(m => 
-                    m.predictions[p] && m.predictions[p].team1 !== null && m.predictions[p].team2 !== null
-                ).length
-            })).sort((a, b) => b.count - a.count);
-            
-            html += `
-                <div class="analytics-card">
-                    <h3>📝 Активность (прогнозов)</h3>
-                    ${activityStats.map(s => `
-                        <div class="analytics-item">
-                            <span class="analytics-label">${s.name}</span>
-                            <span class="analytics-value">${s.count}</span>
-                        </div>
-                    `).join('')}
-                </div>
-            `;
-            
-            html += '</div>';
-            document.getElementById('analyticsContent').innerHTML = html;
-            
-            const allM = [...data.matches, ...data.archivedMatches];
-            document.getElementById('totalMatches').textContent = allM.length;
-            document.getElementById('completedMatches').textContent = 
-                allM.filter(m => m.result.team1 !== null && m.result.team2 !== null).length;
-            document.getElementById('totalPlayers').textContent = data.players.length;
-            document.getElementById('totalPoints').textContent = Math.round(
-                Object.values(stats).reduce((sum, s) => sum + s.points, 0)
-            );
-        }
-
-        function render() {
-            if (!data.initialized) {
-                document.getElementById('initSection').style.display = 'block';
-                return;
-            }
-            
-            document.getElementById('matchesList').innerHTML = data.matches.length ? 
-                data.matches.map((m, i) => renderMatchCard(m, i, false)).join('') : 
-                '<div style="text-align:center; padding:40px; color:#666;">Нет активных матчей</div>';
-
-            document.getElementById('archiveList').innerHTML = data.archivedMatches.length ? 
-                data.archivedMatches.map((m, i) => renderMatchCard(m, i, true)).join('') : 
-                '<div style="text-align:center; padding:40px; color:#666;">Архив пуст</div>';
-
-            renderGroupStandings();
-            renderAnalytics();
-
-            const stats = calculatePoints();
-            const sorted = Object.entries(stats).sort((a, b) => b[1].points - a[1].points);
-            document.getElementById('leaderboardBody').innerHTML = sorted.map(([player, s], i) => `
+            const sorted = Object.entries(stats).sort((a,b) => b[1].points - a[1].points);
+            document.getElementById('leaderboardBody').innerHTML = sorted.map(([p, s], i) => `
                 <tr>
-                    <td>${i + 1}</td>
-                    <td><strong>${player}</strong></td>
+                    <td>${i+1}</td><td><strong>${p}</strong></td>
                     <td><strong>${Math.round(s.points)}</strong></td>
-                    <td>${s.exact}</td>
-                    <td>${s.diff}</td>
-                    <td>${s.outcome}</td>
+                    <td>${s.exact}</td><td>${s.diff}</td><td>${s.outcome}</td>
                 </tr>
-            `).join('') || '<tr><td colspan="6" style="padding:30px;">Пока нет участников</td></tr>';
+            `).join('') || '<tr><td colspan="6" style="padding:30px;">Пока нет данных</td></tr>';
+
+            // Аналитика
+            const totalPoints = Object.values(stats).reduce((sum, s) => sum + s.points, 0);
+            document.getElementById('totalMatches').textContent = data.matches.length + data.archivedMatches.length;
+            document.getElementById('completedMatches').textContent = 
+                [...data.matches, ...data.archivedMatches].filter(m => m.result.team1 !== null).length;
+            document.getElementById('totalPlayers').textContent = data.players.length;
             
-            document.getElementById('playersList').innerHTML = data.players.map(p => `
-                <div class="player-tag">
-                    <span>${p}${p === currentUser ? ' (вы)' : ''}</span>
-                    <button class="delete" onclick="removePlayer('${p}')">×</button>
+            document.getElementById('analyticsContent').innerHTML = `
+                <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:15px;">
+                    <div class="analytics-card" style="background:rgba(30,30,30,0.8); border:2px solid #333; border-radius:8px; padding:15px;">
+                        <h3 style="font-family:'Orbitron'; color:#ff0000; margin-bottom:12px;">🏆 Топ-3</h3>
+                        ${sorted.slice(0,3).map(([p,s],i) => `
+                            <div style="display:flex; justify-content:space-between; padding:6px 0; border-bottom:1px solid #333;">
+                                <span>${i+1}. ${p}</span><span style="color:#ffd700; font-weight:700;">${Math.round(s.points)}</span>
+                            </div>
+                        `).join('')}
+                    </div>
                 </div>
-            `).join('');
+            `;
         }
 
         function switchTab(e, tab) {
@@ -746,9 +595,7 @@
             render();
         }
 
-        window.onload = () => {
-            loadData();
-        };
+        window.onload = loadData;
     </script>
 </body>
 </html>
