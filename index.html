@@ -593,6 +593,11 @@
             margin-bottom: 20px;
             text-align: center;
         }
+        
+        .restore-button {
+            background: linear-gradient(135deg, #ffa500 0%, #ff8c00 100%);
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body>
@@ -642,6 +647,7 @@
                 <div class="section-title">📅 Активные матчи</div>
                 <div class="controls">
                     <button onclick="addMatch()">+ Добавить матч</button>
+                    <button onclick="restoreAllMatches()" class="restore-button">🔄 Восстановить матчи</button>
                     <button onclick="clearAllPredictions()">🗑️ Очистить</button>
                     <button onclick="autoArchiveCompleted()">📁 Авто-архив</button>
                 </div>
@@ -730,7 +736,7 @@
         let data = {
             matches: [],
             archivedMatches: [],
-            players: [],
+            players: ['Сергей', 'ИИ', 'АлПашка'], // ✅ ДОБАВИЛ ИИ!
             groups: {},
             playerJoinData: {}
         };
@@ -754,6 +760,12 @@
                 const val = snapshot.val();
                 if (val) {
                     data = val;
+                    // Проверяем, есть ли матчи, если нет - предлагаем восстановить
+                    if (data.matches.length === 0 && data.archivedMatches.length === 0) {
+                        if (confirm('Матчи не найдены! Восстановить все 24 матча ЧМ-2026?')) {
+                            restoreAllMatches();
+                        }
+                    }
                     render();
                 }
             });
@@ -787,6 +799,48 @@
             const playoffGroups = ['1/8', '1/4', '1/2', 'FINAL', '3RD', '1/8 ФИНАЛА', '1/4 ФИНАЛА', '1/2 ФИНАЛА', 'ФИНАЛ', '3 МЕСТО'];
             const group = (match.group || '').toUpperCase();
             return playoffGroups.some(pg => group.includes(pg));
+        }
+        
+        function restoreAllMatches() {
+            const realMatches = [
+                { date: '11 июня', time: '22:00', team1: 'Мексика', team2: 'ЮАР', group: 'A' },
+                { date: '12 июня', time: '05:00', team1: 'Южная Корея', team2: 'Чехия', group: 'A' },
+                { date: '12 июня', time: '22:00', team1: 'Канада', team2: 'Босния', group: 'B' },
+                { date: '13 июня', time: '04:00', team1: 'США', team2: 'Парагвай', group: 'D' },
+                { date: '13 июня', time: '22:00', team1: 'Катар', team2: 'Швейцария', group: 'B' },
+                { date: '14 июня', time: '01:00', team1: 'Бразилия', team2: 'Марокко', group: 'C' },
+                { date: '14 июня', time: '04:00', team1: 'Гаити', team2: 'Шотландия', group: 'C' },
+                { date: '14 июня', time: '07:00', team1: 'Австралия', team2: 'Турция', group: 'D' },
+                { date: '14 июня', time: '20:00', team1: 'Германия', team2: 'Кюрасао', group: 'E' },
+                { date: '14 июня', time: '23:00', team1: 'Нидерланды', team2: 'Япония', group: 'F' },
+                { date: '15 июня', time: '02:00', team1: "Кот-д'Ивуар", team2: 'Эквадор', group: 'E' },
+                { date: '15 июня', time: '05:00', team1: 'Швеция', team2: 'Тунис', group: 'F' },
+                { date: '15 июня', time: '19:00', team1: 'Испания', team2: 'Кабо-Верде', group: 'H' },
+                { date: '15 июня', time: '22:00', team1: 'Бельгия', team2: 'Египет', group: 'G' },
+                { date: '16 июня', time: '01:00', team1: 'Саудовская Аравия', team2: 'Уругвай', group: 'H' },
+                { date: '16 июня', time: '04:00', team1: 'Иран', team2: 'Новая Зеландия', group: 'G' },
+                { date: '16 июня', time: '22:00', team1: 'Франция', team2: 'Сенегал', group: 'I' },
+                { date: '17 июня', time: '01:00', team1: 'Ирак', team2: 'Норвегия', group: 'I' },
+                { date: '17 июня', time: '04:00', team1: 'Аргентина', team2: 'Алжир', group: 'J' },
+                { date: '17 июня', time: '07:00', team1: 'Австрия', team2: 'Иордания', group: 'J' },
+                { date: '17 июня', time: '20:00', team1: 'Португалия', team2: 'ДР Конго', group: 'K' },
+                { date: '17 июня', time: '23:00', team1: 'Англия', team2: 'Хорватия', group: 'L' },
+                { date: '18 июня', time: '02:00', team1: 'Гана', team2: 'Панама', group: 'L' },
+                { date: '18 июня', time: '05:00', team1: 'Узбекистан', team2: 'Колумбия', group: 'K' }
+            ];
+            
+            // Очищаем текущие матчи и добавляем новые
+            data.matches = [];
+            realMatches.forEach(match => {
+                data.matches.push({
+                    ...match,
+                    predictions: {},
+                    result: { team1: null, team2: null }
+                });
+            });
+            
+            saveData();
+            alert('✅ Все 24 матча ЧМ-2026 восстановлены!');
         }
         
         function addMatch() {
@@ -1057,7 +1111,7 @@
             });
             
             if (html === '') {
-                html = '<div class="empty-state">Нет данных</div>';
+                html = '<div class="empty-state">Нет данных о матчах группового этапа</div>';
             }
             
             container.innerHTML = html;
@@ -1074,7 +1128,7 @@
                         <div class="match-info">
                             <div class="match-date">📅 ${match.date || 'Дата'} ${match.time ? 'в ' + match.time : ''}</div>
                             <div class="match-teams">${match.team1 || 'Команда 1'} vs ${match.team2 || 'Команда 2'}</div>
-                            <div class="match-group">${match.group || '-'}</div>
+                            <div class="match-group">Группа ${match.group || '-'}</div>
                         </div>
                         <div class="match-actions">
                             <div class="result-input">
@@ -1222,7 +1276,7 @@
         function render() {
             const matchesList = document.getElementById('matchesList');
             if (data.matches.length === 0) {
-                matchesList.innerHTML = '<div class="empty-state">Нет матчей. Нажмите "+ Добавить матч" или загрузите начальные данные</div>';
+                matchesList.innerHTML = '<div class="empty-state">Нет матчей. Нажмите "🔄 Восстановить матчи"</div>';
             } else {
                 matchesList.innerHTML = data.matches.map((match, index) => 
                     renderMatchCard(match, index, false)
