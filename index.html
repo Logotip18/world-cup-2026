@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ЧМ-2026: Прогнозы | ЛОГОТИП 18+</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Rajdhani:wght@500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -28,29 +28,38 @@
         h1 {
             font-family: 'Orbitron', sans-serif;
             text-align: center;
-            color: #8B0000;
-            text-shadow: 0 0 20px rgba(139, 0, 0, 0.5);
+            color: #ff0000;
+            text-shadow: 0 0 30px rgba(255, 0, 0, 0.7);
             margin-bottom: 30px;
-            font-size: 2.5em;
-            letter-spacing: 3px;
+            font-size: 3em;
+            letter-spacing: 5px;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+        
+        @keyframes glow {
+            from { text-shadow: 0 0 20px rgba(255, 0, 0, 0.5); }
+            to { text-shadow: 0 0 40px rgba(255, 0, 0, 1), 0 0 60px rgba(255, 0, 0, 0.8); }
         }
         
         .section {
-            background: rgba(20, 20, 20, 0.9);
+            background: rgba(20, 20, 20, 0.95);
             border: 2px solid #8B0000;
-            border-radius: 10px;
-            padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 0 30px rgba(139, 0, 0, 0.3);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 0 40px rgba(139, 0, 0, 0.4);
         }
         
         .section-title {
             font-family: 'Orbitron', sans-serif;
-            color: #8B0000;
-            font-size: 1.5em;
-            margin-bottom: 15px;
-            border-bottom: 2px solid #8B0000;
-            padding-bottom: 10px;
+            color: #ff0000;
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            border-bottom: 3px solid #8B0000;
+            padding-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
         
         table {
@@ -60,65 +69,74 @@
         }
         
         th, td {
-            padding: 12px;
+            padding: 15px;
             text-align: center;
             border: 1px solid #333;
         }
         
         th {
-            background: #8B0000;
+            background: linear-gradient(135deg, #8B0000 0%, #ff0000 100%);
             font-family: 'Orbitron', sans-serif;
             font-weight: 700;
+            font-size: 1.1em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
         
         tr:nth-child(even) {
-            background: rgba(30, 30, 30, 0.5);
+            background: rgba(40, 40, 40, 0.6);
         }
         
         tr:hover {
-            background: rgba(139, 0, 0, 0.2);
+            background: rgba(139, 0, 0, 0.3);
+            transform: scale(1.01);
+            transition: all 0.3s;
         }
         
-        input[type="text"], input[type="number"] {
+        input[type="text"], input[type="number"], input[type="datetime-local"] {
             background: #1a1a1a;
-            border: 1px solid #8B0000;
+            border: 2px solid #8B0000;
             color: #fff;
-            padding: 8px;
-            border-radius: 5px;
+            padding: 10px;
+            border-radius: 8px;
             font-family: 'Rajdhani', sans-serif;
-            font-size: 1em;
-            width: 60px;
+            font-size: 1.1em;
+            font-weight: 600;
             text-align: center;
+            transition: all 0.3s;
         }
         
-        input[type="text"]:focus, input[type="number"]:focus {
+        input[type="text"]:focus, input[type="number"]:focus, input[type="datetime-local"]:focus {
             outline: none;
             border-color: #ff0000;
-            box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.6);
         }
         
         button {
-            background: #8B0000;
+            background: linear-gradient(135deg, #8B0000 0%, #ff0000 100%);
             color: #fff;
             border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
+            padding: 12px 25px;
+            border-radius: 8px;
             cursor: pointer;
             font-family: 'Orbitron', sans-serif;
             font-weight: 700;
+            font-size: 1em;
             transition: all 0.3s;
             margin: 5px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 15px rgba(139, 0, 0, 0.4);
         }
         
         button:hover {
-            background: #ff0000;
-            box-shadow: 0 0 15px rgba(255, 0, 0, 0.6);
-            transform: translateY(-2px);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 25px rgba(255, 0, 0, 0.7);
         }
         
         button.delete {
             background: #333;
-            padding: 5px 10px;
+            padding: 8px 15px;
             font-size: 0.9em;
         }
         
@@ -128,19 +146,103 @@
         
         .controls {
             display: flex;
-            gap: 10px;
-            margin-bottom: 15px;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        
+        .match-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
             flex-wrap: wrap;
         }
         
-        .leaderboard {
+        .match-time {
+            font-size: 0.9em;
+            color: #888;
+            background: #1a1a1a;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+        
+        .teams {
+            font-size: 1.3em;
+            font-weight: 700;
+            color: #fff;
+        }
+        
+        .result {
+            font-size: 1.5em;
+            font-weight: 700;
+            color: #ff0000;
+            font-family: 'Orbitron', sans-serif;
+        }
+        
+        .predictions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .player-prediction {
+            background: rgba(30, 30, 30, 0.8);
+            border: 2px solid #333;
+            border-radius: 10px;
+            padding: 15px;
+            transition: all 0.3s;
+        }
+        
+        .player-prediction:hover {
+            border-color: #8B0000;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(139, 0, 0, 0.4);
+        }
+        
+        .player-name {
+            font-family: 'Orbitron', sans-serif;
+            color: #ff0000;
             font-size: 1.2em;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        
+        .prediction-score {
+            font-size: 1.3em;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        
+        .points-earned {
+            font-size: 0.95em;
+            color: #00ff00;
+            font-weight: 600;
+        }
+        
+        .points-earned.zero {
+            color: #666;
         }
         
         .leaderboard td:first-child {
             font-family: 'Orbitron', sans-serif;
             font-weight: 700;
-            color: #8B0000;
+            color: #ff0000;
+            font-size: 1.2em;
+        }
+        
+        .leaderboard tr:nth-child(1) {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.2) 0%, rgba(255, 215, 0, 0.05) 100%);
+        }
+        
+        .leaderboard tr:nth-child(2) {
+            background: linear-gradient(135deg, rgba(192, 192, 192, 0.2) 0%, rgba(192, 192, 192, 0.05) 100%);
+        }
+        
+        .leaderboard tr:nth-child(3) {
+            background: linear-gradient(135deg, rgba(205, 127, 50, 0.2) 0%, rgba(205, 127, 50, 0.05) 100%);
         }
         
         .stats {
@@ -151,23 +253,63 @@
         }
         
         .stat-card {
-            background: rgba(139, 0, 0, 0.2);
-            border: 1px solid #8B0000;
-            padding: 15px;
-            border-radius: 5px;
+            background: linear-gradient(135deg, rgba(139, 0, 0, 0.3) 0%, rgba(139, 0, 0, 0.1) 100%);
+            border: 2px solid #8B0000;
+            padding: 20px;
+            border-radius: 10px;
             text-align: center;
+            box-shadow: 0 0 20px rgba(139, 0, 0, 0.3);
         }
         
         .stat-value {
             font-family: 'Orbitron', sans-serif;
-            font-size: 2em;
-            color: #8B0000;
+            font-size: 2.5em;
+            color: #ff0000;
+            text-shadow: 0 0 15px rgba(255, 0, 0, 0.6);
         }
         
         .stat-label {
-            font-size: 0.9em;
+            font-size: 1em;
             color: #aaa;
-            margin-top: 5px;
+            margin-top: 8px;
+            font-weight: 600;
+        }
+        
+        .rules {
+            background: rgba(139, 0, 0, 0.2);
+            border: 2px solid #8B0000;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+        
+        .rules-title {
+            font-family: 'Orbitron', sans-serif;
+            color: #ff0000;
+            font-size: 1.3em;
+            margin-bottom: 10px;
+        }
+        
+        .rules-list {
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .rule-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.1em;
+        }
+        
+        .rule-points {
+            background: #8B0000;
+            color: #fff;
+            padding: 5px 12px;
+            border-radius: 5px;
+            font-weight: 700;
+            font-family: 'Orbitron', sans-serif;
         }
     </style>
 </head>
@@ -175,34 +317,32 @@
     <div class="container">
         <h1>⚽ ЧМ-2026: ПРОГНОЗЫ ⚽</h1>
         
-        <div class="section">
-            <div class="section-title">📊 Матчи</div>
-            <div class="controls">
-                <button onclick="addMatch()">+ Добавить матч</button>
-                <button onclick="clearAllPredictions()">Очистить все прогнозы</button>
+        <div class="rules">
+            <div class="rules-title">📋 ПРАВИЛА НАЧИСЛЕНИЯ ОЧКОВ:</div>
+            <div class="rules-list">
+                <div class="rule-item">
+                    <span class="rule-points">3 балла</span>
+                    <span>Точный счёт</span>
+                </div>
+                <div class="rule-item">
+                    <span class="rule-points">2 балла</span>
+                    <span>Угадана разница</span>
+                </div>
+                <div class="rule-item">
+                    <span class="rule-points">1 балл</span>
+                    <span>Угадан исход</span>
+                </div>
             </div>
-            <table id="matchesTable">
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Команда 1</th>
-                        <th>Команда 2</th>
-                        <th id="playersHeader">Игроки</th>
-                        <th>Результат</th>
-                        <th>Действия</th>
-                    </tr>
-                </thead>
-                <tbody id="matchesBody"></tbody>
-            </table>
         </div>
         
         <div class="section">
-            <div class="section-title">👥 Игроки</div>
+            <div class="section-title">📅 Матчи</div>
             <div class="controls">
-                <input type="text" id="newPlayerName" placeholder="Имя игрока" style="width: 200px;">
-                <button onclick="addPlayer()">+ Добавить игрока</button>
+                <button onclick="addMatch()">+ Добавить матч</button>
+                <button onclick="addPreloadedMatches()">📥 Загрузить матчи ЧМ-2026</button>
+                <button onclick="clearAllPredictions()">🗑️ Очистить все прогнозы</button>
             </div>
-            <div id="playersList"></div>
+            <div id="matchesList"></div>
         </div>
         
         <div class="section">
@@ -210,11 +350,12 @@
             <table class="leaderboard">
                 <thead>
                     <tr>
-                        <th>Место</th>
-                        <th>Игрок</th>
-                        <th>Очки</th>
-                        <th>Точных</th>
-                        <th>Исходов</th>
+                        <th>🏅 Место</th>
+                        <th>👤 Игрок</th>
+                        <th>⭐ Очки</th>
+                        <th>🎯 Точных</th>
+                        <th>📊 Разница</th>
+                        <th>✔️ Исходов</th>
                     </tr>
                 </thead>
                 <tbody id="leaderboardBody"></tbody>
@@ -226,15 +367,19 @@
             <div class="stats">
                 <div class="stat-card">
                     <div class="stat-value" id="totalMatches">0</div>
-                    <div class="stat-label">Матчей</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-value" id="totalPlayers">0</div>
-                    <div class="stat-label">Игроков</div>
+                    <div class="stat-label">Всего матчей</div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-value" id="completedMatches">0</div>
                     <div class="stat-label">Сыграно</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="totalPlayers">4</div>
+                    <div class="stat-label">Игроков</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="totalPredictions">0</div>
+                    <div class="stat-label">Прогнозов</div>
                 </div>
             </div>
         </div>
@@ -243,12 +388,12 @@
     <script>
         let data = {
             matches: [],
-            players: ['Виталий', 'Сергей', 'Грок']
+            players: ['Сергей', 'ИИ', 'Владеп', 'АлПашка']
         };
         
         // Загрузка из localStorage
         function loadData() {
-            const saved = localStorage.getItem('worldCup2026');
+            const saved = localStorage.getItem('worldCup2026_v2');
             if (saved) {
                 data = JSON.parse(saved);
             }
@@ -256,7 +401,7 @@
         
         // Сохранение в localStorage
         function saveData() {
-            localStorage.setItem('worldCup2026', JSON.stringify(data));
+            localStorage.setItem('worldCup2026_v2', JSON.stringify(data));
         }
         
         // Добавление матча
@@ -264,9 +409,37 @@
             data.matches.push({
                 team1: '',
                 team2: '',
+                dateTime: '',
                 predictions: {},
                 result: { team1: null, team2: null }
             });
+            saveData();
+            render();
+        }
+        
+        // Загрузка матчей ЧМ-2026
+        function addPreloadedMatches() {
+            const wc2026Matches = [
+                { team1: 'США', team2: 'Канада', dateTime: '2026-06-11T18:00' },
+                { team1: 'Мексика', team2: 'Ямайка', dateTime: '2026-06-12T15:00' },
+                { team1: 'Бразилия', team2: 'Аргентина', dateTime: '2026-06-12T21:00' },
+                { team1: 'Испания', team2: 'Германия', dateTime: '2026-06-13T18:00' },
+                { team1: 'Франция', team2: 'Италия', dateTime: '2026-06-13T21:00' },
+                { team1: 'Англия', team2: 'Португалия', dateTime: '2026-06-14T18:00' },
+                { team1: 'Бельгия', team2: 'Нидерланды', dateTime: '2026-06-14T21:00' },
+                { team1: 'Хорватия', team2: 'Уругвай', dateTime: '2026-06-15T15:00' },
+                { team1: 'Колумбия', team2: 'Марокко', dateTime: '2026-06-15T18:00' },
+                { team1: 'Сенегал', team2: 'Япония', dateTime: '2026-06-15T21:00' }
+            ];
+            
+            wc2026Matches.forEach(match => {
+                data.matches.push({
+                    ...match,
+                    predictions: {},
+                    result: { team1: null, team2: null }
+                });
+            });
+            
             saveData();
             render();
         }
@@ -280,33 +453,9 @@
             }
         }
         
-        // Добавление игрока
-        function addPlayer() {
-            const name = document.getElementById('newPlayerName').value.trim();
-            if (name && !data.players.includes(name)) {
-                data.players.push(name);
-                document.getElementById('newPlayerName').value = '';
-                saveData();
-                render();
-            }
-        }
-        
-        // Удаление игрока
-        function deletePlayer(index) {
-            const name = data.players[index];
-            if (confirm(`Удалить игрока ${name}?`)) {
-                data.players.splice(index, 1);
-                data.matches.forEach(match => {
-                    delete match.predictions[name];
-                });
-                saveData();
-                render();
-            }
-        }
-        
-        // Обновление команды
-        function updateTeam(matchIndex, team, value) {
-            data.matches[matchIndex][team] = value;
+        // Обновление матча
+        function updateMatch(index, field, value) {
+            data.matches[index][field] = value;
             saveData();
         }
         
@@ -327,31 +476,40 @@
             updateLeaderboard();
         }
         
-        // Подсчет очков
+        // Подсчет очков (новая система 3-2-1)
         function calculatePoints() {
             const stats = {};
             data.players.forEach(player => {
-                stats[player] = { points: 0, exact: 0, outcome: 0 };
+                stats[player] = { points: 0, exact: 0, diff: 0, outcome: 0 };
             });
             
             data.matches.forEach(match => {
                 if (match.result.team1 !== null && match.result.team2 !== null) {
+                    const realDiff = match.result.team1 - match.result.team2;
+                    
                     data.players.forEach(player => {
                         const pred = match.predictions[player];
                         if (pred && pred.team1 !== null && pred.team2 !== null) {
-                            // Точный счет
+                            const predDiff = pred.team1 - pred.team2;
+                            let pointsAdded = 0;
+                            
+                            // Точный счет - 3 балла
                             if (pred.team1 === match.result.team1 && pred.team2 === match.result.team2) {
                                 stats[player].points += 3;
                                 stats[player].exact += 1;
+                                pointsAdded = 3;
                             }
-                            // Правильный исход
-                            else {
-                                const predOutcome = Math.sign(pred.team1 - pred.team2);
-                                const realOutcome = Math.sign(match.result.team1 - match.result.team2);
-                                if (predOutcome === realOutcome) {
-                                    stats[player].points += 1;
-                                    stats[player].outcome += 1;
-                                }
+                            // Угадана разница - 2 балла
+                            else if (predDiff === realDiff) {
+                                stats[player].points += 2;
+                                stats[player].diff += 1;
+                                pointsAdded = 2;
+                            }
+                            // Угадан исход - 1 балл
+                            else if (Math.sign(predDiff) === Math.sign(realDiff)) {
+                                stats[player].points += 1;
+                                stats[player].outcome += 1;
+                                pointsAdded = 1;
                             }
                         }
                     });
@@ -373,8 +531,9 @@
                     <tr>
                         <td>${index + 1}</td>
                         <td>${player}</td>
-                        <td>${stat.points}</td>
+                        <td><strong>${stat.points}</strong></td>
                         <td>${stat.exact}</td>
+                        <td>${stat.diff}</td>
                         <td>${stat.outcome}</td>
                     </tr>
                 `;
@@ -382,10 +541,16 @@
             
             // Обновление статистики
             document.getElementById('totalMatches').textContent = data.matches.length;
-            document.getElementById('totalPlayers').textContent = data.players.length;
             document.getElementById('completedMatches').textContent = data.matches.filter(m => 
                 m.result.team1 !== null && m.result.team2 !== null
             ).length;
+            document.getElementById('totalPlayers').textContent = data.players.length;
+            
+            let totalPred = 0;
+            data.matches.forEach(m => {
+                totalPred += Object.keys(m.predictions).length;
+            });
+            document.getElementById('totalPredictions').textContent = totalPred;
         }
         
         // Очистка всех прогнозов
@@ -401,47 +566,90 @@
         
         // Рендеринг
         function render() {
-            // Матчи
-            const tbody = document.getElementById('matchesBody');
-            tbody.innerHTML = data.matches.map((match, index) => {
-                const playerCells = data.players.map(player => {
-                    const pred = match.predictions[player] || { team1: '', team2: '' };
-                    return `
-                        <td>
-                            <input type="number" min="0" value="${pred.team1 || ''}" 
-                                   onchange="updatePrediction(${index}, '${player}', 'team1', this.value)">
-                            :
-                            <input type="number" min="0" value="${pred.team2 || ''}" 
-                                   onchange="updatePrediction(${index}, '${player}', 'team2', this.value)">
-                        </td>
-                    `;
-                }).join('');
+            const matchesList = document.getElementById('matchesList');
+            
+            if (data.matches.length === 0) {
+                matchesList.innerHTML = '<p style="text-align: center; color: #666; padding: 30px;">Нажмите "Загрузить матчи ЧМ-2026" или "Добавить матч"</p>';
+                updateLeaderboard();
+                return;
+            }
+            
+            matchesList.innerHTML = data.matches.map((match, index) => {
+                const result = match.result;
+                const resultText = (result.team1 !== null && result.team2 !== null) 
+                    ? `${result.team1}:${result.team2}` 
+                    : 'не сыгран';
                 
                 return `
-                    <tr>
-                        <td>${index + 1}</td>
-                        <td><input type="text" value="${match.team1}" onchange="updateTeam(${index}, 'team1', this.value)"></td>
-                        <td><input type="text" value="${match.team2}" onchange="updateTeam(${index}, 'team2', this.value)"></td>
-                        ${playerCells}
-                        <td>
-                            <input type="number" min="0" value="${match.result.team1 || ''}" 
-                                   onchange="updateResult(${index}, 'team1', this.value)">
-                            :
-                            <input type="number" min="0" value="${match.result.team2 || ''}" 
-                                   onchange="updateResult(${index}, 'team2', this.value)">
-                        </td>
-                        <td><button class="delete" onclick="deleteMatch(${index})">Удалить</button></td>
-                    </tr>
+                    <div class="section" style="margin-bottom: 15px;">
+                        <div class="match-info">
+                            <div class="teams">${match.team1 || 'Команда 1'} vs ${match.team2 || 'Команда 2'}</div>
+                            <div class="result">📊 ${resultText}</div>
+                        </div>
+                        
+                        <div style="margin-top: 10px; font-size: 0.9em; color: #888;">
+                            <input type="datetime-local" value="${match.dateTime || ''}" 
+                                   onchange="updateMatch(${index}, 'dateTime', this.value)">
+                        </div>
+                        
+                        <div style="margin-top: 15px; display: flex; gap: 20px; align-items: center; flex-wrap: wrap;">
+                            <div style="display: flex; gap: 10px; align-items: center;">
+                                <span style="color: #888;">Результат:</span>
+                                <input type="number" min="0" placeholder="0" value="${result.team1 !== null ? result.team1 : ''}" 
+                                       onchange="updateResult(${index}, 'team1', this.value)" style="width: 60px;">
+                                <span>:</span>
+                                <input type="number" min="0" placeholder="0" value="${result.team2 !== null ? result.team2 : ''}" 
+                                       onchange="updateResult(${index}, 'team2', this.value)" style="width: 60px;">
+                            </div>
+                            <button class="delete" onclick="deleteMatch(${index})">Удалить матч</button>
+                        </div>
+                        
+                        <div style="margin-top: 15px; padding-top: 15px; border-top: 2px solid #333;">
+                            <div style="color: #ff0000; font-weight: 700; margin-bottom: 10px;">📝 Прогнозы участников:</div>
+                            <div class="predictions-grid">
+                                ${data.players.map(player => {
+                                    const pred = match.predictions[player] || { team1: '', team2: '' };
+                                    let points = 0;
+                                    let pointsClass = 'zero';
+                                    
+                                    if (result.team1 !== null && result.team2 !== null && 
+                                        pred.team1 !== null && pred.team2 !== null) {
+                                        const realDiff = result.team1 - result.team2;
+                                        const predDiff = pred.team1 - pred.team2;
+                                        
+                                        if (pred.team1 === result.team1 && pred.team2 === result.team2) {
+                                            points = 3;
+                                            pointsClass = '';
+                                        } else if (predDiff === realDiff) {
+                                            points = 2;
+                                            pointsClass = '';
+                                        } else if (Math.sign(predDiff) === Math.sign(realDiff)) {
+                                            points = 1;
+                                            pointsClass = '';
+                                        }
+                                    }
+                                    
+                                    return `
+                                        <div class="player-prediction">
+                                            <div class="player-name">${player}</div>
+                                            <div class="prediction-score">
+                                                <input type="number" min="0" placeholder="0" value="${pred.team1 || ''}" 
+                                                       onchange="updatePrediction(${index}, '${player}', 'team1', this.value)" style="width: 50px;">
+                                                :
+                                                <input type="number" min="0" placeholder="0" value="${pred.team2 || ''}" 
+                                                       onchange="updatePrediction(${index}, '${player}', 'team2', this.value)" style="width: 50px;">
+                                            </div>
+                                            <div class="points-earned ${pointsClass}">
+                                                ${points > 0 ? `+${points} балла` : '0 баллов'}
+                                            </div>
+                                        </div>
+                                    `;
+                                }).join('')}
+                            </div>
+                        </div>
+                    </div>
                 `;
             }).join('');
-            
-            // Игроки
-            const playersList = document.getElementById('playersList');
-            playersList.innerHTML = data.players.map((player, index) => `
-                <span style="display: inline-block; background: #8B0000; padding: 8px 15px; margin: 5px; border-radius: 5px;">
-                    ${player} <button class="delete" onclick="deletePlayer(${index})">×</button>
-                </span>
-            `).join('');
             
             updateLeaderboard();
         }
