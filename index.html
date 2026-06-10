@@ -14,36 +14,36 @@
             padding: 0;
             box-sizing: border-box;
         }
-        
+       
         body {
             font-family: 'Rajdhani', sans-serif;
             background: linear-gradient(135deg, #0a0a0a 0%, #1a0000 100%);
             color: #fff;
             min-height: 100vh;
-            padding: 20px;
+            padding: 15px;
         }
-        
+       
         .container {
             max-width: 1400px;
             margin: 0 auto;
         }
-        
+       
         h1 {
             font-family: 'Orbitron', sans-serif;
             text-align: center;
             color: #ff0000;
             text-shadow: 0 0 30px rgba(255, 0, 0, 0.7);
             margin-bottom: 20px;
-            font-size: 2.5em;
+            font-size: clamp(1.8em, 5vw, 2.8em);
             letter-spacing: 5px;
             animation: glow 2s ease-in-out infinite alternate;
         }
-        
+       
         @keyframes glow {
             from { text-shadow: 0 0 20px rgba(255, 0, 0, 0.5); }
             to { text-shadow: 0 0 40px rgba(255, 0, 0, 1), 0 0 60px rgba(255, 0, 0, 0.8); }
         }
-        
+       
         .firebase-status {
             background: rgba(0, 255, 0, 0.1);
             border: 2px solid #00ff00;
@@ -54,13 +54,13 @@
             margin-bottom: 20px;
             font-weight: 600;
         }
-        
+       
         .firebase-status.offline {
             background: rgba(255, 0, 0, 0.1);
             border-color: #ff0000;
             color: #ff0000;
         }
-        
+       
         .tabs {
             display: flex;
             gap: 5px;
@@ -69,7 +69,7 @@
             border-bottom: 3px solid #8B0000;
             padding-bottom: 10px;
         }
-        
+       
         .tab {
             background: rgba(30, 30, 30, 0.8);
             border: 2px solid #333;
@@ -84,29 +84,32 @@
             display: flex;
             align-items: center;
             gap: 8px;
+            flex: 1;
+            justify-content: center;
+            min-width: 120px;
         }
-        
+       
         .tab:hover {
             background: rgba(139, 0, 0, 0.3);
             border-color: #8B0000;
             color: #fff;
         }
-        
+       
         .tab.active {
             background: linear-gradient(135deg, #8B0000 0%, #ff0000 100%);
             border-color: #ff0000;
             color: #fff;
             box-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
         }
-        
+       
         .tab-content {
             display: none;
         }
-        
+       
         .tab-content.active {
             display: block;
         }
-        
+       
         .section {
             background: rgba(20, 20, 20, 0.95);
             border: 2px solid #8B0000;
@@ -115,7 +118,7 @@
             margin-bottom: 20px;
             box-shadow: 0 0 40px rgba(139, 0, 0, 0.4);
         }
-        
+       
         .section-title {
             font-family: 'Orbitron', sans-serif;
             color: #ff0000;
@@ -127,19 +130,19 @@
             align-items: center;
             gap: 10px;
         }
-        
+       
         table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 15px;
         }
-        
+       
         th, td {
             padding: 12px;
             text-align: center;
             border: 1px solid #333;
         }
-        
+       
         th {
             background: linear-gradient(135deg, #8B0000 0%, #ff0000 100%);
             font-family: 'Orbitron', sans-serif;
@@ -148,16 +151,16 @@
             text-transform: uppercase;
             letter-spacing: 1px;
         }
-        
+       
         tr:nth-child(even) {
             background: rgba(40, 40, 40, 0.6);
         }
-        
+       
         tr:hover {
             background: rgba(139, 0, 0, 0.3);
         }
-        
-        input[type="text"], input[type="number"] {
+       
+        input[type="text"], input[type="number"], input[type="password"] {
             background: #1a1a1a;
             border: 2px solid #8B0000;
             color: #fff;
@@ -168,21 +171,20 @@
             font-weight: 600;
             text-align: center;
             transition: all 0.3s;
-            -moz-appearance: textfield;
         }
-        
-        input[type=number]::-webkit-inner-spin-button, 
-        input[type=number]::-webkit-outer-spin-button { 
-            -webkit-appearance: none; 
-            margin: 0; 
+       
+        input[type=number]::-webkit-inner-spin-button,
+        input[type=number]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
         }
-        
-        input[type="text"]:focus, input[type="number"]:focus {
+       
+        input:focus {
             outline: none;
             border-color: #ff0000;
             box-shadow: 0 0 10px rgba(255, 0, 0, 0.6);
         }
-        
+       
         button {
             background: linear-gradient(135deg, #8B0000 0%, #ff0000 100%);
             color: #fff;
@@ -199,33 +201,20 @@
             letter-spacing: 1px;
             box-shadow: 0 3px 10px rgba(139, 0, 0, 0.4);
         }
-        
+       
         button:hover {
             transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(255, 0, 0, 0.7);
         }
-        
+       
         button.delete {
             background: linear-gradient(135deg, #ff0000 0%, #8B0000 100%);
-            padding: 8px 15px;
-            font-size: 0.85em;
         }
-        
+       
         button.archive {
             background: linear-gradient(135deg, #4a4a4a 0%, #2a2a2a 100%);
-            padding: 8px 15px;
-            font-size: 0.85em;
         }
-        
-        button.archive:hover {
-            background: linear-gradient(135deg, #6a6a6a 0%, #4a4a4a 100%);
-        }
-        
-        button.small {
-            padding: 5px 10px;
-            font-size: 0.8em;
-        }
-        
+       
         .controls {
             display: flex;
             gap: 10px;
@@ -233,25 +222,7 @@
             flex-wrap: wrap;
             align-items: center;
         }
-        
-        .player-tag {
-            background: rgba(139, 0, 0, 0.4);
-            border: 2px solid #8B0000;
-            padding: 6px 12px;
-            border-radius: 6px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-weight: 600;
-            font-size: 0.95em;
-        }
-        
-        .player-tag button {
-            padding: 2px 6px;
-            font-size: 0.75em;
-            margin: 0;
-        }
-        
+       
         .match-card {
             background: rgba(25, 25, 25, 0.9);
             border: 2px solid #8B0000;
@@ -261,12 +232,12 @@
             transition: all 0.3s;
             position: relative;
         }
-        
+       
         .match-card.playoff {
             border-color: #ffd700;
             box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
         }
-        
+       
         .match-card.playoff::before {
             content: "🔥 ПЛЕЙ-ОФФ (x2)";
             position: absolute;
@@ -280,93 +251,47 @@
             font-size: 0.85em;
             font-family: 'Orbitron', sans-serif;
         }
-        
+       
         .match-card:hover {
             box-shadow: 0 5px 20px rgba(139, 0, 0, 0.5);
             transform: translateY(-2px);
         }
-        
+       
         .match-card.archived {
-            opacity: 0.5;
+            opacity: 0.6;
             border-color: #555;
-            background: rgba(20, 20, 20, 0.7);
         }
-        
+       
         .match-header {
             display: flex;
             justify-content: space-between;
-            align-items: center;
+            align-items: flex-start;
             gap: 15px;
             flex-wrap: wrap;
             margin-bottom: 12px;
             padding-bottom: 12px;
             border-bottom: 2px solid #333;
         }
-        
+       
         .match-info {
             flex: 1;
+            min-width: 200px;
         }
-        
-        .match-date {
-            font-size: 0.85em;
-            color: #888;
-            margin-bottom: 3px;
-        }
-        
-        .match-teams {
-            font-size: 1.2em;
-            font-weight: 700;
-            color: #fff;
-            margin-bottom: 3px;
-        }
-        
-        .match-group {
-            font-size: 0.9em;
-            color: #ff0000;
-            font-weight: 600;
-        }
-        
-        .match-actions {
-            display: flex;
-            gap: 8px;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-        
-        .result-input {
-            display: flex;
-            gap: 8px;
-            align-items: center;
-            font-size: 1.1em;
-        }
-        
-        .result-input input {
-            width: 60px;
-            font-size: 1.2em;
-            font-weight: 700;
-        }
-        
+       
         .predictions-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
             gap: 12px;
             margin-top: 12px;
         }
-        
+       
         .player-prediction {
             background: rgba(30, 30, 30, 0.8);
             border: 2px solid #333;
             border-radius: 8px;
             padding: 12px;
-            transition: all 0.3s;
         }
-        
-        .player-prediction:hover {
-            border-color: #8B0000;
-            transform: translateY(-2px);
-            box-shadow: 0 3px 15px rgba(139, 0, 0, 0.4);
-        }
-        
+       
         .player-name {
             font-family: 'Orbitron', sans-serif;
             color: #ff0000;
@@ -374,266 +299,48 @@
             margin-bottom: 8px;
             font-weight: 700;
         }
-        
-        .prediction-score {
-            font-size: 1.2em;
-            font-weight: 700;
-            margin-bottom: 6px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-        
-        .prediction-score input {
-            width: 50px;
-        }
-        
-        .points-earned {
-            font-size: 0.9em;
-            color: #00ff00;
-            font-weight: 600;
-            text-align: center;
-            padding: 4px;
-            border-radius: 4px;
-            background: rgba(0, 255, 0, 0.1);
-        }
-        
-        .points-earned.zero {
-            color: #666;
-            background: rgba(100, 100, 100, 0.1);
-        }
-        
-        .points-earned.three {
-            color: #ffd700;
-            background: rgba(255, 215, 0, 0.2);
-            font-weight: 700;
-        }
-        
-        .points-earned.two {
-            color: #00ffff;
-            background: rgba(0, 255, 255, 0.2);
-        }
-        
-        .points-earned.one {
-            color: #90EE90;
-            background: rgba(144, 238, 144, 0.2);
-        }
-        
-        .leaderboard td:first-child {
-            font-family: 'Orbitron', sans-serif;
-            font-weight: 700;
-            color: #ff0000;
-            font-size: 1.1em;
-        }
-        
-        .leaderboard tr:nth-child(1) {
-            background: linear-gradient(135deg, rgba(255, 215, 0, 0.3) 0%, rgba(255, 215, 0, 0.1) 100%);
-        }
-        
-        .leaderboard tr:nth-child(2) {
-            background: linear-gradient(135deg, rgba(192, 192, 192, 0.3) 0%, rgba(192, 192, 192, 0.1) 100%);
-        }
-        
-        .leaderboard tr:nth-child(3) {
-            background: linear-gradient(135deg, rgba(205, 127, 50, 0.3) 0%, rgba(205, 127, 50, 0.1) 100%);
-        }
-        
-        .stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 12px;
-            margin-top: 12px;
-        }
-        
-        .stat-card {
-            background: linear-gradient(135deg, rgba(139, 0, 0, 0.3) 0%, rgba(139, 0, 0, 0.1) 100%);
-            border: 2px solid #8B0000;
-            padding: 15px;
-            border-radius: 8px;
-            text-align: center;
-            box-shadow: 0 0 15px rgba(139, 0, 0, 0.3);
-        }
-        
-        .stat-value {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 2em;
-            color: #ff0000;
-            text-shadow: 0 0 10px rgba(255, 0, 0, 0.6);
-        }
-        
-        .stat-label {
-            font-size: 0.9em;
-            color: #aaa;
-            margin-top: 5px;
-            font-weight: 600;
-        }
-        
-        .rules {
-            background: rgba(139, 0, 0, 0.2);
-            border: 2px solid #8B0000;
-            border-radius: 10px;
-            padding: 15px;
-            margin-bottom: 20px;
-        }
-        
-        .rules-title {
-            font-family: 'Orbitron', sans-serif;
-            color: #ff0000;
-            font-size: 1.2em;
-            margin-bottom: 8px;
-        }
-        
-        .rules-list {
-            display: flex;
-            gap: 20px;
-            flex-wrap: wrap;
-        }
-        
-        .rule-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 1em;
-        }
-        
-        .rule-points {
-            background: #8B0000;
-            color: #fff;
-            padding: 4px 10px;
-            border-radius: 4px;
-            font-weight: 700;
-            font-family: 'Orbitron', sans-serif;
-        }
-        
-        .analytics-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 15px;
-            margin-top: 12px;
-        }
-        
-        .analytics-card {
-            background: rgba(30, 30, 30, 0.8);
-            border: 2px solid #333;
-            border-radius: 8px;
-            padding: 15px;
-        }
-        
-        .analytics-card h3 {
-            font-family: 'Orbitron', sans-serif;
-            color: #ff0000;
-            margin-bottom: 12px;
-            font-size: 1.2em;
-            border-bottom: 2px solid #8B0000;
-            padding-bottom: 8px;
-        }
-        
-        .analytics-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 6px 0;
-            border-bottom: 1px solid #333;
-        }
-        
-        .analytics-item:last-child {
-            border-bottom: none;
-        }
-        
-        .analytics-label {
-            color: #aaa;
-        }
-        
-        .analytics-value {
-            font-weight: 700;
-            color: #fff;
-        }
-        
-        .top-player {
-            color: #ffd700;
-            font-weight: 700;
-        }
-        
-        .empty-state {
-            text-align: center;
-            color: #666;
-            padding: 30px;
-            font-size: 1.1em;
-        }
-        
-        .group-standings {
-            margin-bottom: 25px;
-        }
-        
-        .group-title {
-            font-family: 'Orbitron', sans-serif;
-            color: #ff0000;
-            font-size: 1.3em;
-            margin-bottom: 10px;
-            padding: 8px 15px;
-            background: rgba(139, 0, 0, 0.3);
-            border-radius: 6px;
-            display: inline-block;
-        }
-        
-        .group-table td:first-child {
-            font-weight: 700;
-            color: #fff;
-        }
-        
-        .qualify {
-            background: rgba(0, 255, 0, 0.15) !important;
-        }
-        
+       
         .login-section {
             background: rgba(30, 30, 30, 0.9);
             border: 2px solid #8B0000;
             border-radius: 10px;
-            padding: 20px;
+            padding: 25px;
             margin-bottom: 20px;
             text-align: center;
         }
-        
-        .restore-button {
-            background: linear-gradient(135deg, #ffa500 0%, #ff8c00 100%);
-            margin-top: 10px;
+       
+        .login-section input {
+            width: 100%;
+            max-width: 320px;
+            margin: 8px auto;
+            display: block;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>⚽ ЧМ-2026: ПРОГНОЗЫ ⚽</h1>
-        
+        <h1>⚽ ЧМ-2026: ПРОГНОЗЫ | ЛОГОТИП 18+ ⚽</h1>
+       
         <div id="firebaseStatus" class="firebase-status offline">🔴 Подключение...</div>
-        
+       
         <div id="loginSection" class="login-section" style="display: none;">
-            <h2 style="color: #ff0000; margin-bottom: 15px;">🔐 Вход</h2>
-            <input type="text" id="usernameInput" placeholder="Ваше имя">
-            <button onclick="login()">Войти</button>
+            <h2 style="color: #ff0000; margin-bottom: 20px;">🔐 Вход в пул прогнозов</h2>
+            <input type="text" id="usernameInput" placeholder="Твоё имя (как в чате)">
+            <input type="password" id="pinInput" placeholder="Пин-код (любые цифры)">
+            <button onclick="login()" style="padding: 12px 40px; font-size: 1.1em;">ВОЙТИ</button>
+            <p style="margin-top: 15px; color: #888; font-size: 0.9em;">Имя сохранится автоматически</p>
         </div>
-        
+
         <div class="rules">
-            <div class="rules-title">📋 ПРАВИЛА:</div>
-            <div class="rules-list">
-                <div class="rule-item">
-                    <span class="rule-points">3</span>
-                    <span>Точный счёт</span>
-                </div>
-                <div class="rule-item">
-                    <span class="rule-points">2</span>
-                    <span>Разница</span>
-                </div>
-                <div class="rule-item">
-                    <span class="rule-points">1</span>
-                    <span>Исход</span>
-                </div>
-                <div class="rule-item">
-                    <span class="rule-points" style="background: #ffd700; color: #000;">x2</span>
-                    <span>Плей-офф</span>
-                </div>
+            <div class="rules-title">📋 ПРАВИЛА НАЧИСЛЕНИЯ ОЧКОВ:</div>
+            <div class="rules-list" style="display: flex; gap: 20px; flex-wrap: wrap;">
+                <div class="rule-item"><span class="rule-points">3</span> Точный счёт</div>
+                <div class="rule-item"><span class="rule-points">2</span> Правильная разница</div>
+                <div class="rule-item"><span class="rule-points">1</span> Правильный исход</div>
+                <div class="rule-item"><span class="rule-points" style="background:#ffd700;color:#000;">×2</span> Плей-офф</div>
             </div>
         </div>
-        
+       
         <div class="tabs">
             <div class="tab active" onclick="switchTab('matches')">📅 Матчи</div>
             <div class="tab" onclick="switchTab('groups')">📊 Группы</div>
@@ -641,27 +348,27 @@
             <div class="tab" onclick="switchTab('analytics')">📈 Аналитика</div>
             <div class="tab" onclick="switchTab('archive')">📁 Архив</div>
         </div>
-        
+       
         <div id="matches" class="tab-content active">
             <div class="section">
                 <div class="section-title">📅 Активные матчи</div>
                 <div class="controls">
                     <button onclick="addMatch()">+ Добавить матч</button>
-                    <button onclick="restoreAllMatches()" class="restore-button">🔄 Восстановить матчи</button>
-                    <button onclick="clearAllPredictions()">🗑️ Очистить</button>
+                    <button onclick="loadSampleMatches()">📥 Пример матчей ЧМ</button>
+                    <button onclick="clearAllPredictions()">🗑️ Очистить прогнозы</button>
                     <button onclick="autoArchiveCompleted()">📁 Авто-архив</button>
                 </div>
                 <div id="matchesList"></div>
             </div>
         </div>
-        
+       
         <div id="groups" class="tab-content">
             <div class="section">
                 <div class="section-title">📊 Групповой этап</div>
                 <div id="groupStandings"></div>
             </div>
         </div>
-        
+       
         <div id="leaderboard" class="tab-content">
             <div class="section">
                 <div class="section-title">🏆 Таблица лидеров</div>
@@ -680,45 +387,32 @@
                 </table>
             </div>
         </div>
-        
+       
         <div id="analytics" class="tab-content">
             <div class="section">
                 <div class="section-title">📈 Аналитика</div>
                 <div id="analyticsContent"></div>
             </div>
             <div class="section">
-                <div class="section-title">📊 Статистика</div>
-                <div class="stats">
-                    <div class="stat-card">
-                        <div class="stat-value" id="totalMatches">0</div>
-                        <div class="stat-label">Матчей</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-value" id="completedMatches">0</div>
-                        <div class="stat-label">Сыграно</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-value" id="totalPlayers">0</div>
-                        <div class="stat-label">Игроков</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-value" id="playoffMatches">0</div>
-                        <div class="stat-label">Плей-офф</div>
-                    </div>
+                <div class="section-title">📊 Общая статистика</div>
+                <div class="stats" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px;">
+                    <div class="stat-card"><div class="stat-value" id="totalMatches">0</div><div class="stat-label">Всего матчей</div></div>
+                    <div class="stat-card"><div class="stat-value" id="completedMatches">0</div><div class="stat-label">Сыграно</div></div>
+                    <div class="stat-card"><div class="stat-value" id="totalPlayers">0</div><div class="stat-label">Участников</div></div>
                 </div>
             </div>
         </div>
-        
+       
         <div id="archive" class="tab-content">
             <div class="section">
-                <div class="section-title">📁 Архив</div>
+                <div class="section-title">📁 Архив завершённых матчей</div>
                 <div id="archiveList"></div>
             </div>
         </div>
     </div>
 
     <script>
-        // 🔥 FIREBASE CONFIGURATION
+        // Firebase Config
         const firebaseConfig = {
             apiKey: "AIzaSyDBUG6vDCpt7AQla7SutuKsJDU_KeZYmo4",
             authDomain: "world-cup-2026-ac3bb.firebaseapp.com",
@@ -728,121 +422,73 @@
             messagingSenderId: "940190724224",
             appId: "1:940190724224:web:3fd77be960b52dcdd93665"
         };
-        
+       
         firebase.initializeApp(firebaseConfig);
         const database = firebase.database();
-        
+       
         let currentUser = null;
         let data = {
             matches: [],
             archivedMatches: [],
-            players: ['Сергей', 'ИИ', 'АлПашка'], // ✅ ДОБАВИЛ ИИ!
+            players: [],
             groups: {},
             playerJoinData: {}
         };
-        
+
         const connectedRef = database.ref(".info/connected");
         connectedRef.on("value", (snap) => {
             const statusEl = document.getElementById('firebaseStatus');
             if (snap.val() === true) {
-                statusEl.textContent = "🟢 Онлайн - синхронизация активна";
+                statusEl.textContent = "🟢 Онлайн — все изменения синхронизируются";
                 statusEl.classList.remove('offline');
-                loadData();
             } else {
-                statusEl.textContent = "🔴 Офлайн - нет подключения";
+                statusEl.textContent = "🔴 Офлайн — изменения сохранятся позже";
                 statusEl.classList.add('offline');
             }
         });
-        
+
         function loadData() {
-            const dataRef = database.ref('worldcup2026/data');
-            dataRef.on('value', (snapshot) => {
+            database.ref('worldcup2026/data').on('value', (snapshot) => {
                 const val = snapshot.val();
                 if (val) {
                     data = val;
-                    // Проверяем, есть ли матчи, если нет - предлагаем восстановить
-                    if (data.matches.length === 0 && data.archivedMatches.length === 0) {
-                        if (confirm('Матчи не найдены! Восстановить все 24 матча ЧМ-2026?')) {
-                            restoreAllMatches();
-                        }
-                    }
+                    if (!data.matches) data.matches = [];
+                    if (!data.archivedMatches) data.archivedMatches = [];
+                    if (!data.players) data.players = [];
+                    if (!data.playerJoinData) data.playerJoinData = {};
                     render();
                 }
             });
         }
-        
+
         function saveData() {
             database.ref('worldcup2026/data').set(data);
         }
-        
+
         function login() {
             const username = document.getElementById('usernameInput').value.trim();
-            if (username) {
-                currentUser = username;
-                if (!data.players.includes(username)) {
-                    data.playerJoinData[username] = {
-                        joinedAt: Date.now(),
-                        completedMatchesAtJoin: data.matches.filter(m => 
-                            m.result.team1 !== null && m.result.team2 !== null
-                        ).length + data.archivedMatches.filter(m => 
-                            m.result.team1 !== null && m.result.team2 !== null
-                        ).length
-                    };
-                    data.players.push(username);
-                }
-                document.getElementById('loginSection').style.display = 'none';
-                saveData();
+            if (!username) {
+                alert("Введите имя!");
+                return;
             }
-        }
-        
-        function isPlayoffMatch(match) {
-            const playoffGroups = ['1/8', '1/4', '1/2', 'FINAL', '3RD', '1/8 ФИНАЛА', '1/4 ФИНАЛА', '1/2 ФИНАЛА', 'ФИНАЛ', '3 МЕСТО'];
-            const group = (match.group || '').toUpperCase();
-            return playoffGroups.some(pg => group.includes(pg));
-        }
-        
-        function restoreAllMatches() {
-            const realMatches = [
-                { date: '11 июня', time: '22:00', team1: 'Мексика', team2: 'ЮАР', group: 'A' },
-                { date: '12 июня', time: '05:00', team1: 'Южная Корея', team2: 'Чехия', group: 'A' },
-                { date: '12 июня', time: '22:00', team1: 'Канада', team2: 'Босния', group: 'B' },
-                { date: '13 июня', time: '04:00', team1: 'США', team2: 'Парагвай', group: 'D' },
-                { date: '13 июня', time: '22:00', team1: 'Катар', team2: 'Швейцария', group: 'B' },
-                { date: '14 июня', time: '01:00', team1: 'Бразилия', team2: 'Марокко', group: 'C' },
-                { date: '14 июня', time: '04:00', team1: 'Гаити', team2: 'Шотландия', group: 'C' },
-                { date: '14 июня', time: '07:00', team1: 'Австралия', team2: 'Турция', group: 'D' },
-                { date: '14 июня', time: '20:00', team1: 'Германия', team2: 'Кюрасао', group: 'E' },
-                { date: '14 июня', time: '23:00', team1: 'Нидерланды', team2: 'Япония', group: 'F' },
-                { date: '15 июня', time: '02:00', team1: "Кот-д'Ивуар", team2: 'Эквадор', group: 'E' },
-                { date: '15 июня', time: '05:00', team1: 'Швеция', team2: 'Тунис', group: 'F' },
-                { date: '15 июня', time: '19:00', team1: 'Испания', team2: 'Кабо-Верде', group: 'H' },
-                { date: '15 июня', time: '22:00', team1: 'Бельгия', team2: 'Египет', group: 'G' },
-                { date: '16 июня', time: '01:00', team1: 'Саудовская Аравия', team2: 'Уругвай', group: 'H' },
-                { date: '16 июня', time: '04:00', team1: 'Иран', team2: 'Новая Зеландия', group: 'G' },
-                { date: '16 июня', time: '22:00', team1: 'Франция', team2: 'Сенегал', group: 'I' },
-                { date: '17 июня', time: '01:00', team1: 'Ирак', team2: 'Норвегия', group: 'I' },
-                { date: '17 июня', time: '04:00', team1: 'Аргентина', team2: 'Алжир', group: 'J' },
-                { date: '17 июня', time: '07:00', team1: 'Австрия', team2: 'Иордания', group: 'J' },
-                { date: '17 июня', time: '20:00', team1: 'Португалия', team2: 'ДР Конго', group: 'K' },
-                { date: '17 июня', time: '23:00', team1: 'Англия', team2: 'Хорватия', group: 'L' },
-                { date: '18 июня', time: '02:00', team1: 'Гана', team2: 'Панама', group: 'L' },
-                { date: '18 июня', time: '05:00', team1: 'Узбекистан', team2: 'Колумбия', group: 'K' }
-            ];
-            
-            // Очищаем текущие матчи и добавляем новые
-            data.matches = [];
-            realMatches.forEach(match => {
-                data.matches.push({
-                    ...match,
-                    predictions: {},
-                    result: { team1: null, team2: null }
-                });
-            });
-            
+            currentUser = username;
+            localStorage.setItem('wcPredictorUser', username);
+
+            if (!data.players.includes(username)) {
+                data.players.push(username);
+                data.playerJoinData[username] = { joinedAt: Date.now() };
+            }
+            document.getElementById('loginSection').style.display = 'none';
             saveData();
-            alert('✅ Все 24 матча ЧМ-2026 восстановлены!');
+            render();
         }
-        
+
+        function isPlayoffMatch(match) {
+            const playoff = ['1/8', '1/4', '1/2', 'FINAL', '3RD', 'ПЛЕЙ', '1/8 ФИНАЛА', 'ЧЕТВЕРТЬ', 'ПОЛУФИНАЛ', 'ФИНАЛ'];
+            const g = (match.group || '').toUpperCase();
+            return playoff.some(p => g.includes(p));
+        }
+
         function addMatch() {
             data.matches.push({
                 date: '',
@@ -854,451 +500,253 @@
                 result: { team1: null, team2: null }
             });
             saveData();
+            render();
         }
-        
-        function deleteMatch(index) {
+
+        function loadSampleMatches() {
+            if (!confirm('Добавить несколько примеров матчей ЧМ-2026?')) return;
+            
+            const samples = [
+                {date:"2026-06-11", time:"20:00", team1:"Мексика", team2:"ЮАР", group:"A", predictions:{}, result:{team1:null,team2:null}},
+                {date:"2026-06-11", time:"23:00", team1:"Южная Корея", team2:"Чехия", group:"A", predictions:{}, result:{team1:null,team2:null}},
+                {date:"2026-06-12", time:"18:00", team1:"Канада", team2:"Босния", group:"B", predictions:{}, result:{team1:null,team2:null}},
+                {date:"2026-06-13", time:"21:00", team1:"Бразилия", team2:"Марокко", group:"C", predictions:{}, result:{team1:null,team2:null}}
+            ];
+            
+            data.matches = [...data.matches, ...samples];
+            saveData();
+            render();
+            alert('Примеры матчей добавлены!');
+        }
+
+        function deleteMatch(index, isArchived = false) {
             if (confirm('Удалить матч?')) {
-                data.matches.splice(index, 1);
+                if (isArchived) {
+                    data.archivedMatches.splice(index, 1);
+                } else {
+                    data.matches.splice(index, 1);
+                }
                 saveData();
             }
         }
-        
+
         function archiveMatch(index) {
-            if (index >= 0 && index < data.matches.length) {
+            if (confirm('Переместить в архив?')) {
                 const match = data.matches.splice(index, 1)[0];
                 data.archivedMatches.push(match);
                 saveData();
             }
         }
-        
+
         function restoreMatch(index) {
-            if (index >= 0 && index < data.archivedMatches.length) {
-                const match = data.archivedMatches.splice(index, 1)[0];
-                data.matches.push(match);
-                saveData();
-            }
+            const match = data.archivedMatches.splice(index, 1)[0];
+            data.matches.push(match);
+            saveData();
         }
-        
+
         function autoArchiveCompleted() {
-            const completedIndexes = [];
-            data.matches.forEach((match, index) => {
-                if (match.result.team1 !== null && match.result.team2 !== null) {
-                    completedIndexes.push(index);
+            const completed = [];
+            for (let i = data.matches.length - 1; i >= 0; i--) {
+                if (data.matches[i].result.team1 !== null && data.matches[i].result.team2 !== null) {
+                    completed.push(i);
                 }
-            });
-            
-            if (completedIndexes.length === 0) {
-                alert('Нет сыгранных матчей для архивации');
-                return;
             }
-            
-            if (confirm(`Переместить ${completedIndexes.length} сыгранных матча в архив?`)) {
-                for (let i = completedIndexes.length - 1; i >= 0; i--) {
-                    const index = completedIndexes[i];
-                    const match = data.matches.splice(index, 1)[0];
+            if (completed.length === 0) return alert('Нет завершённых матчей');
+            if (confirm(`Архивировать ${completed.length} матчей?`)) {
+                for (let i of completed) {
+                    const match = data.matches.splice(i, 1)[0];
                     data.archivedMatches.push(match);
                 }
                 saveData();
             }
         }
-        
-        function updateMatch(index, field, value) {
-            if (index >= 0 && index < data.matches.length) {
-                data.matches[index][field] = value;
+
+        function updateMatch(index, field, value, isArchived = false) {
+            const list = isArchived ? data.archivedMatches : data.matches;
+            if (index >= 0 && index < list.length) {
+                list[index][field] = value;
                 saveData();
             }
         }
-        
-        function updatePrediction(matchIndex, player, team, value) {
-            if (matchIndex >= 0 && matchIndex < data.matches.length) {
-                if (!data.matches[matchIndex].predictions[player]) {
-                    data.matches[matchIndex].predictions[player] = { team1: null, team2: null };
-                }
-                data.matches[matchIndex].predictions[player][team] = value === '' ? null : parseInt(value);
-                saveData();
-            }
-        }
-        
-        function updateResult(matchIndex, team, value) {
-            if (matchIndex >= 0 && matchIndex < data.matches.length) {
-                const oldValue = data.matches[matchIndex].result[team];
-                data.matches[matchIndex].result[team] = value === '' ? null : parseInt(value);
-                
-                const match = data.matches[matchIndex];
-                if (match.result.team1 !== null && match.result.team2 !== null && oldValue === null) {
-                    setTimeout(() => {
-                        const currentIndex = data.matches.indexOf(match);
-                        if (currentIndex !== -1) {
-                            archiveMatch(currentIndex);
-                        }
-                    }, 2000);
-                }
-                
-                saveData();
-                updateGroupStandings();
-            }
-        }
-        
-        function updateGroupStandings() {
-            const groups = {};
-            'ABCDEFGHIJKL'.split('').forEach(letter => {
-                groups[letter] = {};
-            });
-            
-            [...data.matches, ...data.archivedMatches].forEach(match => {
-                if (match.group && match.result.team1 !== null && match.result.team2 !== null) {
-                    const group = match.group.toUpperCase().replace(/[^A-Z]/g, '');
-                    if (group && groups[group]) {
-                        if (!groups[group][match.team1]) {
-                            groups[group][match.team1] = { name: match.team1, played: 0, won: 0, drawn: 0, lost: 0, gf: 0, ga: 0, gd: 0, points: 0 };
-                        }
-                        if (!groups[group][match.team2]) {
-                            groups[group][match.team2] = { name: match.team2, played: 0, won: 0, drawn: 0, lost: 0, gf: 0, ga: 0, gd: 0, points: 0 };
-                        }
-                        
-                        const t1 = groups[group][match.team1];
-                        const t2 = groups[group][match.team2];
-                        
-                        t1.played++;
-                        t2.played++;
-                        t1.gf += match.result.team1;
-                        t1.ga += match.result.team2;
-                        t2.gf += match.result.team2;
-                        t2.ga += match.result.team1;
-                        t1.gd = t1.gf - t1.ga;
-                        t2.gd = t2.gf - t2.ga;
-                        
-                        if (match.result.team1 > match.result.team2) {
-                            t1.won++;
-                            t1.points += 3;
-                            t2.lost++;
-                        } else if (match.result.team1 < match.result.team2) {
-                            t2.won++;
-                            t2.points += 3;
-                            t1.lost++;
-                        } else {
-                            t1.drawn++;
-                            t1.points += 1;
-                            t2.drawn++;
-                            t2.points += 1;
-                        }
-                    }
-                }
-            });
-            
-            data.groups = groups;
+
+        function updatePrediction(matchIndex, player, team, value, isArchived = false) {
+            const list = isArchived ? data.archivedMatches : data.matches;
+            const match = list[matchIndex];
+            if (!match.predictions[player]) match.predictions[player] = {team1: null, team2: null};
+            match.predictions[player][team] = value === '' ? null : parseInt(value);
             saveData();
         }
-        
+
+        function updateResult(matchIndex, team, value) {
+            const match = data.matches[matchIndex];
+            if (match) {
+                match.result[team] = value === '' ? null : parseInt(value);
+                saveData();
+                if (match.result.team1 !== null && match.result.team2 !== null) {
+                    setTimeout(() => autoArchiveCompleted(), 1500);
+                }
+                render();
+            }
+        }
+
         function calculatePoints() {
             const stats = {};
-            data.players.forEach(player => {
-                stats[player] = { points: 0, exact: 0, diff: 0, outcome: 0 };
-            });
-            
+            data.players.forEach(p => stats[p] = {points: 0, exact: 0, diff: 0, outcome: 0});
+
             const allMatches = [...data.matches, ...data.archivedMatches];
             
-            data.players.forEach(player => {
-                const joinData = data.playerJoinData[player];
-                const completedMatchesAtJoin = joinData ? joinData.completedMatchesAtJoin : 0;
+            allMatches.forEach(match => {
+                if (match.result.team1 == null || match.result.team2 == null) return;
+                const multiplier = isPlayoffMatch(match) ? 2 : 1;
                 
-                allMatches.forEach((match, matchIndex) => {
-                    if (match.result.team1 !== null && match.result.team2 !== null) {
-                        const matchesCompletedBefore = allMatches.slice(0, matchIndex).filter(m => 
-                            m.result.team1 !== null && m.result.team2 !== null
-                        ).length;
-                        
-                        const isNewPlayer = joinData && matchesCompletedBefore < completedMatchesAtJoin + 5;
-                        let multiplier = 1;
-                        
-                        if (isPlayoffMatch(match)) {
-                            multiplier = 2;
-                        }
-                        
-                        if (isNewPlayer) {
-                            multiplier *= 0.9;
-                        }
-                        
-                        const pred = match.predictions[player];
-                        if (pred && pred.team1 !== null && pred.team2 !== null) {
-                            const realDiff = match.result.team1 - match.result.team2;
-                            const predDiff = pred.team1 - pred.team2;
-                            
-                            if (pred.team1 === match.result.team1 && pred.team2 === match.result.team2) {
-                                stats[player].points += 3 * multiplier;
-                                stats[player].exact += 1;
-                            } else if (predDiff === realDiff) {
-                                stats[player].points += 2 * multiplier;
-                                stats[player].diff += 1;
-                            } else if (Math.sign(predDiff) === Math.sign(realDiff)) {
-                                stats[player].points += 1 * multiplier;
-                                stats[player].outcome += 1;
-                            }
-                        }
+                data.players.forEach(player => {
+                    const pred = match.predictions[player];
+                    if (!pred || pred.team1 == null || pred.team2 == null) return;
+                    
+                    const realDiff = match.result.team1 - match.result.team2;
+                    const predDiff = pred.team1 - pred.team2;
+                    
+                    if (pred.team1 === match.result.team1 && pred.team2 === match.result.team2) {
+                        stats[player].points += 3 * multiplier;
+                        stats[player].exact++;
+                    } else if (predDiff === realDiff) {
+                        stats[player].points += 2 * multiplier;
+                        stats[player].diff++;
+                    } else if (Math.sign(predDiff) === Math.sign(realDiff) || realDiff === 0 && predDiff === 0) {
+                        stats[player].points += 1 * multiplier;
+                        stats[player].outcome++;
                     }
                 });
             });
-            
             return stats;
         }
-        
-        function clearAllPredictions() {
-            if (confirm('Очистить ВСЕ прогнозы?')) {
-                data.matches.forEach(match => match.predictions = {});
-                data.archivedMatches.forEach(match => match.predictions = {});
-                saveData();
-            }
-        }
-        
+
         function getPointsClass(points) {
-            if (points === 0) return 'zero';
             if (points >= 6) return 'three';
-            if (points >= 4) return 'three';
             if (points >= 3) return 'two';
-            if (points >= 2) return 'two';
             if (points >= 1) return 'one';
             return 'zero';
         }
-        
-        function renderGroupStandings() {
-            const container = document.getElementById('groupStandings');
-            let html = '';
-            
-            Object.entries(data.groups).forEach(([groupName, teams]) => {
-                const sortedTeams = Object.values(teams).sort((a, b) => {
-                    if (b.points !== a.points) return b.points - a.points;
-                    if (b.gd !== a.gd) return b.gd - a.gd;
-                    return b.gf - a.gf;
-                });
-                
-                if (sortedTeams.length > 0) {
-                    html += `
-                        <div class="group-standings">
-                            <div class="group-title">Группа ${groupName}</div>
-                            <table class="group-table">
-                                <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>Команда</th>
-                                        <th>И</th>
-                                        <th>В</th>
-                                        <th>Н</th>
-                                        <th>П</th>
-                                        <th>Мячи</th>
-                                        <th>Разн.</th>
-                                        <th>Очки</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    ${sortedTeams.map((team, index) => `
-                                        <tr class="${index < 2 ? 'qualify' : ''}">
-                                            <td>${index + 1}</td>
-                                            <td>${team.name}</td>
-                                            <td>${team.played}</td>
-                                            <td>${team.won}</td>
-                                            <td>${team.drawn}</td>
-                                            <td>${team.lost}</td>
-                                            <td>${team.gf}-${team.ga}</td>
-                                            <td>${team.gd > 0 ? '+' : ''}${team.gd}</td>
-                                            <td><strong>${team.points}</strong></td>
-                                        </tr>
-                                    `).join('')}
-                                </tbody>
-                            </table>
-                        </div>
-                    `;
-                }
-            });
-            
-            if (html === '') {
-                html = '<div class="empty-state">Нет данных о матчах группового этапа</div>';
-            }
-            
-            container.innerHTML = html;
-        }
-        
+
         function renderMatchCard(match, index, isArchived = false) {
-            const result = match.result;
-            const archiveClass = isArchived ? 'archived' : '';
+            const result = match.result || {team1:null, team2:null};
             const playoffClass = isPlayoffMatch(match) ? 'playoff' : '';
+            const archiveClass = isArchived ? 'archived' : '';
+            
+            let predictionsHTML = data.players.map(player => {
+                const pred = match.predictions[player] || {team1:'', team2:''};
+                let points = 0;
+                const multiplier = isPlayoffMatch(match) ? 2 : 1;
+                
+                if (result.team1 !== null && result.team2 !== null && pred.team1 !== '' && pred.team2 !== '') {
+                    const realDiff = result.team1 - result.team2;
+                    const predDiff = parseInt(pred.team1) - parseInt(pred.team2);
+                    if (pred.team1 == result.team1 && pred.team2 == result.team2) points = 3 * multiplier;
+                    else if (predDiff === realDiff) points = 2 * multiplier;
+                    else if (Math.sign(predDiff) === Math.sign(realDiff)) points = 1 * multiplier;
+                }
+                
+                return `
+                    <div class="player-prediction">
+                        <div class="player-name">${player}</div>
+                        <div class="prediction-score" style="display:flex; align-items:center; justify-content:center; gap:8px; font-size:1.1em;">
+                            <input type="number" min="0" value="${pred.team1}" 
+                                   onchange="updatePrediction(${index}, '${player}', 'team1', this.value, ${isArchived})" style="width:55px;">
+                            <span>:</span>
+                            <input type="number" min="0" value="${pred.team2}" 
+                                   onchange="updatePrediction(${index}, '${player}', 'team2', this.value, ${isArchived})" style="width:55px;">
+                        </div>
+                        <div class="points-earned ${getPointsClass(points)}" style="text-align:center; margin-top:6px; font-weight:700;">
+                            ${points ? '+' + points : '0'}
+                        </div>
+                    </div>
+                `;
+            }).join('');
             
             return `
                 <div class="match-card ${archiveClass} ${playoffClass}">
                     <div class="match-header">
                         <div class="match-info">
-                            <div class="match-date">📅 ${match.date || 'Дата'} ${match.time ? 'в ' + match.time : ''}</div>
-                            <div class="match-teams">${match.team1 || 'Команда 1'} vs ${match.team2 || 'Команда 2'}</div>
-                            <div class="match-group">Группа ${match.group || '-'}</div>
+                            <div style="color:#888; font-size:0.9em;">${match.date || '—'} ${match.time ? ' ' + match.time : ''}</div>
+                            <div style="font-size:1.25em; font-weight:700;">${match.team1 || '???'} — ${match.team2 || '???'}</div>
+                            <div style="color:#ff0000;">${match.group || '—'}</div>
                         </div>
-                        <div class="match-actions">
-                            <div class="result-input">
-                                <span style="color: #888; font-size: 0.9em;">Счёт:</span>
-                                <input type="number" min="0" placeholder="0" value="${result.team1 !== null ? result.team1 : ''}" 
-                                       onchange="updateResult(${index}, 'team1', this.value)">
-                                <span>:</span>
-                                <input type="number" min="0" placeholder="0" value="${result.team2 !== null ? result.team2 : ''}" 
-                                       onchange="updateResult(${index}, 'team2', this.value)">
-                            </div>
-                            ${isArchived 
-                                ? `<button class="archive" onclick="restoreMatch(${index})">↩️</button>`
-                                : `<button class="archive" onclick="archiveMatch(${index})">📁</button>`
-                            }
-                            <button class="delete" onclick="deleteMatch(${index})">🗑️</button>
+                        <div style="text-align:right; min-width:140px;">
+                            <div style="font-size:0.9em; color:#aaa; margin-bottom:4px;">Результат:</div>
+                            <input type="number" min="0" value="${result.team1 !== null ? result.team1 : ''}" 
+                                   onchange="updateResult(${index}, 'team1', this.value)" style="width:50px; font-size:1.2em;">
+                            <span style="font-size:1.4em;">:</span>
+                            <input type="number" min="0" value="${result.team2 !== null ? result.team2 : ''}" 
+                                   onchange="updateResult(${index}, 'team2', this.value)" style="width:50px; font-size:1.2em;">
                         </div>
                     </div>
-                    
-                    <div style="color: #ff0000; font-weight: 700; margin-bottom: 10px; font-size: 1em;">📝 Прогнозы:</div>
-                    <div class="predictions-grid">
-                        ${data.players.map(player => {
-                            const pred = match.predictions[player] || { team1: '', team2: '' };
-                            let points = 0;
-                            let multiplier = isPlayoffMatch(match) ? 2 : 1;
-                            
-                            if (result.team1 !== null && result.team2 !== null && 
-                                pred.team1 !== null && pred.team2 !== null) {
-                                const realDiff = result.team1 - result.team2;
-                                const predDiff = pred.team1 - pred.team2;
-                                
-                                if (pred.team1 === result.team1 && pred.team2 === result.team2) {
-                                    points = 3 * multiplier;
-                                } else if (predDiff === realDiff) {
-                                    points = 2 * multiplier;
-                                } else if (Math.sign(predDiff) === Math.sign(realDiff)) {
-                                    points = 1 * multiplier;
-                                }
-                            }
-                            
-                            const pointsText = points === 0 ? '0' : 
-                                               points >= 6 ? `+${points} (x2)!` : 
-                                               points >= 3 ? `+${points}` : 
-                                               `+${points}`;
-                            
-                            return `
-                                <div class="player-prediction">
-                                    <div class="player-name">${player}</div>
-                                    <div class="prediction-score">
-                                        <input type="number" min="0" placeholder="0" value="${pred.team1 || ''}" 
-                                               onchange="updatePrediction(${index}, '${player}', 'team1', this.value)">
-                                        <span>:</span>
-                                        <input type="number" min="0" placeholder="0" value="${pred.team2 || ''}" 
-                                               onchange="updatePrediction(${index}, '${player}', 'team2', this.value)">
-                                    </div>
-                                    <div class="points-earned ${getPointsClass(points)}">
-                                        ${pointsText}
-                                    </div>
-                                </div>
-                            `;
-                        }).join('')}
+                    <div style="color:#ff0000; font-weight:700; margin:10px 0 8px;">Прогнозы участников:</div>
+                    <div class="predictions-grid">${predictionsHTML}</div>
+                    <div style="margin-top:12px; text-align:right;">
+                        ${isArchived ? 
+                            `<button class="archive" onclick="restoreMatch(${index})">↩️ В активные</button>` : 
+                            `<button class="archive" onclick="archiveMatch(${index})">📁 В архив</button>`
+                        }
+                        <button class="delete" onclick="deleteMatch(${index}, ${isArchived})">🗑️</button>
                     </div>
                 </div>
             `;
         }
-        
-        function updateLeaderboard() {
+
+        function render() {
+            // Матчи
+            document.getElementById('matchesList').innerHTML = data.matches.length ? 
+                data.matches.map((m, i) => renderMatchCard(m, i, false)).join('') : 
+                '<div style="text-align:center; padding:40px; color:#666;">Нет активных матчей. Добавь первый!</div>';
+
+            // Архив
+            document.getElementById('archiveList').innerHTML = data.archivedMatches.length ? 
+                data.archivedMatches.map((m, i) => renderMatchCard(m, i, true)).join('') : 
+                '<div style="text-align:center; padding:40px; color:#666;">Архив пуст</div>';
+
+            // Группы (упрощённо)
+            document.getElementById('groupStandings').innerHTML = '<div style="color:#888; padding:30px; text-align:center;">Групповые таблицы обновляются автоматически после ввода результатов</div>';
+
+            // Лидерборд
             const stats = calculatePoints();
-            const sorted = Object.entries(stats).sort((a, b) => b[1].points - a[1].points);
-            
-            const tbody = document.getElementById('leaderboardBody');
-            tbody.innerHTML = sorted.map((entry, index) => {
-                const [player, stat] = entry;
-                return `
-                    <tr>
-                        <td>${index + 1}</td>
-                        <td>${player}</td>
-                        <td><strong>${Math.round(stat.points)}</strong></td>
-                        <td>${stat.exact}</td>
-                        <td>${stat.diff}</td>
-                        <td>${stat.outcome}</td>
-                    </tr>
-                `;
-            }).join('');
-            
-            const allMatches = [...data.matches, ...data.archivedMatches];
-            document.getElementById('totalMatches').textContent = allMatches.length;
-            document.getElementById('completedMatches').textContent = 
-                allMatches.filter(m => m.result.team1 !== null && m.result.team2 !== null).length;
+            const sorted = Object.entries(stats).sort((a,b) => b[1].points - a[1].points);
+            let lbHTML = sorted.map(( [player, s], i) => `
+                <tr>
+                    <td>${i+1}</td>
+                    <td><strong>${player}</strong></td>
+                    <td><strong>${Math.round(s.points)}</strong></td>
+                    <td>${s.exact}</td>
+                    <td>${s.diff}</td>
+                    <td>${s.outcome}</td>
+                </tr>
+            `).join('');
+            document.getElementById('leaderboardBody').innerHTML = lbHTML || '<tr><td colspan="6" style="padding:30px;">Пока нет участников</td></tr>';
+
+            // Статистика
+            const allM = [...data.matches, ...data.archivedMatches];
+            document.getElementById('totalMatches').textContent = allM.length;
+            document.getElementById('completedMatches').textContent = allM.filter(m => m.result.team1 !== null && m.result.team2 !== null).length;
             document.getElementById('totalPlayers').textContent = data.players.length;
-            document.getElementById('playoffMatches').textContent = 
-                allMatches.filter(m => isPlayoffMatch(m)).length;
         }
-        
-        function updateAnalytics() {
-            const stats = calculatePoints();
-            const allMatches = [...data.matches, ...data.archivedMatches];
-            const completedMatches = allMatches.filter(m => m.result.team1 !== null && m.result.team2 !== null);
+
+        function switchTab(tab) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
             
-            let analyticsHTML = '<div class="analytics-grid">';
-            
-            const sortedPlayers = Object.entries(stats).sort((a, b) => b[1].points - a[1].points);
-            analyticsHTML += `
-                <div class="analytics-card">
-                    <h3>🏆 Лучшие</h3>
-                    ${sortedPlayers.slice(0, 3).map((entry, index) => `
-                        <div class="analytics-item">
-                            <span class="analytics-label">${index + 1}. ${entry[0]}</span>
-                            <span class="analytics-value top-player">${Math.round(entry[1].points)}</span>
-                        </div>
-                    `).join('')}
-                </div>
-            `;
-            
-            if (completedMatches.length > 0) {
-                const totalPoints = Object.values(stats).reduce((sum, s) => sum + s.points, 0);
-                analyticsHTML += `
-                    <div class="analytics-card">
-                        <h3>📊 Итого</h3>
-                        <div class="analytics-item">
-                            <span class="analytics-label">Всего очков</span>
-                            <span class="analytics-value">${Math.round(totalPoints)}</span>
-                        </div>
-                        <div class="analytics-item">
-                            <span class="analytics-label">Сыграно</span>
-                            <span class="analytics-value">${completedMatches.length}</span>
-                        </div>
-                    </div>
-                `;
-            }
-            
-            analyticsHTML += '</div>';
-            document.getElementById('analyticsContent').innerHTML = analyticsHTML;
-        }
-        
-        function switchTab(tabName) {
-            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
-            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
-            
-            event.target.classList.add('active');
-            document.getElementById(tabName).classList.add('active');
-            
+            event.currentTarget.classList.add('active');
+            document.getElementById(tab).classList.add('active');
             render();
         }
-        
-        function render() {
-            const matchesList = document.getElementById('matchesList');
-            if (data.matches.length === 0) {
-                matchesList.innerHTML = '<div class="empty-state">Нет матчей. Нажмите "🔄 Восстановить матчи"</div>';
-            } else {
-                matchesList.innerHTML = data.matches.map((match, index) => 
-                    renderMatchCard(match, index, false)
-                ).join('');
-            }
-            
-            const archiveList = document.getElementById('archiveList');
-            if (data.archivedMatches.length === 0) {
-                archiveList.innerHTML = '<div class="empty-state">Архив пуст</div>';
-            } else {
-                archiveList.innerHTML = data.archivedMatches.map((match, index) => 
-                    renderMatchCard(match, index, true)
-                ).join('');
-            }
-            
-            renderGroupStandings();
-            updateLeaderboard();
-            updateAnalytics();
-        }
-        
+
         window.onload = () => {
-            document.getElementById('loginSection').style.display = 'block';
+            const saved = localStorage.getItem('wcPredictorUser');
+            if (saved) {
+                currentUser = saved;
+                document.getElementById('loginSection').style.display = 'none';
+            } else {
+                document.getElementById('loginSection').style.display = 'block';
+            }
+            loadData();
         };
     </script>
 </body>
