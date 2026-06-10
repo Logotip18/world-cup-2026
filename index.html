@@ -157,7 +157,7 @@
             background: rgba(139, 0, 0, 0.3);
         }
         
-        input[type="text"], input[type="number"], input[type="password"] {
+        input[type="text"], input[type="number"] {
             background: #1a1a1a;
             border: 2px solid #8B0000;
             color: #fff;
@@ -177,7 +177,7 @@
             margin: 0; 
         }
         
-        input[type="text"]:focus, input[type="number"]:focus, input[type="password"]:focus {
+        input[type="text"]:focus, input[type="number"]:focus {
             outline: none;
             border-color: #ff0000;
             box-shadow: 0 0 10px rgba(255, 0, 0, 0.6);
@@ -230,14 +230,6 @@
             display: flex;
             gap: 10px;
             margin-bottom: 15px;
-            flex-wrap: wrap;
-            align-items: center;
-        }
-        
-        .player-controls {
-            display: flex;
-            gap: 10px;
-            margin-top: 10px;
             flex-wrap: wrap;
             align-items: center;
         }
@@ -601,16 +593,6 @@
             margin-bottom: 20px;
             text-align: center;
         }
-        
-        .new-player-warning {
-            background: rgba(255, 165, 0, 0.2);
-            border: 2px solid #ffa500;
-            color: #ffa500;
-            padding: 10px;
-            border-radius: 6px;
-            margin-top: 10px;
-            font-size: 0.9em;
-        }
     </style>
 </head>
 <body>
@@ -730,15 +712,15 @@
     </div>
 
     <script>
-        // 🔥 FIREBASE CONFIGURATION - ЗАМЕНИ НА СВОИ!
+        // 🔥 FIREBASE CONFIGURATION
         const firebaseConfig = {
-            apiKey: "YOUR_API_KEY",
-            authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-            databaseURL: "https://YOUR_PROJECT_ID-default-rtdb.firebaseio.com",
-            projectId: "YOUR_PROJECT_ID",
-            storageBucket: "YOUR_PROJECT_ID.appspot.com",
-            messagingSenderId: "YOUR_SENDER_ID",
-            appId: "YOUR_APP_ID"
+            apiKey: "AIzaSyDBUG6vDCpt7AQla7SutuKsJDU_KeZYmo4",
+            authDomain: "world-cup-2026-ac3bb.firebaseapp.com",
+            databaseURL: "https://world-cup-2026-ac3bb-default-rtdb.firebaseio.com",
+            projectId: "world-cup-2026-ac3bb",
+            storageBucket: "world-cup-2026-ac3bb.firebasestorage.app",
+            messagingSenderId: "940190724224",
+            appId: "1:940190724224:web:3fd77be960b52dcdd93665"
         };
         
         firebase.initializeApp(firebaseConfig);
@@ -750,18 +732,18 @@
             archivedMatches: [],
             players: [],
             groups: {},
-            playerJoinData: {} // Для отслеживания когда игрок присоединился
+            playerJoinData: {}
         };
         
         const connectedRef = database.ref(".info/connected");
         connectedRef.on("value", (snap) => {
             const statusEl = document.getElementById('firebaseStatus');
             if (snap.val() === true) {
-                statusEl.textContent = "🟢 Онлайн";
+                statusEl.textContent = "🟢 Онлайн - синхронизация активна";
                 statusEl.classList.remove('offline');
                 loadData();
             } else {
-                statusEl.textContent = "🔴 Офлайн";
+                statusEl.textContent = "🔴 Офлайн - нет подключения";
                 statusEl.classList.add('offline');
             }
         });
@@ -786,7 +768,6 @@
             if (username) {
                 currentUser = username;
                 if (!data.players.includes(username)) {
-                    // Новый игрок - запоминаем когда присоединился
                     data.playerJoinData[username] = {
                         joinedAt: Date.now(),
                         completedMatchesAtJoin: data.matches.filter(m => 
@@ -795,8 +776,6 @@
                             m.result.team1 !== null && m.result.team2 !== null
                         ).length
                     };
-                    
-                    // Добавляем игрока
                     data.players.push(username);
                 }
                 document.getElementById('loginSection').style.display = 'none';
@@ -805,7 +784,6 @@
         }
         
         function isPlayoffMatch(match) {
-            // Проверяем, плей-офф ли это
             const playoffGroups = ['1/8', '1/4', '1/2', 'FINAL', '3RD', '1/8 ФИНАЛА', '1/4 ФИНАЛА', '1/2 ФИНАЛА', 'ФИНАЛ', '3 МЕСТО'];
             const group = (match.group || '').toUpperCase();
             return playoffGroups.some(pg => group.includes(pg));
@@ -861,7 +839,6 @@
             }
             
             if (confirm(`Переместить ${completedIndexes.length} сыгранных матча в архив?`)) {
-                // Перемещаем с конца, чтобы индексы не сдвигались
                 for (let i = completedIndexes.length - 1; i >= 0; i--) {
                     const index = completedIndexes[i];
                     const match = data.matches.splice(index, 1)[0];
@@ -893,16 +870,14 @@
                 const oldValue = data.matches[matchIndex].result[team];
                 data.matches[matchIndex].result[team] = value === '' ? null : parseInt(value);
                 
-                // Авто-архив если матч завершен
                 const match = data.matches[matchIndex];
                 if (match.result.team1 !== null && match.result.team2 !== null && oldValue === null) {
-                    // Матч только что завершен
                     setTimeout(() => {
                         const currentIndex = data.matches.indexOf(match);
                         if (currentIndex !== -1) {
                             archiveMatch(currentIndex);
                         }
-                    }, 2000); // Через 2 секунды после ввода результата
+                    }, 2000);
                 }
                 
                 saveData();
@@ -973,23 +948,19 @@
                 const joinData = data.playerJoinData[player];
                 const completedMatchesAtJoin = joinData ? joinData.completedMatchesAtJoin : 0;
                 
-                allMatches.forEach(match => {
+                allMatches.forEach((match, matchIndex) => {
                     if (match.result.team1 !== null && match.result.team2 !== null) {
-                        // Проверяем, был ли матч до присоединения игрока
-                        const matchCompletedIndex = allMatches.indexOf(match);
-                        const matchesCompletedBefore = allMatches.slice(0, matchCompletedIndex).filter(m => 
+                        const matchesCompletedBefore = allMatches.slice(0, matchIndex).filter(m => 
                             m.result.team1 !== null && m.result.team2 !== null
                         ).length;
                         
                         const isNewPlayer = joinData && matchesCompletedBefore < completedMatchesAtJoin + 5;
                         let multiplier = 1;
                         
-                        // Плей-офф удваивает очки
                         if (isPlayoffMatch(match)) {
                             multiplier = 2;
                         }
                         
-                        // Новый игрок получает на 10% меньше
                         if (isNewPlayer) {
                             multiplier *= 0.9;
                         }
@@ -1027,7 +998,7 @@
         
         function getPointsClass(points) {
             if (points === 0) return 'zero';
-            if (points >= 6) return 'three'; // x2 для плей-офф
+            if (points >= 6) return 'three';
             if (points >= 4) return 'three';
             if (points >= 3) return 'two';
             if (points >= 2) return 'two';
@@ -1251,7 +1222,7 @@
         function render() {
             const matchesList = document.getElementById('matchesList');
             if (data.matches.length === 0) {
-                matchesList.innerHTML = '<div class="empty-state">Нет матчей</div>';
+                matchesList.innerHTML = '<div class="empty-state">Нет матчей. Нажмите "+ Добавить матч" или загрузите начальные данные</div>';
             } else {
                 matchesList.innerHTML = data.matches.map((match, index) => 
                     renderMatchCard(match, index, false)
