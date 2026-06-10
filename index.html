@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ЧМ-2026: Прогнозы | ЛОГОТИП 18+</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Rajdhani:wght@500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a0000 100%);
+            color: #fff;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            text-align: center;
+            color: #8B0000;
+            text-shadow: 0 0 20px rgba(139, 0, 0, 0.5);
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            letter-spacing: 3px;
+        }
+        
+        .section {
+            background: rgba(20, 20, 20, 0.9);
+            border: 2px solid #8B0000;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 0 30px rgba(139, 0, 0, 0.3);
+        }
+        
+        .section-title {
+            font-family: 'Orbitron', sans-serif;
+            color: #8B0000;
+            font-size: 1.5em;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #8B0000;
+            padding-bottom: 10px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        
+        th, td {
+            padding: 12px;
+            text-align: center;
+            border: 1px solid #333;
+        }
+        
+        th {
+            background: #8B0000;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+        }
+        
+        tr:nth-child(even) {
+            background: rgba(30, 30, 30, 0.5);
+        }
+        
+        tr:hover {
+            background: rgba(139, 0, 0, 0.2);
+        }
+        
+        input[type="text"], input[type="number"] {
+            background: #1a1a1a;
+            border: 1px solid #8B0000;
+            color: #fff;
+            padding: 8px;
+            border-radius: 5px;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 1em;
+            width: 60px;
+            text-align: center;
+        }
+        
+        input[type="text"]:focus, input[type="number"]:focus {
+            outline: none;
+            border-color: #ff0000;
+            box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+        }
+        
+        button {
+            background: #8B0000;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            transition: all 0.3s;
+            margin: 5px;
+        }
+        
+        button:hover {
+            background: #ff0000;
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.6);
+            transform: translateY(-2px);
+        }
+        
+        button.delete {
+            background: #333;
+            padding: 5px 10px;
+            font-size: 0.9em;
+        }
+        
+        button.delete:hover {
+            background: #ff0000;
+        }
+        
+        .controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .leaderboard {
+            font-size: 1.2em;
+        }
+        
+        .leaderboard td:first-child {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            color: #8B0000;
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .stat-card {
+            background: rgba(139, 0, 0, 0.2);
+            border: 1px solid #8B0000;
+            padding: 15px;
+            border-radius: 5px;
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2em;
+            color: #8B0000;
+        }
+        
+        .stat-label {
+            font-size: 0.9em;
+            color: #aaa;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>⚽ ЧМ-2026: ПРОГНОЗЫ ⚽</h1>
+        
+        <div class="section">
+            <div class="section-title">📊 Матчи</div>
+            <div class="controls">
+                <button onclick="addMatch()">+ Добавить матч</button>
+                <button onclick="clearAllPredictions()">Очистить все прогнозы</button>
+            </div>
+            <table id="matchesTable">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Команда 1</th>
+                        <th>Команда 2</th>
+                        <th id="playersHeader">Игроки</th>
+                        <th>Результат</th>
+                        <th>Действия</th>
+                    </tr>
+                </thead>
+                <tbody id="matchesBody"></tbody>
+            </table>
+        </div>
+        
+        <div class="section">
+            <div class="section-title">👥 Игроки</div>
+            <div class="controls">
+                <input type="text" id="newPlayerName" placeholder="Имя игрока" style="width: 200px;">
+                <button onclick="addPlayer()">+ Добавить игрока</button>
+            </div>
+            <div id="playersList"></div>
+        </div>
+        
+        <div class="section">
+            <div class="section-title">🏆 Таблица лидеров</div>
+            <table class="leaderboard">
+                <thead>
+                    <tr>
+                        <th>Место</th>
+                        <th>Игрок</th>
+                        <th>Очки</th>
+                        <th>Точных</th>
+                        <th>Исходов</th>
+                    </tr>
+                </thead>
+                <tbody id="leaderboardBody"></tbody>
+            </table>
+        </div>
+        
+        <div class="section">
+            <div class="section-title">📈 Статистика</div>
+            <div class="stats">
+                <div class="stat-card">
+                    <div class="stat-value" id="totalMatches">0</div>
+                    <div class="stat-label">Матчей</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="totalPlayers">0</div>
+                    <div class="stat-label">Игроков</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="completedMatches">0</div>
+                    <div class="stat-label">Сыграно</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let data = {
+            matches: [],
+            players: ['Виталий', 'Сергей', 'Грок']
+        };
+        
+        // Загрузка из localStorage
+        function loadData() {
+            const saved = localStorage.getItem('worldCup2026');
+            if (saved) {
+                data = JSON.parse(saved);
+            }
+        }
+        
+        // Сохранение в localStorage
+        function saveData() {
+            localStorage.setItem('worldCup2026', JSON.stringify(data));
+        }
+        
+        // Добавление матча
+        function addMatch() {
+            data.matches.push({
+                team1: '',
+                team2: '',
+                predictions: {},
+                result: { team1: null, team2: null }
+            });
+            saveData();
+            render();
+        }
+        
+        // Удаление матча
+        function deleteMatch(index) {
+            if (confirm('Удалить этот матч?')) {
+                data.matches.splice(index, 1);
+                saveData();
+                render();
+            }
+        }
+        
+        // Добавление игрока
+        function addPlayer() {
+            const name = document.getElementById('newPlayerName').value.trim();
+            if (name && !data.players.includes(name)) {
+                data.players.push(name);
+                document.getElementById('newPlayerName').value = '';
+                saveData();
+                render();
+            }
+        }
+        
+        // Удаление игрока
+        function deletePlayer(index) {
+            const name = data.players[index];
+            if (confirm(`Удалить игрока ${name}?`)) {
+                data.players.splice(index, 1);
+                data.matches.forEach(match => {
+                    delete match.predictions[name];
+                });
+                saveData();
+                render();
+            }
+        }
+        
+        // Обновление команды
+        function updateTeam(matchIndex, team, value) {
+            data.matches[matchIndex][team] = value;
+            saveData();
+        }
+        
+        // Обновление прогноза
+        function updatePrediction(matchIndex, player, team, value) {
+            if (!data.matches[matchIndex].predictions[player]) {
+                data.matches[matchIndex].predictions[player] = { team1: null, team2: null };
+            }
+            data.matches[matchIndex].predictions[player][team] = value === '' ? null : parseInt(value);
+            saveData();
+            updateLeaderboard();
+        }
+        
+        // Обновление результата
+        function updateResult(matchIndex, team, value) {
+            data.matches[matchIndex].result[team] = value === '' ? null : parseInt(value);
+            saveData();
+            updateLeaderboard();
+        }
+        
+        // Подсчет очков
+        function calculatePoints() {
+            const stats = {};
+            data.players.forEach(player => {
+                stats[player] = { points: 0, exact: 0, outcome: 0 };
+            });
+            
+            data.matches.forEach(match => {
+                if (match.result.team1 !== null && match.result.team2 !== null) {
+                    data.players.forEach(player => {
+                        const pred = match.predictions[player];
+                        if (pred && pred.team1 !== null && pred.team2 !== null) {
+                            // Точный счет
+                            if (pred.team1 === match.result.team1 && pred.team2 === match.result.team2) {
+                                stats[player].points += 3;
+                                stats[player].exact += 1;
+                            }
+                            // Правильный исход
+                            else {
+                                const predOutcome = Math.sign(pred.team1 - pred.team2);
+                                const realOutcome = Math.sign(match.result.team1 - match.result.team2);
+                                if (predOutcome === realOutcome) {
+                                    stats[player].points += 1;
+                                    stats[player].outcome += 1;
+                                }
+                            }
+                        }
+                    });
+                }
+            });
+            
+            return stats;
+        }
+        
+        // Обновление таблицы лидеров
+        function updateLeaderboard() {
+            const stats = calculatePoints();
+            const sorted = Object.entries(stats).sort((a, b) => b[1].points - a[1].points);
+            
+            const tbody = document.getElementById('leaderboardBody');
+            tbody.innerHTML = sorted.map((entry, index) => {
+                const [player, stat] = entry;
+                return `
+                    <tr>
+                        <td>${index + 1}</td>
+                        <td>${player}</td>
+                        <td>${stat.points}</td>
+                        <td>${stat.exact}</td>
+                        <td>${stat.outcome}</td>
+                    </tr>
+                `;
+            }).join('');
+            
+            // Обновление статистики
+            document.getElementById('totalMatches').textContent = data.matches.length;
+            document.getElementById('totalPlayers').textContent = data.players.length;
+            document.getElementById('completedMatches').textContent = data.matches.filter(m => 
+                m.result.team1 !== null && m.result.team2 !== null
+            ).length;
+        }
+        
+        // Очистка всех прогнозов
+        function clearAllPredictions() {
+            if (confirm('Очистить все прогнозы? Результаты матчей останутся.')) {
+                data.matches.forEach(match => {
+                    match.predictions = {};
+                });
+                saveData();
+                render();
+            }
+        }
+        
+        // Рендеринг
+        function render() {
+            // Матчи
+            const tbody = document.getElementById('matchesBody');
+            tbody.innerHTML = data.matches.map((match, index) => {
+                const playerCells = data.players.map(player => {
+                    const pred = match.predictions[player] || { team1: '', team2: '' };
+                    return `
+                        <td>
+                            <input type="number" min="0" value="${pred.team1 || ''}" 
+                                   onchange="updatePrediction(${index}, '${player}', 'team1', this.value)">
+                            :
+                            <input type="number" min="0" value="${pred.team2 || ''}" 
+                                   onchange="updatePrediction(${index}, '${player}', 'team2', this.value)">
+                        </td>
+                    `;
+                }).join('');
+                
+                return `
+                    <tr>
+                        <td>${index + 1}</td>
+                        <td><input type="text" value="${match.team1}" onchange="updateTeam(${index}, 'team1', this.value)"></td>
+                        <td><input type="text" value="${match.team2}" onchange="updateTeam(${index}, 'team2', this.value)"></td>
+                        ${playerCells}
+                        <td>
+                            <input type="number" min="0" value="${match.result.team1 || ''}" 
+                                   onchange="updateResult(${index}, 'team1', this.value)">
+                            :
+                            <input type="number" min="0" value="${match.result.team2 || ''}" 
+                                   onchange="updateResult(${index}, 'team2', this.value)">
+                        </td>
+                        <td><button class="delete" onclick="deleteMatch(${index})">Удалить</button></td>
+                    </tr>
+                `;
+            }).join('');
+            
+            // Игроки
+            const playersList = document.getElementById('playersList');
+            playersList.innerHTML = data.players.map((player, index) => `
+                <span style="display: inline-block; background: #8B0000; padding: 8px 15px; margin: 5px; border-radius: 5px;">
+                    ${player} <button class="delete" onclick="deletePlayer(${index})">×</button>
+                </span>
+            `).join('');
+            
+            updateLeaderboard();
+        }
+        
+        // Инициализация
+        loadData();
+        render();
+    </script>
+</body>
+</html>
