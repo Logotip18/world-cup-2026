@@ -3,6 +3,468 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ЧМ-2026: Прогнозы</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Rajdhani', sans-serif; background: linear-gradient(135deg, #0a0a0a 0%, #1a0000 100%); color: #fff; min-height: 100vh; padding: 15px; }
+        .container { max-width: 1400px; margin: 0 auto; }
+        h1 { font-family: 'Orbitron', sans-serif; text-align: center; color: #ff0000; margin-bottom: 20px; font-size: 2.5em; }
+        .status { background: rgba(0,255,0,0.1); border: 2px solid #00ff00; color: #00ff00; padding: 10px; border-radius: 8px; text-align: center; margin-bottom: 20px; }
+        .tabs { display: flex; gap: 5px; margin-bottom: 20px; }
+        .tab { background: rgba(30,30,30,0.8); border: 2px solid #333; color: #aaa; padding: 12px 20px; border-radius: 10px 10px 0 0; cursor: pointer; font-family: 'Orbitron', sans-serif; font-weight: 700; flex: 1; text-align: center; }
+        .tab.active { background: linear-gradient(135deg, #8B0000 0%, #ff0000 100%); border-color: #ff0000; color: #fff; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        .section { background: rgba(20,20,20,0.95); border: 2px solid #8B0000; border-radius: 15px; padding: 20px; margin-bottom: 20px; }
+        .section-title { font-family: 'Orbitron', sans-serif; color: #ff0000; font-size: 1.5em; margin-bottom: 15px; border-bottom: 3px solid #8B0000; padding-bottom: 10px; }
+        .login-box { background: rgba(30,30,30,0.9); border: 2px solid #8B0000; border-radius: 10px; padding: 30px; max-width: 400px; margin: 50px auto; text-align: center; }
+        .login-box input { width: 100%; margin: 10px 0; padding: 10px; background: #1a1a1a; border: 2px solid #8B0000; color: #fff; border-radius: 6px; font-size: 1em; }
+        .login-box button { width: 100%; padding: 12px; background: linear-gradient(135deg, #8B0000 0%, #ff0000 100%); border: none; color: #fff; border-radius: 6px; cursor: pointer; font-family: 'Orbitron', sans-serif; font-weight: 700; font-size: 1.1em; margin-top: 10px; }
+        button { background: linear-gradient(135deg, #8B0000 0%, #ff0000 100%); color: #fff; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-family: 'Orbitron', sans-serif; font-weight: 700; margin: 5px; }
+        button:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(255,0,0,0.7); }
+        button.primary { background: linear-gradient(135deg, #00ff00 0%, #00cc00 100%); color: #000; }
+        .match-card { background: rgba(25,25,25,0.9); border: 2px solid #8B0000; border-radius: 10px; padding: 15px; margin-bottom: 15px; }
+        .match-header { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 15px; margin-bottom: 12px; padding-bottom: 12px; border-bottom: 2px solid #333; }
+        .predictions-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; }
+        .player-prediction { background: rgba(30,30,30,0.8); border: 2px solid #333; border-radius: 8px; padding: 12px; }
+        .player-name { font-family: 'Orbitron', sans-serif; color: #ff0000; font-size: 1.1em; margin-bottom: 8px; font-weight: 700; }
+        .points { font-size: 0.9em; font-weight: 600; text-align: center; padding: 4px; border-radius: 4px; margin-top: 6px; }
+        .points.good { color: #ffd700; background: rgba(255,215,0,0.2); }
+        .points.ok { color: #00ffff; background: rgba(0,255,255,0.2); }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 12px; text-align: center; border: 1px solid #333; }
+        th { background: linear-gradient(135deg, #8B0000 0%, #ff0000 100%); font-family: 'Orbitron', sans-serif; }
+        tr:nth-child(even) { background: rgba(40,40,40,0.6); }
+        input[type="number"] { background: #1a1a1a; border: 2px solid #8B0000; color: #fff; padding: 8px; border-radius: 6px; width: 60px; text-align: center; }
+        .init-banner { background: linear-gradient(135deg, #00ff00 0%, #00cc00 100%); color: #000; padding: 30px; border-radius: 10px; text-align: center; margin-bottom: 20px; }
+        .init-banner button { background: #000; color: #00ff00; font-size: 1.3em; padding: 15px 40px; margin-top: 15px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>⚽ ЧМ-2026: ПРОГНОЗЫ ⚽</h1>
+        <div id="status" class="status">🔴 Подключение...</div>
+        
+        <div id="initBanner" class="init-banner" style="display:none;">
+            <h2>🎮 Первый запуск!</h2>
+            <p style="margin: 15px 0;">Нажми кнопку для создания турнира</p>
+            <button class="primary" onclick="initTournament()">🚀 СОЗДАТЬ ТУРНИР</button>
+        </div>
+
+        <div id="loginBox" class="login-box" style="display:none;">
+            <h2 style="color: #ff0000; margin-bottom: 20px;">🔐 Вход</h2>
+            <input type="text" id="username" placeholder="Логин">
+            <input type="password" id="password" placeholder="Пароль">
+            <button onclick="login()">ВОЙТИ</button>
+            <p style="margin-top: 15px; color: #888; font-size: 0.85em;">
+                Сергей/admin123 | ИИ/ai123 | АлПашка/al123
+            </p>
+        </div>
+
+        <div id="mainContent" style="display:none;">
+            <div class="tabs">
+                <div class="tab active" onclick="switchTab('matches')">📅 Матчи</div>
+                <div class="tab" onclick="switchTab('groups')">📊 Группы</div>
+                <div class="tab" onclick="switchTab('leaderboard')">🏆 Таблица</div>
+                <div class="tab" onclick="switchTab('analytics')">📈 Аналитика</div>
+            </div>
+            
+            <div id="matches" class="tab-content active">
+                <div class="section">
+                    <div class="section-title">📅 Матчи</div>
+                    <div id="matchesList"></div>
+                </div>
+            </div>
+            
+            <div id="groups" class="tab-content">
+                <div class="section">
+                    <div class="section-title">📊 Группы</div>
+                    <div id="groupsList"></div>
+                </div>
+            </div>
+            
+            <div id="leaderboard" class="tab-content">
+                <div class="section">
+                    <div class="section-title">🏆 Таблица лидеров</div>
+                    <table>
+                        <thead><tr><th>Место</th><th>Игрок</th><th>Очки</th><th>Точных</th><th>Разница</th><th>Исходов</th></tr></thead>
+                        <tbody id="leaderboardBody"></tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <div id="analytics" class="tab-content">
+                <div class="section">
+                    <div class="section-title">📈 Аналитика</div>
+                    <div id="analyticsContent"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyDBUG6vDCpt7AQla7SutuKsJDU_KeZYmo4",
+            authDomain: "world-cup-2026-ac3bb.firebaseapp.com",
+            databaseURL: "https://world-cup-2026-ac3bb-default-rtdb.firebaseio.com",
+            projectId: "world-cup-2026-ac3bb",
+            storageBucket: "world-cup-2026-ac3bb.firebasestorage.app",
+            messagingSenderId: "940190724224",
+            appId: "1:940190724224:web:3fd77be960b52dcdd93665"
+        };
+        
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+        
+        let user = null;
+        let isAdmin = false;
+        let data = null;
+        
+        const USERS = {
+            'Сергей': { pass: 'admin123', admin: true },
+            'ИИ': { pass: 'ai123', admin: false },
+            'АлПашка': { pass: 'al123', admin: false }
+        };
+
+        // Проверка подключения
+        db.ref('.info/connected').on('value', snap => {
+            document.getElementById('status').textContent = snap.val() ? '🟢 Онлайн' : '🔴 Офлайн';
+        });
+
+        // Загрузка данных
+        function loadData() {
+            db.ref('wc2026').once('value').then(snap => {
+                const val = snap.val();
+                if (val && val.initialized) {
+                    data = val;
+                    document.getElementById('initBanner').style.display = 'none';
+                    document.getElementById('loginBox').style.display = 'block';
+                } else {
+                    document.getElementById('initBanner').style.display = 'block';
+                }
+            });
+            
+            db.ref('wc2026').on('value', snap => {
+                const val = snap.val();
+                if (val && val.initialized) {
+                    data = val;
+                    if (user) render();
+                }
+            });
+        }
+
+        // Инициализация турнира
+        function initTournament() {
+            const matches = [
+                {date:"11 июня", time:"22:00", team1:"Мексика", team2:"ЮАР", group:"A"},
+                {date:"12 июня", time:"05:00", team1:"Южная Корея", team2:"Чехия", group:"A"},
+                {date:"12 июня", time:"22:00", team1:"Канада", team2:"Босния", group:"B"},
+                {date:"13 июня", time:"04:00", team1:"США", team2:"Парагвай", group:"D"},
+                {date:"13 июня", time:"22:00", team1:"Катар", team2:"Швейцария", group:"B"},
+                {date:"14 июня", time:"01:00", team1:"Бразилия", team2:"Марокко", group:"C"},
+                {date:"14 июня", time:"04:00", team1:"Гаити", team2:"Шотландия", group:"C"},
+                {date:"14 июня", time:"07:00", team1:"Австралия", team2:"Турция", group:"D"},
+                {date:"14 июня", time:"20:00", team1:"Германия", team2:"Кюрасао", group:"E"},
+                {date:"14 июня", time:"23:00", team1:"Нидерланды", team2:"Япония", group:"F"},
+                {date:"15 июня", time:"02:00", team1:"Кот-д'Ивуар", team2:"Эквадор", group:"E"},
+                {date:"15 июня", time:"05:00", team1:"Швеция", team2:"Тунис", group:"F"},
+                {date:"15 июня", time:"19:00", team1:"Испания", team2:"Кабо-Верде", group:"H"},
+                {date:"15 июня", time:"22:00", team1:"Бельгия", team2:"Египет", group:"G"},
+                {date:"16 июня", time:"01:00", team1:"Саудовская Аравия", team2:"Уругвай", group:"H"},
+                {date:"16 июня", time:"04:00", team1:"Иран", team2:"Новая Зеландия", group:"G"},
+                {date:"16 июня", time:"22:00", team1:"Франция", team2:"Сенегал", group:"I"},
+                {date:"17 июня", time:"01:00", team1:"Ирак", team2:"Норвегия", group:"I"},
+                {date:"17 июня", time:"04:00", team1:"Аргентина", team2:"Алжир", group:"J"},
+                {date:"17 июня", time:"07:00", team1:"Австрия", team2:"Иордания", group:"J"},
+                {date:"17 июня", time:"20:00", team1:"Португалия", team2:"ДР Конго", group:"K"},
+                {date:"17 июня", time:"23:00", team1:"Англия", team2:"Хорватия", group:"L"},
+                {date:"18 июня", time:"02:00", team1:"Гана", team2:"Панама", group:"L"},
+                {date:"18 июня", time:"05:00", team1:"Узбекистан", team2:"Колумбия", group:"K"}
+            ];
+            
+            const initData = {
+                initialized: true,
+                matches: matches.map(m => ({
+                    ...m,
+                    predictions: {
+                        'Сергей': {t1: null, t2: null},
+                        'ИИ': {t1: null, t2: null},
+                        'АлПашка': {t1: null, t2: null}
+                    },
+                    result: {t1: null, t2: null}
+                })),
+                players: ['Сергей', 'ИИ', 'АлПашка'],
+                groups: {}
+            };
+            
+            db.ref('wc2026').set(initData).then(() => {
+                alert('✅ Турнир создан!');
+                location.reload();
+            });
+        }
+
+        // Вход
+        function login() {
+            const name = document.getElementById('username').value.trim();
+            const pass = document.getElementById('password').value.trim();
+            
+            if (!USERS[name] || USERS[name].pass !== pass) {
+                alert('❌ Неверный логин или пароль!');
+                return;
+            }
+            
+            user = name;
+            isAdmin = USERS[name].admin;
+            document.getElementById('loginBox').style.display = 'none';
+            document.getElementById('mainContent').style.display = 'block';
+            render();
+        }
+
+        // Обновление результата (только админ)
+        function updateResult(idx, team, val) {
+            if (!isAdmin) { alert('Только Сергей!'); return; }
+            if (!data || !data.matches || !data.matches[idx]) return;
+            
+            if (!data.matches[idx].result) data.matches[idx].result = {t1: null, t2: null};
+            data.matches[idx].result[team] = val === '' ? null : parseInt(val);
+            db.ref('wc2026/matches').set(data.matches);
+            updateGroups();
+        }
+
+        // Обновление прогноза
+        function updatePred(matchIdx, player, team, val) {
+            if (!isAdmin && user !== player) { alert('Только за себя!'); return; }
+            if (!data || !data.matches || !data.matches[matchIdx]) return;
+            
+            if (!data.matches[matchIdx].predictions) {
+                data.matches[matchIdx].predictions = {};
+            }
+            if (!data.matches[matchIdx].predictions[player]) {
+                data.matches[matchIdx].predictions[player] = {t1: null, t2: null};
+            }
+            data.matches[matchIdx].predictions[player][team] = val === '' ? null : parseInt(val);
+            db.ref('wc2026/matches').set(data.matches);
+        }
+
+        // Обновление групп
+        function updateGroups() {
+            if (!data || !data.matches) return;
+            
+            const groups = {};
+            'ABCDEFGHIJKL'.split('').forEach(l => groups[l] = {});
+            
+            data.matches.forEach(m => {
+                if (!m.group || !m.result || m.result.t1 === null || m.result.t2 === null) return;
+                const g = m.group.toUpperCase();
+                if (!groups[g]) return;
+                
+                if (!groups[g][m.team1]) groups[g][m.team1] = {name: m.team1, p:0, w:0, d:0, l:0, gf:0, ga:0, gd:0, pts:0};
+                if (!groups[g][m.team2]) groups[g][m.team2] = {name: m.team2, p:0, w:0, d:0, l:0, gf:0, ga:0, gd:0, pts:0};
+                
+                const t1 = groups[g][m.team1], t2 = groups[g][m.team2];
+                t1.p++; t2.p++;
+                t1.gf += m.result.t1; t1.ga += m.result.t2;
+                t2.gf += m.result.t2; t2.ga += m.result.t1;
+                t1.gd = t1.gf - t1.ga; t2.gd = t2.gf - t2.ga;
+                
+                if (m.result.t1 > m.result.t2) { t1.w++; t1.pts += 3; t2.l++; }
+                else if (m.result.t1 < m.result.t2) { t2.w++; t2.pts += 3; t1.l++; }
+                else { t1.d++; t1.pts++; t2.d++; t2.pts++; }
+            });
+            
+            data.groups = groups;
+            db.ref('wc2026/groups').set(groups);
+        }
+
+        // Подсчёт очков
+        function calcPoints() {
+            if (!data || !data.matches) return {};
+            
+            const stats = {};
+            data.players.forEach(p => stats[p] = {pts: 0, exact: 0, diff: 0, outcome: 0});
+            
+            data.matches.forEach(m => {
+                if (!m.result || m.result.t1 === null || m.result.t2 === null) return;
+                const mult = (m.group && ['1/8','1/4','1/2','ФИНАЛ'].some(x => m.group.includes(x))) ? 2 : 1;
+                
+                data.players.forEach(player => {
+                    if (!m.predictions || !m.predictions[player]) return;
+                    const pred = m.predictions[player];
+                    if (pred.t1 === null || pred.t2 === null) return;
+                    
+                    const realDiff = m.result.t1 - m.result.t2;
+                    const predDiff = pred.t1 - pred.t2;
+                    
+                    if (pred.t1 === m.result.t1 && pred.t2 === m.result.t2) {
+                        stats[player].pts += 3 * mult;
+                        stats[player].exact++;
+                    } else if (predDiff === realDiff) {
+                        stats[player].pts += 2 * mult;
+                        stats[player].diff++;
+                    } else if (Math.sign(predDiff) === Math.sign(realDiff)) {
+                        stats[player].pts += 1 * mult;
+                        stats[player].outcome++;
+                    }
+                });
+            });
+            return stats;
+        }
+
+        // Рендер
+        function render() {
+            if (!data || !user) return;
+            
+            // Матчи
+            const matchesHTML = data.matches.map((m, i) => {
+                const preds = data.players.map(p => {
+                    const pred = (m.predictions && m.predictions[p]) || {t1:'', t2:''};
+                    let pts = 0;
+                    
+                    if (m.result && m.result.t1 !== null && m.result.t2 !== null && 
+                        pred.t1 !== null && pred.t2 !== null) {
+                        const mult = 1; // упрощено
+                        const realDiff = m.result.t1 - m.result.t2;
+                        const predDiff = pred.t1 - pred.t2;
+                        
+                        if (pred.t1 == m.result.t1 && pred.t2 == m.result.t2) pts = 3 * mult;
+                        else if (predDiff === realDiff) pts = 2 * mult;
+                        else if (Math.sign(predDiff) === Math.sign(realDiff)) pts = 1 * mult;
+                    }
+                    
+                    const canEdit = isAdmin || user === p;
+                    return `
+                        <div class="player-prediction" style="${!canEdit ? 'opacity:0.5;' : ''}">
+                            <div class="player-name">${p} ${p===user?'(ты)':''}</div>
+                            <div style="display:flex; gap:8px; justify-content:center; align-items:center;">
+                                <input type="number" min="0" value="${pred.t1 || ''}" 
+                                    ${!canEdit?'disabled':''} 
+                                    onchange="updatePred(${i}, '${p}', 't1', this.value)">
+                                <span>:</span>
+                                <input type="number" min="0" value="${pred.t2 || ''}" 
+                                    ${!canEdit?'disabled':''} 
+                                    onchange="updatePred(${i}, '${p}', 't2', this.value)">
+                            </div>
+                            <div class="points ${pts>=3?'good':pts>=1?'ok':''}">${pts>0?'+'+pts:'0'}</div>
+                        </div>
+                    `;
+                }).join('');
+                
+                return `
+                    <div class="match-card">
+                        <div class="match-header">
+                            <div>
+                                <div style="color:#888;">${m.date||''} ${m.time||''}</div>
+                                <div style="font-size:1.3em; font-weight:700;">${m.team1} — ${m.team2}</div>
+                                <div style="color:#ff0000;">Группа ${m.group||'-'}</div>
+                            </div>
+                            <div>
+                                <div style="color:#aaa; margin-bottom:5px;">Результат:</div>
+                                <input type="number" min="0" value="${(m.result && m.result.t1!==null)?m.result.t1:''}" 
+                                    ${!isAdmin?'disabled':''} 
+                                    onchange="updateResult(${i}, 't1', this.value)">
+                                <span style="font-size:1.4em;">:</span>
+                                <input type="number" min="0" value="${(m.result && m.result.t2!==null)?m.result.t2:''}" 
+                                    ${!isAdmin?'disabled':''} 
+                                    onchange="updateResult(${i}, 't2', this.value)">
+                            </div>
+                        </div>
+                        <div style="color:#ff0000; font-weight:700; margin:10px 0;">📝 Прогнозы:</div>
+                        <div class="predictions-grid">${preds}</div>
+                    </div>
+                `;
+            }).join('');
+            
+            document.getElementById('matchesList').innerHTML = matchesHTML || '<div style="text-align:center; padding:40px;">Нет матчей</div>';
+            
+            // Группы
+            let groupsHTML = '';
+            if (data.groups) {
+                Object.entries(data.groups).forEach(([name, teams]) => {
+                    const sorted = Object.values(teams).sort((a,b) => {
+                        if (b.pts !== a.pts) return b.pts - a.pts;
+                        if (b.gd !== a.gd) return b.gd - a.gd;
+                        return b.gf - a.gf;
+                    });
+                    
+                    if (sorted.length > 0) {
+                        groupsHTML += `
+                            <div style="margin-bottom:25px;">
+                                <div style="font-family:'Orbitron'; color:#ff0000; font-size:1.3em; margin-bottom:10px; padding:8px 15px; background:rgba(139,0,0,0.3); border-radius:6px; display:inline-block;">Группа ${name}</div>
+                                <table>
+                                    <thead><tr><th>#</th><th>Команда</th><th>И</th><th>В</th><th>Н</th><th>П</th><th>Мячи</th><th>Разн.</th><th>Очки</th></tr></thead>
+                                    <tbody>
+                                        ${sorted.map((t, idx) => `
+                                            <tr style="${idx<2?'background:rgba(0,255,0,0.15)':''}">
+                                                <td>${idx+1}</td><td style="text-align:left;">${t.name}</td>
+                                                <td>${t.p}</td><td>${t.w}</td><td>${t.d}</td><td>${t.l}</td>
+                                                <td>${t.gf}-${t.ga}</td><td>${t.gd>0?'+':''}${t.gd}</td>
+                                                <td><strong>${t.pts}</strong></td>
+                                            </tr>
+                                        `).join('')}
+                                    </tbody>
+                                </table>
+                            </div>
+                        `;
+                    }
+                });
+            }
+            document.getElementById('groupsList').innerHTML = groupsHTML || '<div style="text-align:center; padding:30px; color:#666;">Нет данных</div>';
+            
+            // Таблица
+            const stats = calcPoints();
+            const sorted = Object.entries(stats).sort((a,b) => b[1].pts - a[1].pts);
+            document.getElementById('leaderboardBody').innerHTML = sorted.map(([p, s], i) => `
+                <tr>
+                    <td>${i+1}</td><td><strong>${p}</strong></td>
+                    <td><strong>${Math.round(s.pts)}</strong></td>
+                    <td>${s.exact}</td><td>${s.diff}</td><td>${s.outcome}</td>
+                </tr>
+            `).join('') || '<tr><td colspan="6" style="padding:30px;">Нет данных</td></tr>';
+            
+            // Аналитика
+            const totalPts = Object.values(stats).reduce((sum, s) => sum + s.pts, 0);
+            document.getElementById('analyticsContent').innerHTML = `
+                <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:15px;">
+                    <div style="background:rgba(30,30,30,0.8); border:2px solid #333; border-radius:8px; padding:20px; text-align:center;">
+                        <div style="font-family:'Orbitron'; font-size:2.5em; color:#ff0000;">${data.matches.length}</div>
+                        <div style="color:#aaa; margin-top:5px;">Всего матчей</div>
+                    </div>
+                    <div style="background:rgba(30,30,30,0.8); border:2px solid #333; border-radius:8px; padding:20px; text-align:center;">
+                        <div style="font-family:'Orbitron'; font-size:2.5em; color:#ff0000;">${data.matches.filter(m=>m.result && m.result.t1!==null).length}</div>
+                        <div style="color:#aaa; margin-top:5px;">Сыграно</div>
+                    </div>
+                    <div style="background:rgba(30,30,30,0.8); border:2px solid #333; border-radius:8px; padding:20px; text-align:center;">
+                        <div style="font-family:'Orbitron'; font-size:2.5em; color:#ff0000;">${data.players.length}</div>
+                        <div style="color:#aaa; margin-top:5px;">Игроков</div>
+                    </div>
+                    <div style="background:rgba(30,30,30,0.8); border:2px solid #333; border-radius:8px; padding:20px; text-align:center;">
+                        <div style="font-family:'Orbitron'; font-size:2.5em; color:#ff0000;">${Math.round(totalPts)}</div>
+                        <div style="color:#aaa; margin-top:5px;">Всего очков</div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function switchTab(tab) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            event.target.classList.add('active');
+            document.getElementById(tab).classList.add('active');
+            render();
+        }
+
+        // Старт
+        window.onload = loadData;
+    </script>
+</body>
+</html><!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ЧМ-2026: Прогнозы | ЛОГОТИП 18+</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
