@@ -1,4 +1,4 @@
-file:///C:/Users/logot/Desktop/NkS1Z2wE.htm<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
@@ -9,614 +9,81 @@ file:///C:/Users/logot/Desktop/NkS1Z2wE.htm<!DOCTYPE html>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        
-        body {
-            font-family: 'Rajdhani', sans-serif;
-            font-weight: 500;
-            background: #000;
-            background-image: 
-                radial-gradient(circle at 20% 30%, rgba(139, 0, 0, 0.15) 0%, transparent 50%),
-                radial-gradient(circle at 80% 70%, rgba(139, 0, 0, 0.1) 0%, transparent 50%),
-                linear-gradient(135deg, #000 0%, #0a0000 50%, #000 100%);
-            color: #fff;
-            min-height: 100vh;
-            padding: 15px;
-            text-shadow: 0 0 1px rgba(255,255,255,0.3);
-        }
-        
+        body { font-family: 'Rajdhani', sans-serif; font-weight: 500; background: #000; background-image: radial-gradient(circle at 20% 30%, rgba(139, 0, 0, 0.15) 0%, transparent 50%), radial-gradient(circle at 80% 70%, rgba(139, 0, 0, 0.1) 0%, transparent 50%), linear-gradient(135deg, #000 0%, #0a0000 50%, #000 100%); color: #fff; min-height: 100vh; padding: 15px; }
         .container { max-width: 1400px; margin: 0 auto; }
-        
-        h1 {
-            font-family: 'Orbitron', sans-serif;
-            font-weight: 900;
-            text-align: center;
-            color: #ff0000;
-            margin-bottom: 20px;
-            font-size: clamp(1.8em, 5vw, 3em);
-            letter-spacing: 4px;
-            text-shadow: 
-                0 0 10px rgba(255, 0, 0, 0.8),
-                0 0 20px rgba(255, 0, 0, 0.5),
-                2px 2px 0 #000;
-            -webkit-text-stroke: 1px #000;
-        }
-        
-        .status {
-            background: rgba(0, 40, 0, 0.6);
-            border: 2px solid #00ff00;
-            color: #00ff00;
-            padding: 10px;
-            border-radius: 8px;
-            text-align: center;
-            margin-bottom: 20px;
-            font-weight: 700;
-            font-family: 'Orbitron', sans-serif;
-            font-size: 0.9em;
-            letter-spacing: 2px;
-        }
-        
-        .status.offline {
-            background: rgba(40, 0, 0, 0.6);
-            border-color: #ff0000;
-            color: #ff0000;
-        }
-        
-        .tabs {
-            display: flex;
-            gap: 5px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-            border-bottom: 3px solid #8B0000;
-            padding-bottom: 5px;
-        }
-        
-        .tab {
-            background: rgba(20, 0, 0, 0.8);
-            border: 2px solid #333;
-            color: #aaa;
-            padding: 12px 20px;
-            border-radius: 10px 10px 0 0;
-            cursor: pointer;
-            font-family: 'Orbitron', sans-serif;
-            font-weight: 700;
-            font-size: 0.9em;
-            letter-spacing: 1px;
-            flex: 1;
-            text-align: center;
-            transition: all 0.3s;
-            text-transform: uppercase;
-        }
-        
-        .tab:hover {
-            background: rgba(139, 0, 0, 0.3);
-            border-color: #8B0000;
-            color: #fff;
-        }
-        
-        .tab.active {
-            background: linear-gradient(135deg, #5C0000 0%, #8B0000 50%, #ff0000 100%);
-            border-color: #ff0000;
-            color: #fff;
-            box-shadow: 0 0 20px rgba(255, 0, 0, 0.6);
-            text-shadow: 0 0 5px #fff;
-        }
-        
+        h1 { font-family: 'Orbitron', sans-serif; font-weight: 900; text-align: center; color: #ff0000; margin-bottom: 20px; font-size: clamp(1.8em, 5vw, 3em); letter-spacing: 4px; text-shadow: 0 0 10px rgba(255, 0, 0, 0.8), 0 0 20px rgba(255, 0, 0, 0.5), 2px 2px 0 #000; }
+        .status { background: rgba(0, 40, 0, 0.6); border: 2px solid #00ff00; color: #00ff00; padding: 10px; border-radius: 8px; text-align: center; margin-bottom: 20px; font-weight: 700; font-family: 'Orbitron', sans-serif; font-size: 0.9em; letter-spacing: 2px; }
+        .status.offline { background: rgba(40, 0, 0, 0.6); border-color: #ff0000; color: #ff0000; }
+        .tabs { display: flex; gap: 5px; margin-bottom: 20px; flex-wrap: wrap; border-bottom: 3px solid #8B0000; padding-bottom: 5px; }
+        .tab { background: rgba(20, 0, 0, 0.8); border: 2px solid #333; color: #aaa; padding: 12px 20px; border-radius: 10px 10px 0 0; cursor: pointer; font-family: 'Orbitron', sans-serif; font-weight: 700; font-size: 0.9em; letter-spacing: 1px; flex: 1; text-align: center; transition: all 0.3s; text-transform: uppercase; }
+        .tab:hover { background: rgba(139, 0, 0, 0.3); border-color: #8B0000; color: #fff; }
+        .tab.active { background: linear-gradient(135deg, #5C0000 0%, #8B0000 50%, #ff0000 100%); border-color: #ff0000; color: #fff; box-shadow: 0 0 20px rgba(255, 0, 0, 0.6); }
         .tab-content { display: none; }
         .tab-content.active { display: block; }
-        
-        .section {
-            background: rgba(10, 0, 0, 0.85);
-            border: 2px solid #8B0000;
-            border-radius: 15px;
-            padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: 
-                0 0 30px rgba(139, 0, 0, 0.4),
-                inset 0 0 20px rgba(0, 0, 0, 0.5);
-        }
-        
-        .section-title {
-            font-family: 'Orbitron', sans-serif;
-            font-weight: 900;
-            color: #ff0000;
-            font-size: 1.4em;
-            margin-bottom: 15px;
-            border-bottom: 3px solid #8B0000;
-            padding-bottom: 10px;
-            letter-spacing: 2px;
-            text-shadow: 0 0 10px rgba(255, 0, 0, 0.6), 2px 2px 0 #000;
-            text-transform: uppercase;
-        }
-        
-        .login-box {
-            background: rgba(10, 0, 0, 0.95);
-            border: 3px solid #8B0000;
-            border-radius: 15px;
-            padding: 35px;
-            max-width: 420px;
-            margin: 50px auto;
-            text-align: center;
-            box-shadow: 0 0 50px rgba(139, 0, 0, 0.6);
-        }
-        
-        .login-box h2 {
-            font-family: 'Orbitron', sans-serif;
-            font-weight: 900;
-            color: #ff0000;
-            margin-bottom: 25px;
-            letter-spacing: 3px;
-            text-shadow: 0 0 15px rgba(255, 0, 0, 0.8);
-        }
-        
-        .login-box input {
-            width: 100%;
-            margin: 10px 0;
-            padding: 12px;
-            background: #000;
-            border: 2px solid #8B0000;
-            color: #fff;
-            border-radius: 8px;
-            font-size: 1.1em;
-            font-family: 'Rajdhani', sans-serif;
-            font-weight: 600;
-            letter-spacing: 1px;
-        }
-        
-        .login-box button {
-            width: 100%;
-            padding: 14px;
-            background: linear-gradient(135deg, #5C0000 0%, #ff0000 100%);
-            border: none;
-            color: #fff;
-            border-radius: 8px;
-            cursor: pointer;
-            font-family: 'Orbitron', sans-serif;
-            font-weight: 900;
-            font-size: 1.2em;
-            margin-top: 15px;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            box-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
-            transition: all 0.3s;
-        }
-        
-        .login-box button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 0 30px rgba(255, 0, 0, 0.8);
-        }
-        
-        button {
-            background: linear-gradient(135deg, #5C0000 0%, #8B0000 50%, #ff0000 100%);
-            color: #fff;
-            border: 2px solid #8B0000;
-            padding: 10px 20px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-family: 'Orbitron', sans-serif;
-            font-weight: 700;
-            font-size: 0.85em;
-            margin: 5px;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            transition: all 0.3s;
-            box-shadow: 0 0 10px rgba(139, 0, 0, 0.4);
-        }
-        
-        button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 0 20px rgba(255, 0, 0, 0.7);
-            border-color: #ff0000;
-        }
-        
-        button.primary {
-            background: linear-gradient(135deg, #00ff00 0%, #008800 100%);
-            color: #000;
-            border-color: #00ff00;
-            font-size: 1.3em;
-            padding: 15px 40px;
-            letter-spacing: 3px;
-        }
-        
-        .match-card {
-            background: rgba(15, 0, 0, 0.9);
-            border: 2px solid #8B0000;
-            border-radius: 12px;
-            padding: 18px;
-            margin-bottom: 18px;
-            box-shadow: 0 0 15px rgba(139, 0, 0, 0.3);
-            transition: all 0.3s;
-        }
-        
-        .match-card:hover {
-            box-shadow: 0 0 25px rgba(255, 0, 0, 0.5);
-            border-color: #ff0000;
-        }
-        
-        .match-header {
-            display: flex;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 15px;
-            margin-bottom: 15px;
-            padding-bottom: 15px;
-            border-bottom: 2px solid #333;
-            align-items: center;
-        }
-        
-        .match-info .date {
-            color: #888;
-            font-size: 0.9em;
-            margin-bottom: 5px;
-            font-weight: 600;
-        }
-        
-        .match-info .teams {
-            font-size: 1.4em;
-            font-weight: 700;
-            color: #fff;
-            margin-bottom: 5px;
-            font-family: 'Rajdhani', sans-serif;
-            letter-spacing: 1px;
-        }
-        
-        .match-info .group {
-            color: #ff0000;
-            font-weight: 700;
-            font-family: 'Orbitron', sans-serif;
-            font-size: 0.9em;
-            letter-spacing: 2px;
-        }
-        
-        .predictions-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 12px;
-            margin-top: 15px;
-        }
-        
-        .player-prediction {
-            background: rgba(20, 0, 0, 0.8);
-            border: 2px solid #444;
-            border-radius: 10px;
-            padding: 12px;
-            transition: all 0.3s;
-        }
-        
-        .player-prediction:hover {
-            border-color: #8B0000;
-            box-shadow: 0 0 15px rgba(139, 0, 0, 0.4);
-        }
-        
-        .player-prediction.disabled {
-            opacity: 0.4;
-            filter: grayscale(0.5);
-        }
-        
-        .player-name {
-            font-family: 'Orbitron', sans-serif;
-            font-weight: 700;
-            color: #ff0000;
-            font-size: 1em;
-            margin-bottom: 10px;
-            letter-spacing: 1px;
-            text-align: center;
-            text-shadow: 0 0 5px rgba(255, 0, 0, 0.5);
-        }
-        
-        .player-name.you {
-            color: #ffd700;
-            text-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
-        }
-        
-        .points {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 0.95em;
-            font-weight: 700;
-            text-align: center;
-            padding: 6px;
-            border-radius: 6px;
-            margin-top: 8px;
-            letter-spacing: 1px;
-        }
-        
-        .points.good {
-            color: #ffd700;
-            background: rgba(255, 215, 0, 0.15);
-            border: 1px solid #ffd700;
-            text-shadow: 0 0 5px rgba(255, 215, 0, 0.8);
-        }
-        
-        .points.ok {
-            color: #00ffff;
-            background: rgba(0, 255, 255, 0.1);
-            border: 1px solid #00ffff;
-        }
-        
-        .points.zero {
-            color: #666;
-            background: rgba(50, 50, 50, 0.3);
-        }
-        
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 15px;
-            background: rgba(10, 0, 0, 0.5);
-        }
-        
-        th, td {
-            padding: 12px;
-            text-align: center;
-            border: 1px solid #333;
-            font-weight: 600;
-        }
-        
-        th {
-            background: linear-gradient(135deg, #5C0000 0%, #8B0000 100%);
-            font-family: 'Orbitron', sans-serif;
-            font-weight: 700;
-            font-size: 0.85em;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            text-shadow: 0 0 5px rgba(0,0,0,0.8);
-        }
-        
+        .section { background: rgba(10, 0, 0, 0.85); border: 2px solid #8B0000; border-radius: 15px; padding: 20px; margin-bottom: 20px; box-shadow: 0 0 30px rgba(139, 0, 0, 0.4); }
+        .section-title { font-family: 'Orbitron', sans-serif; font-weight: 900; color: #ff0000; font-size: 1.4em; margin-bottom: 15px; border-bottom: 3px solid #8B0000; padding-bottom: 10px; letter-spacing: 2px; text-transform: uppercase; }
+        .login-box { background: rgba(10, 0, 0, 0.95); border: 3px solid #8B0000; border-radius: 15px; padding: 35px; max-width: 420px; margin: 50px auto; text-align: center; box-shadow: 0 0 50px rgba(139, 0, 0, 0.6); }
+        .login-box h2 { font-family: 'Orbitron', sans-serif; font-weight: 900; color: #ff0000; margin-bottom: 25px; letter-spacing: 3px; }
+        .login-box input { width: 100%; margin: 10px 0; padding: 12px; background: #000; border: 2px solid #8B0000; color: #fff; border-radius: 8px; font-size: 1.1em; font-family: 'Rajdhani', sans-serif; font-weight: 600; }
+        .login-box button { width: 100%; padding: 14px; background: linear-gradient(135deg, #5C0000 0%, #ff0000 100%); border: none; color: #fff; border-radius: 8px; cursor: pointer; font-family: 'Orbitron', sans-serif; font-weight: 900; font-size: 1.2em; margin-top: 15px; letter-spacing: 3px; text-transform: uppercase; }
+        button { background: linear-gradient(135deg, #5C0000 0%, #8B0000 50%, #ff0000 100%); color: #fff; border: 2px solid #8B0000; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-family: 'Orbitron', sans-serif; font-weight: 700; font-size: 0.85em; margin: 5px; letter-spacing: 1px; text-transform: uppercase; transition: all 0.3s; }
+        button:hover { transform: translateY(-2px); box-shadow: 0 0 20px rgba(255, 0, 0, 0.7); }
+        button.primary { background: linear-gradient(135deg, #00ff00 0%, #008800 100%); color: #000; border-color: #00ff00; font-size: 1.3em; padding: 15px 40px; }
+        .match-card { background: rgba(15, 0, 0, 0.9); border: 2px solid #8B0000; border-radius: 12px; padding: 18px; margin-bottom: 18px; }
+        .match-header { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 15px; margin-bottom: 15px; padding-bottom: 15px; border-bottom: 2px solid #333; align-items: center; }
+        .predictions-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin-top: 15px; }
+        .player-prediction { background: rgba(20, 0, 0, 0.8); border: 2px solid #444; border-radius: 10px; padding: 12px; transition: all 0.3s; }
+        .player-prediction:hover { border-color: #8B0000; }
+        .player-prediction.disabled { opacity: 0.4; filter: grayscale(0.5); }
+        .player-name { font-family: 'Orbitron', sans-serif; font-weight: 700; color: #ff0000; font-size: 1em; margin-bottom: 10px; letter-spacing: 1px; text-align: center; }
+        .player-name.you { color: #ffd700; text-shadow: 0 0 10px rgba(255, 215, 0, 0.8); }
+        .points { font-family: 'Orbitron', sans-serif; font-size: 0.95em; font-weight: 700; text-align: center; padding: 6px; border-radius: 6px; margin-top: 8px; }
+        .points.good { color: #ffd700; background: rgba(255, 215, 0, 0.15); border: 1px solid #ffd700; }
+        .points.ok { color: #00ffff; background: rgba(0, 255, 255, 0.1); border: 1px solid #00ffff; }
+        .points.zero { color: #666; background: rgba(50, 50, 50, 0.3); }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; background: rgba(10, 0, 0, 0.5); }
+        th, td { padding: 12px; text-align: center; border: 1px solid #333; font-weight: 600; }
+        th { background: linear-gradient(135deg, #5C0000 0%, #8B0000 100%); font-family: 'Orbitron', sans-serif; font-weight: 700; font-size: 0.85em; letter-spacing: 1px; text-transform: uppercase; }
         tr:nth-child(even) { background: rgba(30, 0, 0, 0.4); }
         tr:hover { background: rgba(139, 0, 0, 0.3); }
         tr.qualify { background: rgba(0, 80, 0, 0.3) !important; border-left: 3px solid #00ff00; }
-        
-        input[type="number"] {
-            -moz-appearance: textfield;
-            appearance: textfield;
-            background: #000;
-            border: 2px solid #8B0000;
-            color: #fff;
-            padding: 8px;
-            border-radius: 6px;
-            width: 60px;
-            text-align: center;
-            font-family: 'Orbitron', sans-serif;
-            font-weight: 700;
-            font-size: 1.1em;
-            transition: all 0.3s;
-        }
-        
-        input[type="number"]::-webkit-inner-spin-button,
-        input[type="number"]::-webkit-outer-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
-        }
-        
-        input[type="number"]:focus {
-            outline: none;
-            border-color: #ff0000;
-            box-shadow: 0 0 15px rgba(255, 0, 0, 0.6);
-        }
-        
-        input[type="number"]:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            background: #111;
-        }
-        
-        .init-banner {
-            background: linear-gradient(135deg, rgba(0, 80, 0, 0.9) 0%, rgba(0, 40, 0, 0.9) 100%);
-            border: 3px solid #00ff00;
-            color: #fff;
-            padding: 40px;
-            border-radius: 15px;
-            text-align: center;
-            margin-bottom: 20px;
-            box-shadow: 0 0 50px rgba(0, 255, 0, 0.4);
-        }
-        
-        .init-banner h2 {
-            font-family: 'Orbitron', sans-serif;
-            font-weight: 900;
-            color: #00ff00;
-            margin-bottom: 15px;
-            letter-spacing: 3px;
-            text-shadow: 0 0 15px rgba(0, 255, 0, 0.8);
-        }
-        
-        .rules {
-            background: rgba(40, 0, 0, 0.6);
-            border: 2px solid #8B0000;
-            border-radius: 10px;
-            padding: 15px;
-            margin-bottom: 20px;
-        }
-        
-        .rules-title {
-            font-family: 'Orbitron', sans-serif;
-            color: #ff0000;
-            font-size: 1.1em;
-            margin-bottom: 10px;
-            font-weight: 700;
-            letter-spacing: 2px;
-        }
-        
-        .rules-list {
-            display: flex;
-            gap: 20px;
-            flex-wrap: wrap;
-        }
-        
-        .rule-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-weight: 600;
-            font-size: 1em;
-        }
-        
-        .rule-points {
-            background: linear-gradient(135deg, #5C0000 0%, #8B0000 100%);
-            color: #fff;
-            padding: 5px 12px;
-            border-radius: 5px;
-            font-weight: 900;
-            font-family: 'Orbitron', sans-serif;
-            border: 1px solid #ff0000;
-            text-shadow: 0 0 3px #000;
-        }
-        
-        .analytics-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-        
-        .stat-card {
-            background: rgba(20, 0, 0, 0.8);
-            border: 2px solid #8B0000;
-            border-radius: 10px;
-            padding: 20px;
-            text-align: center;
-            box-shadow: 0 0 15px rgba(139, 0, 0, 0.3);
-        }
-        
-        .stat-value {
-            font-family: 'Orbitron', sans-serif;
-            font-weight: 900;
-            font-size: 2.5em;
-            color: #ff0000;
-            text-shadow: 0 0 15px rgba(255, 0, 0, 0.8);
-        }
-        
-        .stat-label {
-            color: #aaa;
-            margin-top: 8px;
-            font-weight: 600;
-            font-size: 0.95em;
-            letter-spacing: 1px;
-        }
-        
+        input[type="number"] { -moz-appearance: textfield; appearance: textfield; background: #000; border: 2px solid #8B0000; color: #fff; padding: 8px; border-radius: 6px; width: 60px; text-align: center; font-family: 'Orbitron', sans-serif; font-weight: 700; font-size: 1.1em; }
+        input[type="number"]::-webkit-inner-spin-button, input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+        input[type="number"]:focus { outline: none; border-color: #ff0000; box-shadow: 0 0 15px rgba(255, 0, 0, 0.6); }
+        input[type="number"]:disabled { opacity: 0.5; cursor: not-allowed; background: #111; }
+        input[type="text"], input[type="password"] { background: #000; border: 2px solid #8B0000; color: #fff; padding: 10px; border-radius: 6px; font-family: 'Rajdhani', sans-serif; font-weight: 600; font-size: 1em; }
+        input[type="text"]:focus, input[type="password"]:focus { outline: none; border-color: #ff0000; box-shadow: 0 0 10px rgba(255, 0, 0, 0.6); }
+        .init-banner { background: linear-gradient(135deg, rgba(0, 80, 0, 0.9) 0%, rgba(0, 40, 0, 0.9) 100%); border: 3px solid #00ff00; color: #fff; padding: 40px; border-radius: 15px; text-align: center; margin-bottom: 20px; box-shadow: 0 0 50px rgba(0, 255, 0, 0.4); }
+        .init-banner h2 { font-family: 'Orbitron', sans-serif; font-weight: 900; color: #00ff00; margin-bottom: 15px; letter-spacing: 3px; }
+        .rules { background: rgba(40, 0, 0, 0.6); border: 2px solid #8B0000; border-radius: 10px; padding: 15px; margin-bottom: 20px; }
+        .rules-title { font-family: 'Orbitron', sans-serif; color: #ff0000; font-size: 1.1em; margin-bottom: 10px; font-weight: 700; letter-spacing: 2px; }
+        .rules-list { display: flex; gap: 20px; flex-wrap: wrap; }
+        .rule-item { display: flex; align-items: center; gap: 8px; font-weight: 600; }
+        .rule-points { background: linear-gradient(135deg, #5C0000 0%, #8B0000 100%); color: #fff; padding: 5px 12px; border-radius: 5px; font-weight: 900; font-family: 'Orbitron', sans-serif; border: 1px solid #ff0000; }
+        .analytics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 20px; }
+        .stat-card { background: rgba(20, 0, 0, 0.8); border: 2px solid #8B0000; border-radius: 10px; padding: 20px; text-align: center; }
+        .stat-value { font-family: 'Orbitron', sans-serif; font-weight: 900; font-size: 2.5em; color: #ff0000; text-shadow: 0 0 15px rgba(255, 0, 0, 0.8); }
+        .stat-label { color: #aaa; margin-top: 8px; font-weight: 600; letter-spacing: 1px; }
         .group-table { margin-bottom: 25px; }
-        
-        .group-title {
-            font-family: 'Orbitron', sans-serif;
-            font-weight: 900;
-            color: #ff0000;
-            font-size: 1.2em;
-            margin-bottom: 10px;
-            padding: 10px 20px;
-            background: linear-gradient(135deg, rgba(92, 0, 0, 0.6) 0%, rgba(139, 0, 0, 0.3) 100%);
-            border: 2px solid #8B0000;
-            border-radius: 8px;
-            display: inline-block;
-            letter-spacing: 3px;
-            text-shadow: 0 0 10px rgba(255, 0, 0, 0.6);
-        }
-        
-        .top-player-card {
-            background: rgba(20, 0, 0, 0.8);
-            border: 2px solid #8B0000;
-            border-radius: 10px;
-            padding: 20px;
-            margin-top: 20px;
-        }
-        
-        .top-player-card h3 {
-            font-family: 'Orbitron', sans-serif;
-            color: #ff0000;
-            margin-bottom: 15px;
-            font-weight: 700;
-            letter-spacing: 2px;
-        }
-        
-        .top-player-row {
-            padding: 10px;
-            border-bottom: 1px solid #333;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-weight: 600;
-        }
-        
+        .group-title { font-family: 'Orbitron', sans-serif; font-weight: 900; color: #ff0000; font-size: 1.2em; margin-bottom: 10px; padding: 10px 20px; background: linear-gradient(135deg, rgba(92, 0, 0, 0.6) 0%, rgba(139, 0, 0, 0.3) 100%); border: 2px solid #8B0000; border-radius: 8px; display: inline-block; letter-spacing: 3px; }
+        .top-player-card { background: rgba(20, 0, 0, 0.8); border: 2px solid #8B0000; border-radius: 10px; padding: 20px; margin-top: 20px; }
+        .top-player-card h3 { font-family: 'Orbitron', sans-serif; color: #ff0000; margin-bottom: 15px; font-weight: 700; letter-spacing: 2px; }
+        .top-player-row { padding: 10px; border-bottom: 1px solid #333; display: flex; justify-content: space-between; align-items: center; font-weight: 600; }
         .top-player-row:last-child { border-bottom: none; }
-        
-        .top-player-row .pts {
-            color: #ffd700;
-            font-family: 'Orbitron', sans-serif;
-            font-weight: 900;
-            text-shadow: 0 0 5px rgba(255, 215, 0, 0.6);
-        }
-        
-        .hint {
-            margin-top: 15px;
-            color: #888;
-            font-size: 0.85em;
-            font-weight: 500;
-        }
-        
-        .players-section {
-            background: rgba(10, 0, 0, 0.85);
-            border: 2px solid #8B0000;
-            border-radius: 15px;
-            padding: 20px;
-            margin-bottom: 20px;
-        }
-        
-        .players-inputs {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 15px;
-            flex-wrap: wrap;
-        }
-        
-        .players-inputs input {
-            flex: 1;
-            min-width: 150px;
-            padding: 10px;
-            background: #000;
-            border: 2px solid #8B0000;
-            color: #fff;
-            border-radius: 8px;
-            font-family: 'Rajdhani', sans-serif;
-            font-size: 1em;
-        }
-        
-        .players-list {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            margin-top: 10px;
-        }
-        
-        .player-tag {
-            background: rgba(139, 0, 0, 0.4);
-            border: 2px solid #8B0000;
-            padding: 8px 15px;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-weight: 600;
-        }
-        
-        .player-tag .remove-btn {
-            background: #ff0000;
-            border: none;
-            color: #fff;
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            cursor: pointer;
-            font-size: 0.8em;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 0;
-            margin: 0;
-        }
+        .top-player-row .pts { color: #ffd700; font-family: 'Orbitron', sans-serif; font-weight: 900; }
+        .hint { margin-top: 15px; color: #888; font-size: 0.85em; font-weight: 500; }
+        .players-section { background: rgba(10, 0, 0, 0.85); border: 2px solid #8B0000; border-radius: 15px; padding: 20px; margin-bottom: 20px; }
+        .players-inputs { display: flex; gap: 10px; margin-bottom: 15px; flex-wrap: wrap; }
+        .players-inputs input { flex: 1; min-width: 150px; padding: 10px; background: #000; border: 2px solid #8B0000; color: #fff; border-radius: 8px; font-family: 'Rajdhani', sans-serif; font-size: 1em; }
+        .players-list { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px; }
+        .player-tag { background: rgba(139, 0, 0, 0.4); border: 2px solid #8B0000; padding: 8px 15px; border-radius: 8px; display: flex; align-items: center; gap: 8px; font-weight: 600; }
+        .player-tag .remove-btn { background: #ff0000; border: none; color: #fff; width: 20px; height: 20px; border-radius: 50%; cursor: pointer; font-size: 0.8em; display: flex; align-items: center; justify-content: center; padding: 0; margin: 0; }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>⚽ ЧМ-2026 ⚽</h1>
-        <div id="status" class="status offline"> ПОДКЛЮЧЕНИЕ...</div>
+        <div id="status" class="status offline">🔴 ПОДКЛЮЧЕНИЕ...</div>
         
         <div id="initBanner" class="init-banner" style="display:none;">
             <h2>🎮 ПЕРВЫЙ ЗАПУСК</h2>
@@ -629,18 +96,15 @@ file:///C:/Users/logot/Desktop/NkS1Z2wE.htm<!DOCTYPE html>
             <input type="text" id="username" placeholder="ЛОГИН" autocomplete="username">
             <input type="password" id="password" placeholder="ПАРОЛЬ" autocomplete="current-password">
             <button onclick="login()">ВОЙТИ</button>
-            <div class="hint">
-                Сергей: 11 | ИИ: 22 | АлПашка: 33
-            </div>
+            <div class="hint">Сергей: 11 | ИИ: 22 | АлПашка: 33</div>
         </div>
 
         <div id="mainContent" style="display:none;">
-            <!-- УПРАВЛЕНИЕ ИГРОКАМИ (только для админа) -->
             <div id="playersSection" class="players-section" style="display:none;">
                 <div class="section-title" style="font-size: 1.2em;">👥 УПРАВЛЕНИЕ ИГРОКАМИ</div>
                 <div class="players-inputs">
                     <input type="text" id="newPlayerName" placeholder="Имя нового игрока">
-                    <input type="password" id="newPlayerPass" placeholder="Пароль (2 цифры)" maxlength="2">
+                    <input type="password" id="newPlayerPass" placeholder="Пароль" maxlength="10">
                     <button onclick="addNewPlayer()" style="background: linear-gradient(135deg, #00ff00 0%, #008800 100%); color: #000; font-weight: 900;">+ ДОБАВИТЬ</button>
                 </div>
                 <div id="playersList" class="players-list"></div>
@@ -679,7 +143,7 @@ file:///C:/Users/logot/Desktop/NkS1Z2wE.htm<!DOCTYPE html>
             
             <div id="leaderboard" class="tab-content">
                 <div class="section">
-                    <div class="section-title"> Таблица лидеров</div>
+                    <div class="section-title">🏆 Таблица лидеров</div>
                     <table>
                         <thead><tr><th>#</th><th>Игрок</th><th>Очки</th><th>Точных</th><th>Разница</th><th>Исходов</th></tr></thead>
                         <tbody id="leaderboardBody"></tbody>
@@ -735,37 +199,27 @@ file:///C:/Users/logot/Desktop/NkS1Z2wE.htm<!DOCTYPE html>
             'L': ['Англия', 'Хорватия', 'Гана', 'Панама']
         };
 
-        // Статус подключения
         db.ref('.info/connected').on('value', snap => {
             const el = document.getElementById('status');
-            if (snap.val()) {
-                el.textContent = '🟢 ОНЛАЙН — СИНХРОНИЗАЦИЯ';
-                el.classList.remove('offline');
-            } else {
-                el.textContent = '🔴 ОФФЛАЙН';
-                el.classList.add('offline');
-            }
+            if (snap.val()) { el.textContent = '🟢 ОНЛАЙН'; el.classList.remove('offline'); }
+            else { el.textContent = '🔴 ОФФЛАЙН'; el.classList.add('offline'); }
         });
 
-        // Загрузка данных
         function loadData() {
             db.ref('wc2026').once('value').then(snap => {
                 const val = snap.val();
                 if (val && val.initialized) {
                     appData = val;
                     document.getElementById('initBanner').style.display = 'none';
-                    
                     const savedUser = localStorage.getItem('wcUser');
                     const savedPass = localStorage.getItem('wcPass');
                     if (savedUser) document.getElementById('username').value = savedUser;
                     if (savedPass) document.getElementById('password').value = savedPass;
-                    
                     document.getElementById('loginBox').style.display = 'block';
                 } else {
                     document.getElementById('initBanner').style.display = 'block';
                 }
             });
-            
             db.ref('wc2026').on('value', snap => {
                 const val = snap.val();
                 if (val && val.initialized) {
@@ -775,10 +229,9 @@ file:///C:/Users/logot/Desktop/NkS1Z2wE.htm<!DOCTYPE html>
             });
         }
 
-        // Создание турнира
         function initTournament() {
             const allMatches = [
-                // Тур 1 (11-18 июня)
+                // ТУР 1 (11-18 июня)
                 {date:"11 июня", time:"22:00", team1:"Мексика", team2:"ЮАР", group:"A", pred:{t1:2,t2:1}},
                 {date:"12 июня", time:"05:00", team1:"Южная Корея", team2:"Чехия", group:"A", pred:{t1:1,t2:2}},
                 {date:"12 июня", time:"22:00", team1:"Канада", team2:"Босния", group:"B", pred:{t1:2,t2:0}},
@@ -803,37 +256,41 @@ file:///C:/Users/logot/Desktop/NkS1Z2wE.htm<!DOCTYPE html>
                 {date:"17 июня", time:"23:00", team1:"Англия", team2:"Хорватия", group:"L", pred:{t1:2,t2:1}},
                 {date:"18 июня", time:"02:00", team1:"Гана", team2:"Панама", group:"L", pred:{t1:2,t2:0}},
                 {date:"18 июня", time:"05:00", team1:"Узбекистан", team2:"Колумбия", group:"K", pred:{t1:1,t2:2}},
-                // Тур 2 (19-24 июня)
-                {date:"19 июня", time:"19:00", team1:"Чехия", team2:"ЮАР", group:"A", pred:{t1:2,t2:0}},
-                {date:"19 июня", time:"22:00", team1:"Швейцария", team2:"Босния", group:"B", pred:{t1:2,t2:1}},
-                {date:"19 июня", time:"01:00", team1:"Канада", team2:"Катар", group:"B", pred:{t1:2,t2:0}},
-                {date:"19 июня", time:"04:00", team1:"Мексика", team2:"Южная Корея", group:"A", pred:{t1:2,t2:1}},
-                {date:"19 июня", time:"22:00", team1:"США", team2:"Австралия", group:"D", pred:{t1:2,t2:1}},
-                {date:"20 июня", time:"01:00", team1:"Шотландия", team2:"Марокко", group:"C", pred:{t1:0,t2:2}},
+                // ТУР 2 (19-24 июня)
+                {date:"19 июня", time:"19:00", team1:"Чехия", team2:"ЮАР", group:"A", pred:{t1:2,t2:1}},
+                {date:"19 июня", time:"22:00", team1:"Швейцария", team2:"Босния", group:"B", pred:{t1:2,t2:0}},
+                {date:"19 июня", time:"01:00", team1:"Канада", team2:"Катар", group:"B", pred:{t1:2,t2:1}},
+                {date:"19 июня", time:"04:00", team1:"Мексика", team2:"Южная Корея", group:"A", pred:{t1:2,t2:0}},
+                {date:"20 июня", time:"22:00", team1:"США", team2:"Австралия", group:"D", pred:{t1:2,t2:1}},
+                {date:"20 июня", time:"01:00", team1:"Шотландия", team2:"Марокко", group:"C", pred:{t1:1,t2:2}},
                 {date:"20 июня", time:"03:30", team1:"Бразилия", team2:"Гаити", group:"C", pred:{t1:3,t2:0}},
                 {date:"20 июня", time:"06:00", team1:"Турция", team2:"Парагвай", group:"D", pred:{t1:2,t2:1}},
                 {date:"20 июня", time:"20:00", team1:"Нидерланды", team2:"Швеция", group:"F", pred:{t1:2,t2:1}},
                 {date:"20 июня", time:"23:00", team1:"Германия", team2:"Кот-д'Ивуар", group:"E", pred:{t1:2,t2:0}},
                 {date:"21 июня", time:"03:00", team1:"Эквадор", team2:"Кюрасао", group:"E", pred:{t1:2,t2:0}},
-                {date:"21 июня", time:"07:00", team1:"Тунис", team2:"Япония", group:"F", pred:{t1:0,t2:1}},
+                {date:"21 июня", time:"07:00", team1:"Тунис", team2:"Япония", group:"F", pred:{t1:1,t2:2}},
                 {date:"21 июня", time:"19:00", team1:"Испания", team2:"Саудовская Аравия", group:"H", pred:{t1:3,t2:0}},
-                {date:"21 июня", time:"22:00", team1:"Бельгия", team2:"Иран", group:"G", pred:{t1:2,t2:0}},
+                {date:"21 июня", time:"22:00", team1:"Бельгия", team2:"Иран", group:"G", pred:{t1:2,t2:1}},
                 {date:"22 июня", time:"01:00", team1:"Уругвай", team2:"Кабо-Верде", group:"H", pred:{t1:2,t2:0}},
                 {date:"22 июня", time:"04:00", team1:"Новая Зеландия", team2:"Египет", group:"G", pred:{t1:0,t2:2}},
-                {date:"22 июня", time:"20:00", team1:"Аргентина", team2:"Австрия", group:"J", pred:{t1:2,t2:0}},
+                {date:"22 июня", time:"20:00", team1:"Аргентина", team2:"Австрия", group:"J", pred:{t1:2,t2:1}},
                 {date:"23 июня", time:"00:00", team1:"Франция", team2:"Ирак", group:"I", pred:{t1:3,t2:0}},
-                {date:"23 июня", time:"03:00", team1:"Норвегия", team2:"Сенегал", group:"I", pred:{t1:1,t2:1}},
+                {date:"23 июня", time:"03:00", team1:"Норвегия", team2:"Сенегал", group:"I", pred:{t1:2,t2:1}},
                 {date:"23 июня", time:"06:00", team1:"Иордания", team2:"Алжир", group:"J", pred:{t1:1,t2:2}},
                 {date:"23 июня", time:"20:00", team1:"Португалия", team2:"Узбекистан", group:"K", pred:{t1:2,t2:0}},
                 {date:"23 июня", time:"23:00", team1:"Англия", team2:"Гана", group:"L", pred:{t1:2,t2:1}},
-                {date:"24 июня", time:"02:00", team1:"Панама", team2:"Хорватия", group:"L", pred:{t1:0,t2:2}},
+                {date:"24 июня", time:"02:00", team1:"Панама", team2:"Хорватия", group:"L", pred:{t1:1,t2:2}},
                 {date:"24 июня", time:"05:00", team1:"Колумбия", team2:"ДР Конго", group:"K", pred:{t1:2,t2:1}}
             ];
             
             const initData = {
                 initialized: true,
                 matches: allMatches.map(m => ({
-                    ...m,
+                    date: m.date,
+                    time: m.time,
+                    team1: m.team1,
+                    team2: m.team2,
+                    group: m.group,
                     predictions: {
                         'Сергей': {t1: null, t2: null},
                         'ИИ': {t1: m.pred.t1, t2: m.pred.t2},
@@ -846,114 +303,63 @@ file:///C:/Users/logot/Desktop/NkS1Z2wE.htm<!DOCTYPE html>
             };
             
             db.ref('wc2026').set(initData).then(() => {
-                alert('✅ ТУРНИР СОЗДАН!\n48 матчей загружено\nПрогнозы ИИ расставлены');
+                alert('✅ ТУРНИР СОЗДАН!\n48 матчей + прогнозы ИИ');
                 location.reload();
-            }).catch(err => {
-                alert('❌ Ошибка: ' + err.message);
-            });
+            }).catch(err => alert('❌ Ошибка: ' + err.message));
         }
 
-        // Вход
         function login() {
             const name = document.getElementById('username').value.trim();
             const pass = document.getElementById('password').value.trim();
-            
-            if (!USERS[name] || USERS[name].pass !== pass) {
-                alert('❌ Неверный логин или пароль!');
-                return;
-            }
-            
+            if (!USERS[name] || USERS[name].pass !== pass) { alert('❌ Неверный логин или пароль!'); return; }
             currentUser = name;
             isAdmin = USERS[name].admin;
-            
             localStorage.setItem('wcUser', name);
             localStorage.setItem('wcPass', pass);
-            
             document.getElementById('loginBox').style.display = 'none';
             document.getElementById('mainContent').style.display = 'block';
-            
-            if (isAdmin) {
-                document.getElementById('playersSection').style.display = 'block';
-            }
-            
+            if (isAdmin) document.getElementById('playersSection').style.display = 'block';
             render();
         }
 
-        // Добавление нового игрока
         function addNewPlayer() {
+            if (!isAdmin) { alert('⚠️ Только админ!'); return; }
             const name = document.getElementById('newPlayerName').value.trim();
             const pass = document.getElementById('newPlayerPass').value.trim();
-            
-            if (!name) {
-                alert('⚠️ Введите имя игрока!');
-                return;
-            }
-            
-            if (!pass || pass.length < 2) {
-                alert('⚠️ Пароль должен быть минимум 2 символа!');
-                return;
-            }
-            
-            if (USERS[name]) {
-                alert('⚠️ Такой игрок уже есть!');
-                return;
-            }
-            
+            if (!name) { alert('⚠️ Введите имя!'); return; }
+            if (!pass || pass.length < 2) { alert('⚠️ Пароль минимум 2 символа!'); return; }
+            if (USERS[name]) { alert('⚠️ Такой игрок уже есть!'); return; }
             USERS[name] = { pass: pass, admin: false };
-            
-            if (!appData.players.includes(name)) {
-                appData.players.push(name);
-            }
-            
+            if (!appData.players.includes(name)) appData.players.push(name);
             appData.matches.forEach(m => {
                 if (!m.predictions) m.predictions = {};
                 m.predictions[name] = { t1: null, t2: null };
             });
-            
             db.ref('wc2026/players').set(appData.players);
             db.ref('wc2026/matches').set(appData.matches);
-            
             document.getElementById('newPlayerName').value = '';
             document.getElementById('newPlayerPass').value = '';
-            
             alert(`✅ Игрок "${name}" добавлен!\nПароль: ${pass}`);
-            
             render();
             renderPlayersList();
         }
 
-        // Удаление игрока
         function removePlayer(name) {
-            if (name === 'Сергей' || name === currentUser) {
-                alert('️ Нельзя удалить этого игрока!');
-                return;
-            }
-            
+            if (name === 'Сергей' || name === currentUser) { alert('⚠️ Нельзя удалить!'); return; }
             if (!confirm(`Удалить игрока "${name}"?`)) return;
-            
             delete USERS[name];
-            
             appData.players = appData.players.filter(p => p !== name);
-            
-            appData.matches.forEach(m => {
-                if (m.predictions && m.predictions[name]) {
-                    delete m.predictions[name];
-                }
-            });
-            
+            appData.matches.forEach(m => { if (m.predictions && m.predictions[name]) delete m.predictions[name]; });
             db.ref('wc2026/players').set(appData.players);
             db.ref('wc2026/matches').set(appData.matches);
-            
             alert(`✅ Игрок "${name}" удалён!`);
             render();
             renderPlayersList();
         }
 
-        // Рендер списка игроков
         function renderPlayersList() {
             const container = document.getElementById('playersList');
             if (!container) return;
-            
             container.innerHTML = appData.players.map(name => `
                 <div class="player-tag">
                     <span style="color: #ff0000; font-weight: 700;">${name}</span>
@@ -963,312 +369,181 @@ file:///C:/Users/logot/Desktop/NkS1Z2wE.htm<!DOCTYPE html>
             `).join('');
         }
 
-        // Обновление результата
         function updateResult(idx, team, val) {
-            if (!isAdmin) { alert('️ Только Сергей может вводить результаты!'); return; }
+            if (!isAdmin) { alert('⚠️ Только Сергей!'); return; }
             if (!appData || !appData.matches || !appData.matches[idx]) return;
-            
             let numVal = null;
-            if (val !== '' && val !== null && val !== undefined) {
-                numVal = parseInt(val);
-                if (isNaN(numVal)) numVal = null;
-            }
-            
-            if (!appData.matches[idx].result) {
-                appData.matches[idx].result = {t1: null, t2: null};
-            }
+            if (val !== '' && val !== null && val !== undefined) { numVal = parseInt(val); if (isNaN(numVal)) numVal = null; }
+            if (!appData.matches[idx].result) appData.matches[idx].result = {t1: null, t2: null};
             appData.matches[idx].result[team] = numVal;
-            
-            db.ref('wc2026/matches').set(appData.matches).then(() => {
-                updateGroups();
-            });
+            db.ref('wc2026/matches').set(appData.matches).then(() => updateGroups());
         }
 
-        // Обновление прогноза
         function updatePred(matchIdx, player, team, val) {
-            if (!isAdmin && currentUser !== player) {
-                alert('⚠️ Ты можешь ставить прогнозы только за себя!');
-                return;
-            }
+            if (!isAdmin && currentUser !== player) { alert('⚠️ Только за себя!'); return; }
             if (!appData || !appData.matches || !appData.matches[matchIdx]) return;
-            
             let numVal = null;
-            if (val !== '' && val !== null && val !== undefined) {
-                numVal = parseInt(val);
-                if (isNaN(numVal)) numVal = null;
-            }
-            
-            if (!appData.matches[matchIdx].predictions) {
-                appData.matches[matchIdx].predictions = {};
-            }
-            if (!appData.matches[matchIdx].predictions[player]) {
-                appData.matches[matchIdx].predictions[player] = {t1: null, t2: null};
-            }
+            if (val !== '' && val !== null && val !== undefined) { numVal = parseInt(val); if (isNaN(numVal)) numVal = null; }
+            if (!appData.matches[matchIdx].predictions) appData.matches[matchIdx].predictions = {};
+            if (!appData.matches[matchIdx].predictions[player]) appData.matches[matchIdx].predictions[player] = {t1: null, t2: null};
             appData.matches[matchIdx].predictions[player][team] = numVal;
             db.ref('wc2026/matches').set(appData.matches);
         }
 
-        // Обновление групп
         function updateGroups() {
             if (!appData || !appData.matches) return;
-            
             const groups = {};
             Object.keys(GROUPS_STRUCTURE).forEach(g => {
                 groups[g] = {};
-                GROUPS_STRUCTURE[g].forEach(team => {
-                    groups[g][team] = {name: team, p:0, w:0, d:0, l:0, gf:0, ga:0, gd:0, pts:0};
-                });
+                GROUPS_STRUCTURE[g].forEach(team => { groups[g][team] = {name: team, p:0, w:0, d:0, l:0, gf:0, ga:0, gd:0, pts:0}; });
             });
-            
             appData.matches.forEach(m => {
                 if (!m.group || !m.result || m.result.t1 === null || m.result.t2 === null) return;
                 const g = m.group.toUpperCase();
                 if (!groups[g] || !groups[g][m.team1] || !groups[g][m.team2]) return;
-                
                 const t1 = groups[g][m.team1], t2 = groups[g][m.team2];
                 t1.p++; t2.p++;
                 t1.gf += m.result.t1; t1.ga += m.result.t2;
                 t2.gf += m.result.t2; t2.ga += m.result.t1;
                 t1.gd = t1.gf - t1.ga; t2.gd = t2.gf - t2.ga;
-                
                 if (m.result.t1 > m.result.t2) { t1.w++; t1.pts += 3; t2.l++; }
                 else if (m.result.t1 < m.result.t2) { t2.w++; t2.pts += 3; t1.l++; }
                 else { t1.d++; t1.pts++; t2.d++; t2.pts++; }
             });
-            
             appData.groups = groups;
             db.ref('wc2026/groups').set(groups);
         }
 
-        // Подсчёт очков
         function calcPoints() {
             if (!appData || !appData.matches || !appData.players) return {};
-            
             const stats = {};
             appData.players.forEach(p => stats[p] = {pts: 0, exact: 0, diff: 0, outcome: 0});
-            
             appData.matches.forEach(m => {
                 if (!m.result || m.result.t1 === null || m.result.t2 === null) return;
                 const isPlayoff = m.group && ['1/8','1/4','1/2','ФИНАЛ'].some(x => m.group.includes(x));
                 const mult = isPlayoff ? 2 : 1;
-                
                 appData.players.forEach(player => {
                     if (!m.predictions || !m.predictions[player]) return;
                     const pred = m.predictions[player];
                     if (pred.t1 === null || pred.t2 === null) return;
-                    
                     const realDiff = m.result.t1 - m.result.t2;
                     const predDiff = pred.t1 - pred.t2;
-                    
-                    if (pred.t1 === m.result.t1 && pred.t2 === m.result.t2) {
-                        stats[player].pts += 3 * mult;
-                        stats[player].exact++;
-                    } else if (predDiff === realDiff) {
-                        stats[player].pts += 2 * mult;
-                        stats[player].diff++;
-                    } else if (Math.sign(predDiff) === Math.sign(realDiff)) {
-                        stats[player].pts += 1 * mult;
-                        stats[player].outcome++;
-                    }
+                    if (pred.t1 === m.result.t1 && pred.t2 === m.result.t2) { stats[player].pts += 3 * mult; stats[player].exact++; }
+                    else if (predDiff === realDiff) { stats[player].pts += 2 * mult; stats[player].diff++; }
+                    else if (Math.sign(predDiff) === Math.sign(realDiff)) { stats[player].pts += 1 * mult; stats[player].outcome++; }
                 });
             });
             return stats;
         }
 
-        function safeVal(v) {
-            if (v === null || v === undefined) return '';
-            return v;
-        }
+        function safeVal(v) { if (v === null || v === undefined) return ''; return v; }
 
-        // Рендер
         function render() {
             if (!appData || !currentUser) return;
             
-            // МАТЧИ
             const matchesHTML = appData.matches.map((m, i) => {
                 const preds = appData.players.map(p => {
                     const pred = (m.predictions && m.predictions[p]) || {t1: null, t2: null};
-                    let pts = 0;
-                    let hasResult = false;
-                    
-                    if (m.result && m.result.t1 !== null && m.result.t2 !== null && 
-                        pred.t1 !== null && pred.t2 !== null) {
+                    let pts = 0; let hasResult = false;
+                    if (m.result && m.result.t1 !== null && m.result.t2 !== null && pred.t1 !== null && pred.t2 !== null) {
                         hasResult = true;
                         const isPlayoff = m.group && ['1/8','1/4','1/2','ФИНАЛ'].some(x => m.group.includes(x));
                         const mult = isPlayoff ? 2 : 1;
                         const realDiff = m.result.t1 - m.result.t2;
                         const predDiff = pred.t1 - pred.t2;
-                        
-                        if (pred.t1 === m.result.t1 && pred.t2 === m.result.t2) {
-                            pts = 3 * mult;
-                        } else if (predDiff === realDiff) {
-                            pts = 2 * mult;
-                        } else if (Math.sign(predDiff) === Math.sign(realDiff)) {
-                            pts = 1 * mult;
-                        }
+                        if (pred.t1 === m.result.t1 && pred.t2 === m.result.t2) pts = 3 * mult;
+                        else if (predDiff === realDiff) pts = 2 * mult;
+                        else if (Math.sign(predDiff) === Math.sign(realDiff)) pts = 1 * mult;
                     }
-                    
                     const canEdit = isAdmin || currentUser === p;
                     const isYou = p === currentUser;
                     const ptsClass = hasResult ? (pts >= 3 ? 'good' : pts >= 1 ? 'ok' : 'zero') : 'zero';
                     const ptsText = hasResult ? (pts > 0 ? '+' + pts : '0') : '—';
-                    
-                    return `
-                        <div class="player-prediction ${!canEdit ? 'disabled' : ''}">
-                            <div class="player-name ${isYou ? 'you' : ''}">${p}${isYou ? ' ' : ''}</div>
-                            <div style="display:flex; gap:8px; justify-content:center; align-items:center;">
-                                <input type="number" min="0" max="20" value="${safeVal(pred.t1)}" 
-                                    ${!canEdit ? 'disabled' : ''} 
-                                    onchange="updatePred(${i}, '${p}', 't1', this.value)">
-                                <span style="color:#ff0000; font-weight:700; font-size:1.3em;">:</span>
-                                <input type="number" min="0" max="20" value="${safeVal(pred.t2)}" 
-                                    ${!canEdit ? 'disabled' : ''} 
-                                    onchange="updatePred(${i}, '${p}', 't2', this.value)">
-                            </div>
-                            <div class="points ${ptsClass}">${ptsText}</div>
+                    return `<div class="player-prediction ${!canEdit ? 'disabled' : ''}">
+                        <div class="player-name ${isYou ? 'you' : ''}">${p}${isYou ? ' ⭐' : ''}</div>
+                        <div style="display:flex; gap:8px; justify-content:center; align-items:center;">
+                            <input type="number" min="0" max="20" value="${safeVal(pred.t1)}" ${!canEdit ? 'disabled' : ''} onchange="updatePred(${i}, '${p}', 't1', this.value)">
+                            <span style="color:#ff0000; font-weight:700; font-size:1.3em;">:</span>
+                            <input type="number" min="0" max="20" value="${safeVal(pred.t2)}" ${!canEdit ? 'disabled' : ''} onchange="updatePred(${i}, '${p}', 't2', this.value)">
                         </div>
-                    `;
+                        <div class="points ${ptsClass}">${ptsText}</div>
+                    </div>`;
                 }).join('');
-                
-                return `
-                    <div class="match-card">
-                        <div class="match-header">
-                            <div class="match-info">
-                                <div class="date">📅 ${m.date || '—'} ${m.time || ''}</div>
-                                <div class="teams">${m.team1} — ${m.team2}</div>
-                                <div class="group">ГРУППА ${m.group || '-'}</div>
-                            </div>
-                            <div style="text-align:right;">
-                                <div style="color:#aaa; margin-bottom:5px; font-size:0.9em; font-weight:600;">РЕЗУЛЬТАТ:</div>
-                                <div style="display:flex; align-items:center; gap:8px;">
-                                    <input type="number" min="0" max="20" value="${safeVal(m.result ? m.result.t1 : null)}" 
-                                        ${!isAdmin ? 'disabled' : ''} 
-                                        onchange="updateResult(${i}, 't1', this.value)">
-                                    <span style="color:#ff0000; font-weight:900; font-size:1.5em;">:</span>
-                                    <input type="number" min="0" max="20" value="${safeVal(m.result ? m.result.t2 : null)}" 
-                                        ${!isAdmin ? 'disabled' : ''} 
-                                        onchange="updateResult(${i}, 't2', this.value)">
-                                </div>
+                return `<div class="match-card">
+                    <div class="match-header">
+                        <div>
+                            <div style="color:#888; font-size:0.9em;">📅 ${m.date || '—'} ${m.time || ''}</div>
+                            <div style="font-size:1.3em; font-weight:700;">${m.team1} — ${m.team2}</div>
+                            <div style="color:#ff0000; font-family:'Orbitron'; letter-spacing:2px; font-size:0.9em;">ГРУППА ${m.group || '-'}</div>
+                        </div>
+                        <div style="text-align:right;">
+                            <div style="color:#aaa; margin-bottom:5px; font-size:0.9em; font-weight:600;">РЕЗУЛЬТАТ:</div>
+                            <div style="display:flex; align-items:center; gap:8px;">
+                                <input type="number" min="0" max="20" value="${safeVal(m.result ? m.result.t1 : null)}" ${!isAdmin ? 'disabled' : ''} onchange="updateResult(${i}, 't1', this.value)">
+                                <span style="color:#ff0000; font-weight:900; font-size:1.5em;">:</span>
+                                <input type="number" min="0" max="20" value="${safeVal(m.result ? m.result.t2 : null)}" ${!isAdmin ? 'disabled' : ''} onchange="updateResult(${i}, 't2', this.value)">
                             </div>
                         </div>
-                        <div style="color:#ff0000; font-weight:700; margin:10px 0; font-family:'Orbitron'; letter-spacing:2px; font-size:0.9em;">📝 ПРОГНОЗЫ:</div>
-                        <div class="predictions-grid">${preds}</div>
                     </div>
-                `;
+                    <div style="color:#ff0000; font-weight:700; margin:10px 0; font-family:'Orbitron'; letter-spacing:2px; font-size:0.9em;">📝 ПРОГНОЗЫ:</div>
+                    <div class="predictions-grid">${preds}</div>
+                </div>`;
             }).join('');
-            
             document.getElementById('matchesList').innerHTML = matchesHTML || '<div style="text-align:center; padding:40px; color:#666;">Нет матчей</div>';
             
-            // ГРУППЫ
             let groupsHTML = '';
             if (appData.groups && Object.keys(appData.groups).length > 0) {
                 Object.entries(appData.groups).forEach(([name, teams]) => {
-                    const sorted = Object.values(teams).sort((a,b) => {
-                        if (b.pts !== a.pts) return b.pts - a.pts;
-                        if (b.gd !== a.gd) return b.gd - a.gd;
-                        return b.gf - a.gf;
-                    });
-                    
+                    const sorted = Object.values(teams).sort((a,b) => { if (b.pts !== a.pts) return b.pts - a.pts; if (b.gd !== a.gd) return b.gd - a.gd; return b.gf - a.gf; });
                     if (sorted.length > 0 && sorted.some(t => t.p > 0)) {
-                        groupsHTML += `
-                            <div class="group-table">
-                                <div class="group-title">ГРУППА ${name}</div>
-                                <table>
-                                    <thead><tr><th>#</th><th>Команда</th><th>И</th><th>В</th><th>Н</th><th>П</th><th>Мячи</th><th>±</th><th>О</th></tr></thead>
-                                    <tbody>
-                                        ${sorted.map((t, idx) => `
-                                            <tr class="${idx < 2 ? 'qualify' : ''}">
-                                                <td>${idx+1}</td>
-                                                <td style="text-align:left; font-weight:700;">${t.name}</td>
-                                                <td>${t.p}</td>
-                                                <td>${t.w}</td>
-                                                <td>${t.d}</td>
-                                                <td>${t.l}</td>
-                                                <td>${t.gf}-${t.ga}</td>
-                                                <td>${t.gd > 0 ? '+' : ''}${t.gd}</td>
-                                                <td style="font-weight:900; color:#ffd700;">${t.pts}</td>
-                                            </tr>
-                                        `).join('')}
-                                    </tbody>
-                                </table>
-                            </div>
-                        `;
+                        groupsHTML += `<div class="group-table"><div class="group-title">ГРУППА ${name}</div>
+                            <table><thead><tr><th>#</th><th>Команда</th><th>И</th><th>В</th><th>Н</th><th>П</th><th>Мячи</th><th>±</th><th>О</th></tr></thead>
+                            <tbody>${sorted.map((t, idx) => `<tr class="${idx < 2 ? 'qualify' : ''}">
+                                <td>${idx+1}</td><td style="text-align:left; font-weight:700;">${t.name}</td>
+                                <td>${t.p}</td><td>${t.w}</td><td>${t.d}</td><td>${t.l}</td>
+                                <td>${t.gf}-${t.ga}</td><td>${t.gd > 0 ? '+' : ''}${t.gd}</td>
+                                <td style="font-weight:900; color:#ffd700;">${t.pts}</td>
+                            </tr>`).join('')}</tbody></table></div>`;
                     }
                 });
             }
-            document.getElementById('groupsList').innerHTML = groupsHTML || '<div style="text-align:center; padding:40px; color:#666; font-size:1.1em;">⚽ Введите результаты матчей — таблицы групп появятся автоматически</div>';
+            document.getElementById('groupsList').innerHTML = groupsHTML || '<div style="text-align:center; padding:40px; color:#666;">⚽ Введите результаты матчей</div>';
             
-            // ТАБЛИЦА ЛИДЕРОВ
             const stats = calcPoints();
             const sorted = Object.entries(stats).sort((a,b) => b[1].pts - a[1].pts);
             document.getElementById('leaderboardBody').innerHTML = sorted.map(([p, s], i) => `
-                <tr>
-                    <td style="font-family:'Orbitron'; font-weight:900; color:#ff0000;">${i+1}</td>
-                    <td style="font-weight:700; text-align:left;">${p}${p === currentUser ? ' ⭐' : ''}</td>
-                    <td style="font-weight:900; color:#ffd700; font-size:1.2em;">${Math.round(s.pts)}</td>
-                    <td>${s.exact}</td>
-                    <td>${s.diff}</td>
-                    <td>${s.outcome}</td>
-                </tr>
+                <tr><td style="font-family:'Orbitron'; font-weight:900; color:#ff0000;">${i+1}</td>
+                <td style="font-weight:700; text-align:left;">${p}${p === currentUser ? ' ⭐' : ''}</td>
+                <td style="font-weight:900; color:#ffd700; font-size:1.2em;">${Math.round(s.pts)}</td>
+                <td>${s.exact}</td><td>${s.diff}</td><td>${s.outcome}</td></tr>
             `).join('') || '<tr><td colspan="6" style="padding:30px;">Нет данных</td></tr>';
             
-            // АНАЛИТИКА
             const totalPts = Object.values(stats).reduce((sum, s) => sum + s.pts, 0);
             const completed = appData.matches.filter(m => m.result && m.result.t1 !== null).length;
-            const predictionsCount = appData.matches.reduce((sum, m) => {
-                if (!m.predictions) return sum;
-                return sum + Object.values(m.predictions).filter(p => p.t1 !== null && p.t2 !== null).length;
-            }, 0);
+            const predictionsCount = appData.matches.reduce((sum, m) => { if (!m.predictions) return sum; return sum + Object.values(m.predictions).filter(p => p.t1 !== null && p.t2 !== null).length; }, 0);
             
             document.getElementById('analyticsContent').innerHTML = `
                 <div class="analytics-grid">
-                    <div class="stat-card">
-                        <div class="stat-value">${appData.matches.length}</div>
-                        <div class="stat-label">ВСЕГО МАТЧЕЙ</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-value">${completed}</div>
-                        <div class="stat-label">СЫГРАНО</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-value">${appData.players.length}</div>
-                        <div class="stat-label">ИГРОКОВ</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-value">${Math.round(totalPts)}</div>
-                        <div class="stat-label">ВСЕГО ОЧКОВ</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-value">${predictionsCount}</div>
-                        <div class="stat-label">ПРОГНОЗОВ</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-value">${completed > 0 ? (totalPts / completed / appData.players.length).toFixed(1) : '0'}</div>
-                        <div class="stat-label">СРЕДНИЙ БАЛЛ</div>
-                    </div>
+                    <div class="stat-card"><div class="stat-value">${appData.matches.length}</div><div class="stat-label">ВСЕГО МАТЧЕЙ</div></div>
+                    <div class="stat-card"><div class="stat-value">${completed}</div><div class="stat-label">СЫГРАНО</div></div>
+                    <div class="stat-card"><div class="stat-value">${appData.players.length}</div><div class="stat-label">ИГРОКОВ</div></div>
+                    <div class="stat-card"><div class="stat-value">${Math.round(totalPts)}</div><div class="stat-label">ВСЕГО ОЧКОВ</div></div>
+                    <div class="stat-card"><div class="stat-value">${predictionsCount}</div><div class="stat-label">ПРОГНОЗОВ</div></div>
+                    <div class="stat-card"><div class="stat-value">${completed > 0 ? (totalPts / completed / appData.players.length).toFixed(1) : '0'}</div><div class="stat-label">СРЕДНИЙ БАЛЛ</div></div>
                 </div>
-                
-                <div class="top-player-card">
-                    <h3>🏆 ТОП ИГРОКОВ</h3>
-                    ${sorted.map(([p, s], i) => `
-                        <div class="top-player-row">
-                            <span style="font-family:'Orbitron'; color:#ff0000; font-weight:900;">#${i+1}</span>
-                            <span style="font-weight:700; font-size:1.1em;">${p}${p === currentUser ? ' ⭐' : ''}</span>
-                            <span class="pts">${Math.round(s.pts)}</span>
-                        </div>
-                    `).join('')}
+                <div class="top-player-card"><h3>🏆 ТОП ИГРОКОВ</h3>
+                    ${sorted.map(([p, s], i) => `<div class="top-player-row">
+                        <span style="font-family:'Orbitron'; color:#ff0000; font-weight:900;">#${i+1}</span>
+                        <span style="font-weight:700; font-size:1.1em;">${p}${p === currentUser ? ' ⭐' : ''}</span>
+                        <span class="pts">${Math.round(s.pts)}</span>
+                    </div>`).join('')}
                 </div>
-                
-                <div class="top-player-card" style="margin-top:15px;">
-                    <h3>🎯 ТОЧНЫЕ ПРОГНОЗЫ</h3>
+                <div class="top-player-card" style="margin-top:15px;"><h3>🎯 ТОЧНЫЕ ПРОГНОЗЫ</h3>
                     ${Object.entries(stats).sort((a,b) => b[1].exact - a[1].exact).map(([p, s]) => `
-                        <div class="top-player-row">
-                            <span style="font-weight:700;">${p}</span>
-                            <span style="color:#ffd700; font-weight:900; font-family:'Orbitron';">${s.exact}</span>
-                        </div>
+                        <div class="top-player-row"><span style="font-weight:700;">${p}</span>
+                        <span style="color:#ffd700; font-weight:900; font-family:'Orbitron';">${s.exact}</span></div>
                     `).join('')}
-                </div>
-            `;
+                </div>`;
             
             renderPlayersList();
         }
