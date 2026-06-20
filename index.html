@@ -365,7 +365,6 @@
         tr:hover { background: rgba(139, 0, 0, 0.3); }
         tr.qualify { background: rgba(0, 80, 0, 0.3) !important; border-left: 3px solid #00ff00; }
         
-        /* УБИРАЕМ СТРЕЛОЧКИ У NUMBER INPUT */
         input[type="number"] {
             -moz-appearance: textfield;
             appearance: textfield;
@@ -551,16 +550,77 @@
             font-size: 0.85em;
             font-weight: 500;
         }
+        
+        .players-section {
+            background: rgba(10, 0, 0, 0.85);
+            border: 2px solid #8B0000;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .players-inputs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .players-inputs input {
+            flex: 1;
+            min-width: 150px;
+            padding: 10px;
+            background: #000;
+            border: 2px solid #8B0000;
+            color: #fff;
+            border-radius: 8px;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 1em;
+        }
+        
+        .players-list {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+        
+        .player-tag {
+            background: rgba(139, 0, 0, 0.4);
+            border: 2px solid #8B0000;
+            padding: 8px 15px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+        }
+        
+        .player-tag .remove-btn {
+            background: #ff0000;
+            border: none;
+            color: #fff;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 0.8em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+            margin: 0;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>⚽ ЧМ-2026 ⚽</h1>
-        <div id="status" class="status offline">🔴 ПОДКЛЮЧЕНИЕ...</div>
+        <div id="status" class="status offline"> ПОДКЛЮЧЕНИЕ...</div>
         
         <div id="initBanner" class="init-banner" style="display:none;">
             <h2>🎮 ПЕРВЫЙ ЗАПУСК</h2>
-            <p style="margin: 15px 0; font-size: 1.1em;">Создать турнир: 24 матча + 3 игрока</p>
+            <p style="margin: 15px 0; font-size: 1.1em;">Создать турнир: 48 матчей + 3 игрока</p>
             <button class="primary" onclick="initTournament()">🚀 ЗАПУСТИТЬ</button>
         </div>
 
@@ -575,6 +635,17 @@
         </div>
 
         <div id="mainContent" style="display:none;">
+            <!-- УПРАВЛЕНИЕ ИГРОКАМИ (только для админа) -->
+            <div id="playersSection" class="players-section" style="display:none;">
+                <div class="section-title" style="font-size: 1.2em;">👥 УПРАВЛЕНИЕ ИГРОКАМИ</div>
+                <div class="players-inputs">
+                    <input type="text" id="newPlayerName" placeholder="Имя нового игрока">
+                    <input type="password" id="newPlayerPass" placeholder="Пароль (2 цифры)" maxlength="2">
+                    <button onclick="addNewPlayer()" style="background: linear-gradient(135deg, #00ff00 0%, #008800 100%); color: #000; font-weight: 900;">+ ДОБАВИТЬ</button>
+                </div>
+                <div id="playersList" class="players-list"></div>
+            </div>
+
             <div class="rules">
                 <div class="rules-title">📋 ПРАВИЛА:</div>
                 <div class="rules-list">
@@ -608,7 +679,7 @@
             
             <div id="leaderboard" class="tab-content">
                 <div class="section">
-                    <div class="section-title">🏆 Таблица лидеров</div>
+                    <div class="section-title"> Таблица лидеров</div>
                     <table>
                         <thead><tr><th>#</th><th>Игрок</th><th>Очки</th><th>Точных</th><th>Разница</th><th>Исходов</th></tr></thead>
                         <tbody id="leaderboardBody"></tbody>
@@ -643,7 +714,6 @@
         let isAdmin = false;
         let appData = null;
         
-        // ПРОСТЫЕ ПАРОЛИ
         const USERS = {
             'Сергей': { pass: '11', admin: true },
             'ИИ': { pass: '22', admin: false },
@@ -685,7 +755,6 @@
                     appData = val;
                     document.getElementById('initBanner').style.display = 'none';
                     
-                    // АВТОЗАПОЛНЕНИЕ
                     const savedUser = localStorage.getItem('wcUser');
                     const savedPass = localStorage.getItem('wcPass');
                     if (savedUser) document.getElementById('username').value = savedUser;
@@ -709,30 +778,56 @@
         // Создание турнира
         function initTournament() {
             const allMatches = [
-                {date:"11 июня", time:"22:00", team1:"Мексика", team2:"ЮАР", group:"A"},
-                {date:"12 июня", time:"05:00", team1:"Южная Корея", team2:"Чехия", group:"A"},
-                {date:"12 июня", time:"22:00", team1:"Канада", team2:"Босния", group:"B"},
-                {date:"13 июня", time:"04:00", team1:"США", team2:"Парагвай", group:"D"},
-                {date:"13 июня", time:"22:00", team1:"Катар", team2:"Швейцария", group:"B"},
-                {date:"14 июня", time:"01:00", team1:"Бразилия", team2:"Марокко", group:"C"},
-                {date:"14 июня", time:"04:00", team1:"Гаити", team2:"Шотландия", group:"C"},
-                {date:"14 июня", time:"07:00", team1:"Австралия", team2:"Турция", group:"D"},
-                {date:"14 июня", time:"20:00", team1:"Германия", team2:"Кюрасао", group:"E"},
-                {date:"14 июня", time:"23:00", team1:"Нидерланды", team2:"Япония", group:"F"},
-                {date:"15 июня", time:"02:00", team1:"Кот-д'Ивуар", team2:"Эквадор", group:"E"},
-                {date:"15 июня", time:"05:00", team1:"Швеция", team2:"Тунис", group:"F"},
-                {date:"15 июня", time:"19:00", team1:"Испания", team2:"Кабо-Верде", group:"H"},
-                {date:"15 июня", time:"22:00", team1:"Бельгия", team2:"Египет", group:"G"},
-                {date:"16 июня", time:"01:00", team1:"Саудовская Аравия", team2:"Уругвай", group:"H"},
-                {date:"16 июня", time:"04:00", team1:"Иран", team2:"Новая Зеландия", group:"G"},
-                {date:"16 июня", time:"22:00", team1:"Франция", team2:"Сенегал", group:"I"},
-                {date:"17 июня", time:"01:00", team1:"Ирак", team2:"Норвегия", group:"I"},
-                {date:"17 июня", time:"04:00", team1:"Аргентина", team2:"Алжир", group:"J"},
-                {date:"17 июня", time:"07:00", team1:"Австрия", team2:"Иордания", group:"J"},
-                {date:"17 июня", time:"20:00", team1:"Португалия", team2:"ДР Конго", group:"K"},
-                {date:"17 июня", time:"23:00", team1:"Англия", team2:"Хорватия", group:"L"},
-                {date:"18 июня", time:"02:00", team1:"Гана", team2:"Панама", group:"L"},
-                {date:"18 июня", time:"05:00", team1:"Узбекистан", team2:"Колумбия", group:"K"}
+                // Тур 1 (11-18 июня)
+                {date:"11 июня", time:"22:00", team1:"Мексика", team2:"ЮАР", group:"A", pred:{t1:2,t2:1}},
+                {date:"12 июня", time:"05:00", team1:"Южная Корея", team2:"Чехия", group:"A", pred:{t1:1,t2:2}},
+                {date:"12 июня", time:"22:00", team1:"Канада", team2:"Босния", group:"B", pred:{t1:2,t2:0}},
+                {date:"13 июня", time:"04:00", team1:"США", team2:"Парагвай", group:"D", pred:{t1:2,t2:1}},
+                {date:"13 июня", time:"22:00", team1:"Катар", team2:"Швейцария", group:"B", pred:{t1:0,t2:2}},
+                {date:"14 июня", time:"01:00", team1:"Бразилия", team2:"Марокко", group:"C", pred:{t1:2,t2:1}},
+                {date:"14 июня", time:"04:00", team1:"Гаити", team2:"Шотландия", group:"C", pred:{t1:0,t2:2}},
+                {date:"14 июня", time:"07:00", team1:"Австралия", team2:"Турция", group:"D", pred:{t1:1,t2:2}},
+                {date:"14 июня", time:"20:00", team1:"Германия", team2:"Кюрасао", group:"E", pred:{t1:3,t2:0}},
+                {date:"14 июня", time:"23:00", team1:"Нидерланды", team2:"Япония", group:"F", pred:{t1:2,t2:1}},
+                {date:"15 июня", time:"02:00", team1:"Кот-д'Ивуар", team2:"Эквадор", group:"E", pred:{t1:2,t2:1}},
+                {date:"15 июня", time:"05:00", team1:"Швеция", team2:"Тунис", group:"F", pred:{t1:2,t2:0}},
+                {date:"15 июня", time:"19:00", team1:"Испания", team2:"Кабо-Верде", group:"H", pred:{t1:3,t2:0}},
+                {date:"15 июня", time:"22:00", team1:"Бельгия", team2:"Египет", group:"G", pred:{t1:2,t2:1}},
+                {date:"16 июня", time:"01:00", team1:"Саудовская Аравия", team2:"Уругвай", group:"H", pred:{t1:1,t2:2}},
+                {date:"16 июня", time:"04:00", team1:"Иран", team2:"Новая Зеландия", group:"G", pred:{t1:2,t2:0}},
+                {date:"16 июня", time:"22:00", team1:"Франция", team2:"Сенегал", group:"I", pred:{t1:2,t2:1}},
+                {date:"17 июня", time:"01:00", team1:"Ирак", team2:"Норвегия", group:"I", pred:{t1:1,t2:3}},
+                {date:"17 июня", time:"04:00", team1:"Аргентина", team2:"Алжир", group:"J", pred:{t1:2,t2:0}},
+                {date:"17 июня", time:"07:00", team1:"Австрия", team2:"Иордания", group:"J", pred:{t1:2,t2:1}},
+                {date:"17 июня", time:"20:00", team1:"Португалия", team2:"ДР Конго", group:"K", pred:{t1:3,t2:1}},
+                {date:"17 июня", time:"23:00", team1:"Англия", team2:"Хорватия", group:"L", pred:{t1:2,t2:1}},
+                {date:"18 июня", time:"02:00", team1:"Гана", team2:"Панама", group:"L", pred:{t1:2,t2:0}},
+                {date:"18 июня", time:"05:00", team1:"Узбекистан", team2:"Колумбия", group:"K", pred:{t1:1,t2:2}},
+                // Тур 2 (19-24 июня)
+                {date:"19 июня", time:"19:00", team1:"Чехия", team2:"ЮАР", group:"A", pred:{t1:2,t2:0}},
+                {date:"19 июня", time:"22:00", team1:"Швейцария", team2:"Босния", group:"B", pred:{t1:2,t2:1}},
+                {date:"19 июня", time:"01:00", team1:"Канада", team2:"Катар", group:"B", pred:{t1:2,t2:0}},
+                {date:"19 июня", time:"04:00", team1:"Мексика", team2:"Южная Корея", group:"A", pred:{t1:2,t2:1}},
+                {date:"19 июня", time:"22:00", team1:"США", team2:"Австралия", group:"D", pred:{t1:2,t2:1}},
+                {date:"20 июня", time:"01:00", team1:"Шотландия", team2:"Марокко", group:"C", pred:{t1:0,t2:2}},
+                {date:"20 июня", time:"03:30", team1:"Бразилия", team2:"Гаити", group:"C", pred:{t1:3,t2:0}},
+                {date:"20 июня", time:"06:00", team1:"Турция", team2:"Парагвай", group:"D", pred:{t1:2,t2:1}},
+                {date:"20 июня", time:"20:00", team1:"Нидерланды", team2:"Швеция", group:"F", pred:{t1:2,t2:1}},
+                {date:"20 июня", time:"23:00", team1:"Германия", team2:"Кот-д'Ивуар", group:"E", pred:{t1:2,t2:0}},
+                {date:"21 июня", time:"03:00", team1:"Эквадор", team2:"Кюрасао", group:"E", pred:{t1:2,t2:0}},
+                {date:"21 июня", time:"07:00", team1:"Тунис", team2:"Япония", group:"F", pred:{t1:0,t2:1}},
+                {date:"21 июня", time:"19:00", team1:"Испания", team2:"Саудовская Аравия", group:"H", pred:{t1:3,t2:0}},
+                {date:"21 июня", time:"22:00", team1:"Бельгия", team2:"Иран", group:"G", pred:{t1:2,t2:0}},
+                {date:"22 июня", time:"01:00", team1:"Уругвай", team2:"Кабо-Верде", group:"H", pred:{t1:2,t2:0}},
+                {date:"22 июня", time:"04:00", team1:"Новая Зеландия", team2:"Египет", group:"G", pred:{t1:0,t2:2}},
+                {date:"22 июня", time:"20:00", team1:"Аргентина", team2:"Австрия", group:"J", pred:{t1:2,t2:0}},
+                {date:"23 июня", time:"00:00", team1:"Франция", team2:"Ирак", group:"I", pred:{t1:3,t2:0}},
+                {date:"23 июня", time:"03:00", team1:"Норвегия", team2:"Сенегал", group:"I", pred:{t1:1,t2:1}},
+                {date:"23 июня", time:"06:00", team1:"Иордания", team2:"Алжир", group:"J", pred:{t1:1,t2:2}},
+                {date:"23 июня", time:"20:00", team1:"Португалия", team2:"Узбекистан", group:"K", pred:{t1:2,t2:0}},
+                {date:"23 июня", time:"23:00", team1:"Англия", team2:"Гана", group:"L", pred:{t1:2,t2:1}},
+                {date:"24 июня", time:"02:00", team1:"Панама", team2:"Хорватия", group:"L", pred:{t1:0,t2:2}},
+                {date:"24 июня", time:"05:00", team1:"Колумбия", team2:"ДР Конго", group:"K", pred:{t1:2,t2:1}}
             ];
             
             const initData = {
@@ -741,7 +836,7 @@
                     ...m,
                     predictions: {
                         'Сергей': {t1: null, t2: null},
-                        'ИИ': {t1: null, t2: null},
+                        'ИИ': {t1: m.pred.t1, t2: m.pred.t2},
                         'АлПашка': {t1: null, t2: null}
                     },
                     result: {t1: null, t2: null}
@@ -751,7 +846,7 @@
             };
             
             db.ref('wc2026').set(initData).then(() => {
-                alert('✅ ТУРНИР СОЗДАН!\n24 матча загружено');
+                alert('✅ ТУРНИР СОЗДАН!\n48 матчей загружено\nПрогнозы ИИ расставлены');
                 location.reload();
             }).catch(err => {
                 alert('❌ Ошибка: ' + err.message);
@@ -771,18 +866,106 @@
             currentUser = name;
             isAdmin = USERS[name].admin;
             
-            // СОХРАНЯЕМ ДЛЯ АВТОЗАПОЛНЕНИЯ
             localStorage.setItem('wcUser', name);
             localStorage.setItem('wcPass', pass);
             
             document.getElementById('loginBox').style.display = 'none';
             document.getElementById('mainContent').style.display = 'block';
+            
+            if (isAdmin) {
+                document.getElementById('playersSection').style.display = 'block';
+            }
+            
             render();
+        }
+
+        // Добавление нового игрока
+        function addNewPlayer() {
+            const name = document.getElementById('newPlayerName').value.trim();
+            const pass = document.getElementById('newPlayerPass').value.trim();
+            
+            if (!name) {
+                alert('⚠️ Введите имя игрока!');
+                return;
+            }
+            
+            if (!pass || pass.length < 2) {
+                alert('⚠️ Пароль должен быть минимум 2 символа!');
+                return;
+            }
+            
+            if (USERS[name]) {
+                alert('⚠️ Такой игрок уже есть!');
+                return;
+            }
+            
+            USERS[name] = { pass: pass, admin: false };
+            
+            if (!appData.players.includes(name)) {
+                appData.players.push(name);
+            }
+            
+            appData.matches.forEach(m => {
+                if (!m.predictions) m.predictions = {};
+                m.predictions[name] = { t1: null, t2: null };
+            });
+            
+            db.ref('wc2026/players').set(appData.players);
+            db.ref('wc2026/matches').set(appData.matches);
+            
+            document.getElementById('newPlayerName').value = '';
+            document.getElementById('newPlayerPass').value = '';
+            
+            alert(`✅ Игрок "${name}" добавлен!\nПароль: ${pass}`);
+            
+            render();
+            renderPlayersList();
+        }
+
+        // Удаление игрока
+        function removePlayer(name) {
+            if (name === 'Сергей' || name === currentUser) {
+                alert('️ Нельзя удалить этого игрока!');
+                return;
+            }
+            
+            if (!confirm(`Удалить игрока "${name}"?`)) return;
+            
+            delete USERS[name];
+            
+            appData.players = appData.players.filter(p => p !== name);
+            
+            appData.matches.forEach(m => {
+                if (m.predictions && m.predictions[name]) {
+                    delete m.predictions[name];
+                }
+            });
+            
+            db.ref('wc2026/players').set(appData.players);
+            db.ref('wc2026/matches').set(appData.matches);
+            
+            alert(`✅ Игрок "${name}" удалён!`);
+            render();
+            renderPlayersList();
+        }
+
+        // Рендер списка игроков
+        function renderPlayersList() {
+            const container = document.getElementById('playersList');
+            if (!container) return;
+            
+            container.innerHTML = appData.players.map(name => `
+                <div class="player-tag">
+                    <span style="color: #ff0000; font-weight: 700;">${name}</span>
+                    <span style="color: #888; font-size: 0.85em;">(${USERS[name] && USERS[name].admin ? 'Админ' : 'Игрок'})</span>
+                    ${name !== 'Сергей' ? `<button class="remove-btn" onclick="removePlayer('${name}')">×</button>` : ''}
+                </div>
+            `).join('');
         }
 
         // Обновление результата
         function updateResult(idx, team, val) {
-            if (!isAdmin) { alert('⚠️ Только Сергей может вводить результаты!'); return; }
+            if (!isAdmin) { alert('️ Только Сергей может вводить результаты!'); return; }
             if (!appData || !appData.matches || !appData.matches[idx]) return;
             
             let numVal = null;
@@ -892,7 +1075,6 @@
             return stats;
         }
 
-        // Безопасное получение значения (ИСПРАВЛЕНИЕ БАГА С НУЛЁМ)
         function safeVal(v) {
             if (v === null || v === undefined) return '';
             return v;
@@ -933,7 +1115,7 @@
                     
                     return `
                         <div class="player-prediction ${!canEdit ? 'disabled' : ''}">
-                            <div class="player-name ${isYou ? 'you' : ''}">${p}${isYou ? ' ⭐' : ''}</div>
+                            <div class="player-name ${isYou ? 'you' : ''}">${p}${isYou ? ' ' : ''}</div>
                             <div style="display:flex; gap:8px; justify-content:center; align-items:center;">
                                 <input type="number" min="0" max="20" value="${safeVal(pred.t1)}" 
                                     ${!canEdit ? 'disabled' : ''} 
@@ -1087,6 +1269,8 @@
                     `).join('')}
                 </div>
             `;
+            
+            renderPlayersList();
         }
 
         function switchTab(tabName) {
