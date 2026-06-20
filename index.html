@@ -9,74 +9,73 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Rajdhani', sans-serif; font-weight: 500; background: #000; background-image: radial-gradient(circle at 20% 30%, rgba(139, 0, 0, 0.15) 0%, transparent 50%), radial-gradient(circle at 80% 70%, rgba(139, 0, 0, 0.1) 0%, transparent 50%), linear-gradient(135deg, #000 0%, #0a0000 50%, #000 100%); color: #fff; min-height: 100vh; padding: 15px; }
+        body { font-family: 'Rajdhani', sans-serif; background: #000; background-image: radial-gradient(circle at 20% 30%, rgba(139,0,0,0.15) 0%, transparent 50%), radial-gradient(circle at 80% 70%, rgba(139,0,0,0.1) 0%, transparent 50%), linear-gradient(135deg, #000 0%, #0a0000 50%, #000 100%); color: #fff; min-height: 100vh; padding: 15px; }
         .container { max-width: 1400px; margin: 0 auto; }
-        h1 { font-family: 'Orbitron', sans-serif; font-weight: 900; text-align: center; color: #ff0000; margin-bottom: 20px; font-size: clamp(1.8em, 5vw, 3em); letter-spacing: 4px; text-shadow: 0 0 10px rgba(255, 0, 0, 0.8), 0 0 20px rgba(255, 0, 0, 0.5), 2px 2px 0 #000; }
-        .status { background: rgba(0, 40, 0, 0.6); border: 2px solid #00ff00; color: #00ff00; padding: 10px; border-radius: 8px; text-align: center; margin-bottom: 20px; font-weight: 700; font-family: 'Orbitron', sans-serif; font-size: 0.9em; letter-spacing: 2px; }
-        .status.offline { background: rgba(40, 0, 0, 0.6); border-color: #ff0000; color: #ff0000; }
+        h1 { font-family: 'Orbitron', sans-serif; font-weight: 900; text-align: center; color: #ff0000; margin-bottom: 20px; font-size: clamp(1.8em, 5vw, 3em); letter-spacing: 4px; text-shadow: 0 0 10px rgba(255,0,0,0.8), 0 0 20px rgba(255,0,0,0.5); }
+        .status { background: rgba(0,40,0,0.6); border: 2px solid #00ff00; color: #00ff00; padding: 10px; border-radius: 8px; text-align: center; margin-bottom: 20px; font-weight: 700; font-family: 'Orbitron', sans-serif; font-size: 0.9em; }
+        .status.offline { background: rgba(40,0,0,0.6); border-color: #ff0000; color: #ff0000; }
         .tabs { display: flex; gap: 5px; margin-bottom: 20px; flex-wrap: wrap; border-bottom: 3px solid #8B0000; padding-bottom: 5px; }
-        .tab { background: rgba(20, 0, 0, 0.8); border: 2px solid #333; color: #aaa; padding: 12px 20px; border-radius: 10px 10px 0 0; cursor: pointer; font-family: 'Orbitron', sans-serif; font-weight: 700; font-size: 0.9em; letter-spacing: 1px; flex: 1; text-align: center; transition: all 0.3s; text-transform: uppercase; }
-        .tab:hover { background: rgba(139, 0, 0, 0.3); border-color: #8B0000; color: #fff; }
-        .tab.active { background: linear-gradient(135deg, #5C0000 0%, #8B0000 50%, #ff0000 100%); border-color: #ff0000; color: #fff; box-shadow: 0 0 20px rgba(255, 0, 0, 0.6); }
+        .tab { background: rgba(20,0,0,0.8); border: 2px solid #333; color: #aaa; padding: 12px 20px; border-radius: 10px 10px 0 0; cursor: pointer; font-family: 'Orbitron', sans-serif; font-weight: 700; font-size: 0.9em; flex: 1; text-align: center; transition: all 0.3s; text-transform: uppercase; }
+        .tab:hover { background: rgba(139,0,0,0.3); border-color: #8B0000; color: #fff; }
+        .tab.active { background: linear-gradient(135deg, #5C0000 0%, #8B0000 50%, #ff0000 100%); border-color: #ff0000; color: #fff; box-shadow: 0 0 20px rgba(255,0,0,0.6); }
         .tab-content { display: none; }
         .tab-content.active { display: block; }
-        .section { background: rgba(10, 0, 0, 0.85); border: 2px solid #8B0000; border-radius: 15px; padding: 20px; margin-bottom: 20px; box-shadow: 0 0 30px rgba(139, 0, 0, 0.4); }
+        .section { background: rgba(10,0,0,0.85); border: 2px solid #8B0000; border-radius: 15px; padding: 20px; margin-bottom: 20px; box-shadow: 0 0 30px rgba(139,0,0,0.4); }
         .section-title { font-family: 'Orbitron', sans-serif; font-weight: 900; color: #ff0000; font-size: 1.4em; margin-bottom: 15px; border-bottom: 3px solid #8B0000; padding-bottom: 10px; letter-spacing: 2px; text-transform: uppercase; }
-        .login-box { background: rgba(10, 0, 0, 0.95); border: 3px solid #8B0000; border-radius: 15px; padding: 35px; max-width: 420px; margin: 50px auto; text-align: center; box-shadow: 0 0 50px rgba(139, 0, 0, 0.6); }
+        .login-box { background: rgba(10,0,0,0.95); border: 3px solid #8B0000; border-radius: 15px; padding: 35px; max-width: 420px; margin: 50px auto; text-align: center; }
         .login-box h2 { font-family: 'Orbitron', sans-serif; font-weight: 900; color: #ff0000; margin-bottom: 25px; letter-spacing: 3px; }
         .login-box input { width: 100%; margin: 10px 0; padding: 12px; background: #000; border: 2px solid #8B0000; color: #fff; border-radius: 8px; font-size: 1.1em; font-family: 'Rajdhani', sans-serif; font-weight: 600; }
         .login-box button { width: 100%; padding: 14px; background: linear-gradient(135deg, #5C0000 0%, #ff0000 100%); border: none; color: #fff; border-radius: 8px; cursor: pointer; font-family: 'Orbitron', sans-serif; font-weight: 900; font-size: 1.2em; margin-top: 15px; letter-spacing: 3px; text-transform: uppercase; }
         button { background: linear-gradient(135deg, #5C0000 0%, #8B0000 50%, #ff0000 100%); color: #fff; border: 2px solid #8B0000; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-family: 'Orbitron', sans-serif; font-weight: 700; font-size: 0.85em; margin: 5px; letter-spacing: 1px; text-transform: uppercase; transition: all 0.3s; }
-        button:hover { transform: translateY(-2px); box-shadow: 0 0 20px rgba(255, 0, 0, 0.7); }
+        button:hover { transform: translateY(-2px); box-shadow: 0 0 20px rgba(255,0,0,0.7); }
         button.primary { background: linear-gradient(135deg, #00ff00 0%, #008800 100%); color: #000; border-color: #00ff00; font-size: 1.3em; padding: 15px 40px; }
-        .match-card { background: rgba(15, 0, 0, 0.9); border: 2px solid #8B0000; border-radius: 12px; padding: 18px; margin-bottom: 18px; }
+        button.green { background: linear-gradient(135deg, #00aa00 0%, #00ff00 100%); color: #000; border-color: #00ff00; }
+        .match-card { background: rgba(15,0,0,0.9); border: 2px solid #8B0000; border-radius: 12px; padding: 18px; margin-bottom: 18px; }
         .match-header { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 15px; margin-bottom: 15px; padding-bottom: 15px; border-bottom: 2px solid #333; align-items: center; }
         .predictions-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin-top: 15px; }
-        .player-prediction { background: rgba(20, 0, 0, 0.8); border: 2px solid #444; border-radius: 10px; padding: 12px; transition: all 0.3s; }
+        .player-prediction { background: rgba(20,0,0,0.8); border: 2px solid #444; border-radius: 10px; padding: 12px; transition: all 0.3s; }
         .player-prediction:hover { border-color: #8B0000; }
         .player-prediction.disabled { opacity: 0.4; filter: grayscale(0.5); }
         .player-name { font-family: 'Orbitron', sans-serif; font-weight: 700; color: #ff0000; font-size: 1em; margin-bottom: 10px; letter-spacing: 1px; text-align: center; }
-        .player-name.you { color: #ffd700; text-shadow: 0 0 10px rgba(255, 215, 0, 0.8); }
+        .player-name.you { color: #ffd700; text-shadow: 0 0 10px rgba(255,215,0,0.8); }
         .points { font-family: 'Orbitron', sans-serif; font-size: 0.95em; font-weight: 700; text-align: center; padding: 6px; border-radius: 6px; margin-top: 8px; }
-        .points.good { color: #ffd700; background: rgba(255, 215, 0, 0.15); border: 1px solid #ffd700; }
-        .points.ok { color: #00ffff; background: rgba(0, 255, 255, 0.1); border: 1px solid #00ffff; }
-        .points.zero { color: #666; background: rgba(50, 50, 50, 0.3); }
-        table { width: 100%; border-collapse: collapse; margin-top: 15px; background: rgba(10, 0, 0, 0.5); }
+        .points.good { color: #ffd700; background: rgba(255,215,0,0.15); border: 1px solid #ffd700; }
+        .points.ok { color: #00ffff; background: rgba(0,255,255,0.1); border: 1px solid #00ffff; }
+        .points.zero { color: #666; background: rgba(50,50,50,0.3); }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; background: rgba(10,0,0,0.5); }
         th, td { padding: 12px; text-align: center; border: 1px solid #333; font-weight: 600; }
         th { background: linear-gradient(135deg, #5C0000 0%, #8B0000 100%); font-family: 'Orbitron', sans-serif; font-weight: 700; font-size: 0.85em; letter-spacing: 1px; text-transform: uppercase; }
-        tr:nth-child(even) { background: rgba(30, 0, 0, 0.4); }
-        tr:hover { background: rgba(139, 0, 0, 0.3); }
-        tr.qualify { background: rgba(0, 80, 0, 0.3) !important; border-left: 3px solid #00ff00; }
+        tr:nth-child(even) { background: rgba(30,0,0,0.4); }
+        tr:hover { background: rgba(139,0,0,0.3); }
+        tr.qualify { background: rgba(0,80,0,0.3) !important; border-left: 3px solid #00ff00; }
         input[type="number"] { -moz-appearance: textfield; appearance: textfield; background: #000; border: 2px solid #8B0000; color: #fff; padding: 8px; border-radius: 6px; width: 60px; text-align: center; font-family: 'Orbitron', sans-serif; font-weight: 700; font-size: 1.1em; }
         input[type="number"]::-webkit-inner-spin-button, input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
-        input[type="number"]:focus { outline: none; border-color: #ff0000; box-shadow: 0 0 15px rgba(255, 0, 0, 0.6); }
+        input[type="number"]:focus { outline: none; border-color: #ff0000; box-shadow: 0 0 15px rgba(255,0,0,0.6); }
         input[type="number"]:disabled { opacity: 0.5; cursor: not-allowed; background: #111; }
         input[type="text"], input[type="password"] { background: #000; border: 2px solid #8B0000; color: #fff; padding: 10px; border-radius: 6px; font-family: 'Rajdhani', sans-serif; font-weight: 600; font-size: 1em; }
-        input[type="text"]:focus, input[type="password"]:focus { outline: none; border-color: #ff0000; box-shadow: 0 0 10px rgba(255, 0, 0, 0.6); }
-        .init-banner { background: linear-gradient(135deg, rgba(0, 80, 0, 0.9) 0%, rgba(0, 40, 0, 0.9) 100%); border: 3px solid #00ff00; color: #fff; padding: 40px; border-radius: 15px; text-align: center; margin-bottom: 20px; box-shadow: 0 0 50px rgba(0, 255, 0, 0.4); }
-        .init-banner h2 { font-family: 'Orbitron', sans-serif; font-weight: 900; color: #00ff00; margin-bottom: 15px; letter-spacing: 3px; }
-        .rules { background: rgba(40, 0, 0, 0.6); border: 2px solid #8B0000; border-radius: 10px; padding: 15px; margin-bottom: 20px; }
+        input[type="text"]:focus, input[type="password"]:focus { outline: none; border-color: #ff0000; box-shadow: 0 0 10px rgba(255,0,0,0.6); }
+        .rules { background: rgba(40,0,0,0.6); border: 2px solid #8B0000; border-radius: 10px; padding: 15px; margin-bottom: 20px; }
         .rules-title { font-family: 'Orbitron', sans-serif; color: #ff0000; font-size: 1.1em; margin-bottom: 10px; font-weight: 700; letter-spacing: 2px; }
         .rules-list { display: flex; gap: 20px; flex-wrap: wrap; }
         .rule-item { display: flex; align-items: center; gap: 8px; font-weight: 600; }
         .rule-points { background: linear-gradient(135deg, #5C0000 0%, #8B0000 100%); color: #fff; padding: 5px 12px; border-radius: 5px; font-weight: 900; font-family: 'Orbitron', sans-serif; border: 1px solid #ff0000; }
         .analytics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 20px; }
-        .stat-card { background: rgba(20, 0, 0, 0.8); border: 2px solid #8B0000; border-radius: 10px; padding: 20px; text-align: center; }
-        .stat-value { font-family: 'Orbitron', sans-serif; font-weight: 900; font-size: 2.5em; color: #ff0000; text-shadow: 0 0 15px rgba(255, 0, 0, 0.8); }
+        .stat-card { background: rgba(20,0,0,0.8); border: 2px solid #8B0000; border-radius: 10px; padding: 20px; text-align: center; }
+        .stat-value { font-family: 'Orbitron', sans-serif; font-weight: 900; font-size: 2.5em; color: #ff0000; text-shadow: 0 0 15px rgba(255,0,0,0.8); }
         .stat-label { color: #aaa; margin-top: 8px; font-weight: 600; letter-spacing: 1px; }
         .group-table { margin-bottom: 25px; }
-        .group-title { font-family: 'Orbitron', sans-serif; font-weight: 900; color: #ff0000; font-size: 1.2em; margin-bottom: 10px; padding: 10px 20px; background: linear-gradient(135deg, rgba(92, 0, 0, 0.6) 0%, rgba(139, 0, 0, 0.3) 100%); border: 2px solid #8B0000; border-radius: 8px; display: inline-block; letter-spacing: 3px; }
-        .top-player-card { background: rgba(20, 0, 0, 0.8); border: 2px solid #8B0000; border-radius: 10px; padding: 20px; margin-top: 20px; }
+        .group-title { font-family: 'Orbitron', sans-serif; font-weight: 900; color: #ff0000; font-size: 1.2em; margin-bottom: 10px; padding: 10px 20px; background: linear-gradient(135deg, rgba(92,0,0,0.6) 0%, rgba(139,0,0,0.3) 100%); border: 2px solid #8B0000; border-radius: 8px; display: inline-block; letter-spacing: 3px; }
+        .top-player-card { background: rgba(20,0,0,0.8); border: 2px solid #8B0000; border-radius: 10px; padding: 20px; margin-top: 20px; }
         .top-player-card h3 { font-family: 'Orbitron', sans-serif; color: #ff0000; margin-bottom: 15px; font-weight: 700; letter-spacing: 2px; }
         .top-player-row { padding: 10px; border-bottom: 1px solid #333; display: flex; justify-content: space-between; align-items: center; font-weight: 600; }
         .top-player-row:last-child { border-bottom: none; }
         .top-player-row .pts { color: #ffd700; font-family: 'Orbitron', sans-serif; font-weight: 900; }
         .hint { margin-top: 15px; color: #888; font-size: 0.85em; font-weight: 500; }
-        .players-section { background: rgba(10, 0, 0, 0.85); border: 2px solid #8B0000; border-radius: 15px; padding: 20px; margin-bottom: 20px; }
+        .players-section { background: rgba(10,0,0,0.85); border: 2px solid #8B0000; border-radius: 15px; padding: 20px; margin-bottom: 20px; }
         .players-inputs { display: flex; gap: 10px; margin-bottom: 15px; flex-wrap: wrap; }
         .players-inputs input { flex: 1; min-width: 150px; padding: 10px; background: #000; border: 2px solid #8B0000; color: #fff; border-radius: 8px; font-family: 'Rajdhani', sans-serif; font-size: 1em; }
         .players-list { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px; }
-        .player-tag { background: rgba(139, 0, 0, 0.4); border: 2px solid #8B0000; padding: 8px 15px; border-radius: 8px; display: flex; align-items: center; gap: 8px; font-weight: 600; }
+        .player-tag { background: rgba(139,0,0,0.4); border: 2px solid #8B0000; padding: 8px 15px; border-radius: 8px; display: flex; align-items: center; gap: 8px; font-weight: 600; }
         .player-tag .remove-btn { background: #ff0000; border: none; color: #fff; width: 20px; height: 20px; border-radius: 50%; cursor: pointer; font-size: 0.8em; display: flex; align-items: center; justify-content: center; padding: 0; margin: 0; }
     </style>
 </head>
@@ -84,12 +83,6 @@
     <div class="container">
         <h1>⚽ ЧМ-2026 ⚽</h1>
         <div id="status" class="status offline">🔴 ПОДКЛЮЧЕНИЕ...</div>
-        
-        <div id="initBanner" class="init-banner" style="display:none;">
-            <h2>🎮 ПЕРВЫЙ ЗАПУСК</h2>
-            <p style="margin: 15px 0; font-size: 1.1em;">Создать турнир: 48 матчей + 3 игрока</p>
-            <button class="primary" onclick="initTournament()">🚀 ЗАПУСТИТЬ</button>
-        </div>
 
         <div id="loginBox" class="login-box" style="display:none;">
             <h2>🔐 ВХОД</h2>
@@ -105,7 +98,7 @@
                 <div class="players-inputs">
                     <input type="text" id="newPlayerName" placeholder="Имя нового игрока">
                     <input type="password" id="newPlayerPass" placeholder="Пароль" maxlength="10">
-                    <button onclick="addNewPlayer()" style="background: linear-gradient(135deg, #00ff00 0%, #008800 100%); color: #000; font-weight: 900;">+ ДОБАВИТЬ</button>
+                    <button onclick="addNewPlayer()" class="green">+ ДОБАВИТЬ</button>
                 </div>
                 <div id="playersList" class="players-list"></div>
             </div>
@@ -210,14 +203,11 @@
                 const val = snap.val();
                 if (val && val.initialized) {
                     appData = val;
-                    document.getElementById('initBanner').style.display = 'none';
+                    document.getElementById('loginBox').style.display = 'block';
                     const savedUser = localStorage.getItem('wcUser');
                     const savedPass = localStorage.getItem('wcPass');
                     if (savedUser) document.getElementById('username').value = savedUser;
                     if (savedPass) document.getElementById('password').value = savedPass;
-                    document.getElementById('loginBox').style.display = 'block';
-                } else {
-                    document.getElementById('initBanner').style.display = 'block';
                 }
             });
             db.ref('wc2026').on('value', snap => {
@@ -227,85 +217,6 @@
                     if (currentUser) render();
                 }
             });
-        }
-
-        function initTournament() {
-            const allMatches = [
-                // ТУР 1 (11-18 июня)
-                {date:"11 июня", time:"22:00", team1:"Мексика", team2:"ЮАР", group:"A", pred:{t1:2,t2:1}},
-                {date:"12 июня", time:"05:00", team1:"Южная Корея", team2:"Чехия", group:"A", pred:{t1:1,t2:2}},
-                {date:"12 июня", time:"22:00", team1:"Канада", team2:"Босния", group:"B", pred:{t1:2,t2:0}},
-                {date:"13 июня", time:"04:00", team1:"США", team2:"Парагвай", group:"D", pred:{t1:2,t2:1}},
-                {date:"13 июня", time:"22:00", team1:"Катар", team2:"Швейцария", group:"B", pred:{t1:0,t2:2}},
-                {date:"14 июня", time:"01:00", team1:"Бразилия", team2:"Марокко", group:"C", pred:{t1:2,t2:1}},
-                {date:"14 июня", time:"04:00", team1:"Гаити", team2:"Шотландия", group:"C", pred:{t1:0,t2:2}},
-                {date:"14 июня", time:"07:00", team1:"Австралия", team2:"Турция", group:"D", pred:{t1:1,t2:2}},
-                {date:"14 июня", time:"20:00", team1:"Германия", team2:"Кюрасао", group:"E", pred:{t1:3,t2:0}},
-                {date:"14 июня", time:"23:00", team1:"Нидерланды", team2:"Япония", group:"F", pred:{t1:2,t2:1}},
-                {date:"15 июня", time:"02:00", team1:"Кот-д'Ивуар", team2:"Эквадор", group:"E", pred:{t1:2,t2:1}},
-                {date:"15 июня", time:"05:00", team1:"Швеция", team2:"Тунис", group:"F", pred:{t1:2,t2:0}},
-                {date:"15 июня", time:"19:00", team1:"Испания", team2:"Кабо-Верде", group:"H", pred:{t1:3,t2:0}},
-                {date:"15 июня", time:"22:00", team1:"Бельгия", team2:"Египет", group:"G", pred:{t1:2,t2:1}},
-                {date:"16 июня", time:"01:00", team1:"Саудовская Аравия", team2:"Уругвай", group:"H", pred:{t1:1,t2:2}},
-                {date:"16 июня", time:"04:00", team1:"Иран", team2:"Новая Зеландия", group:"G", pred:{t1:2,t2:0}},
-                {date:"16 июня", time:"22:00", team1:"Франция", team2:"Сенегал", group:"I", pred:{t1:2,t2:1}},
-                {date:"17 июня", time:"01:00", team1:"Ирак", team2:"Норвегия", group:"I", pred:{t1:1,t2:3}},
-                {date:"17 июня", time:"04:00", team1:"Аргентина", team2:"Алжир", group:"J", pred:{t1:2,t2:0}},
-                {date:"17 июня", time:"07:00", team1:"Австрия", team2:"Иордания", group:"J", pred:{t1:2,t2:1}},
-                {date:"17 июня", time:"20:00", team1:"Португалия", team2:"ДР Конго", group:"K", pred:{t1:3,t2:1}},
-                {date:"17 июня", time:"23:00", team1:"Англия", team2:"Хорватия", group:"L", pred:{t1:2,t2:1}},
-                {date:"18 июня", time:"02:00", team1:"Гана", team2:"Панама", group:"L", pred:{t1:2,t2:0}},
-                {date:"18 июня", time:"05:00", team1:"Узбекистан", team2:"Колумбия", group:"K", pred:{t1:1,t2:2}},
-                // ТУР 2 (19-24 июня)
-                {date:"19 июня", time:"19:00", team1:"Чехия", team2:"ЮАР", group:"A", pred:{t1:2,t2:1}},
-                {date:"19 июня", time:"22:00", team1:"Швейцария", team2:"Босния", group:"B", pred:{t1:2,t2:0}},
-                {date:"19 июня", time:"01:00", team1:"Канада", team2:"Катар", group:"B", pred:{t1:2,t2:1}},
-                {date:"19 июня", time:"04:00", team1:"Мексика", team2:"Южная Корея", group:"A", pred:{t1:2,t2:0}},
-                {date:"20 июня", time:"22:00", team1:"США", team2:"Австралия", group:"D", pred:{t1:2,t2:1}},
-                {date:"20 июня", time:"01:00", team1:"Шотландия", team2:"Марокко", group:"C", pred:{t1:1,t2:2}},
-                {date:"20 июня", time:"03:30", team1:"Бразилия", team2:"Гаити", group:"C", pred:{t1:3,t2:0}},
-                {date:"20 июня", time:"06:00", team1:"Турция", team2:"Парагвай", group:"D", pred:{t1:2,t2:1}},
-                {date:"20 июня", time:"20:00", team1:"Нидерланды", team2:"Швеция", group:"F", pred:{t1:2,t2:1}},
-                {date:"20 июня", time:"23:00", team1:"Германия", team2:"Кот-д'Ивуар", group:"E", pred:{t1:2,t2:0}},
-                {date:"21 июня", time:"03:00", team1:"Эквадор", team2:"Кюрасао", group:"E", pred:{t1:2,t2:0}},
-                {date:"21 июня", time:"07:00", team1:"Тунис", team2:"Япония", group:"F", pred:{t1:1,t2:2}},
-                {date:"21 июня", time:"19:00", team1:"Испания", team2:"Саудовская Аравия", group:"H", pred:{t1:3,t2:0}},
-                {date:"21 июня", time:"22:00", team1:"Бельгия", team2:"Иран", group:"G", pred:{t1:2,t2:1}},
-                {date:"22 июня", time:"01:00", team1:"Уругвай", team2:"Кабо-Верде", group:"H", pred:{t1:2,t2:0}},
-                {date:"22 июня", time:"04:00", team1:"Новая Зеландия", team2:"Египет", group:"G", pred:{t1:0,t2:2}},
-                {date:"22 июня", time:"20:00", team1:"Аргентина", team2:"Австрия", group:"J", pred:{t1:2,t2:1}},
-                {date:"23 июня", time:"00:00", team1:"Франция", team2:"Ирак", group:"I", pred:{t1:3,t2:0}},
-                {date:"23 июня", time:"03:00", team1:"Норвегия", team2:"Сенегал", group:"I", pred:{t1:2,t2:1}},
-                {date:"23 июня", time:"06:00", team1:"Иордания", team2:"Алжир", group:"J", pred:{t1:1,t2:2}},
-                {date:"23 июня", time:"20:00", team1:"Португалия", team2:"Узбекистан", group:"K", pred:{t1:2,t2:0}},
-                {date:"23 июня", time:"23:00", team1:"Англия", team2:"Гана", group:"L", pred:{t1:2,t2:1}},
-                {date:"24 июня", time:"02:00", team1:"Панама", team2:"Хорватия", group:"L", pred:{t1:1,t2:2}},
-                {date:"24 июня", time:"05:00", team1:"Колумбия", team2:"ДР Конго", group:"K", pred:{t1:2,t2:1}}
-            ];
-            
-            const initData = {
-                initialized: true,
-                matches: allMatches.map(m => ({
-                    date: m.date,
-                    time: m.time,
-                    team1: m.team1,
-                    team2: m.team2,
-                    group: m.group,
-                    predictions: {
-                        'Сергей': {t1: null, t2: null},
-                        'ИИ': {t1: m.pred.t1, t2: m.pred.t2},
-                        'АлПашка': {t1: null, t2: null}
-                    },
-                    result: {t1: null, t2: null}
-                })),
-                players: ['Сергей', 'ИИ', 'АлПашка'],
-                groups: {}
-            };
-            
-            db.ref('wc2026').set(initData).then(() => {
-                alert('✅ ТУРНИР СОЗДАН!\n48 матчей + прогнозы ИИ');
-                location.reload();
-            }).catch(err => alert('❌ Ошибка: ' + err.message));
         }
 
         function login() {
